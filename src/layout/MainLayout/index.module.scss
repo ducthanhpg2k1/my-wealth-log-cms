@@ -1,0 +1,46 @@
+.container {
+  display: flex;
+}
+
+.contentMain {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  height: 100dvh;
+  width: 100%;
+}
+
+.headerMain {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: end;
+  align-items: end;
+  width: 100%;
+  padding: 18px;
+  border-bottom: 1px solid #e8e8e8;
+  background: white;
+}
+
+.containerMain {
+  padding: 32px;
+  background-color: #fafafc;
+  height: 100dvh;
+}
+
+.menuActcontainerMainStatistics {
+  padding: 32px;
+  background-color: #f8fbfa;
+  height: 100dvh;
+}
+
+.profile {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: end;
+  gap: 12px;
+}

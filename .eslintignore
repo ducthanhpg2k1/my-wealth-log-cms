@@ -1,0 +1,23 @@
+# Ignore artifacts:
+build
+coverage
+
+node_modules
+
+# Ignore all HTML files:
+*.html
+
+.github
+
+.next
+
+.swc
+
+next.config.js
+
+next-i18next.config.js
+.dockerignore
+scripts/genColorCss.ts
+styles/color/color.variables.ts
+styles/icon/icon-css.css
+

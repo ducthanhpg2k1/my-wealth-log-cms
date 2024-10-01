@@ -1,0 +1,110 @@
+.ant-picker:hover {
+  border: 1px solid #2aa98b !important;
+  box-shadow: none !important;
+}
+.ant-picker-focused {
+  border: 1px solid #2aa98b !important;
+  box-shadow: none !important;
+}
+
+.ant-select-selector:focus-visible {
+  border-color: #2aa98b !important;
+  box-shadow: none !important;
+}
+.ant-select-selector:hover {
+  border-color: #2aa98b !important;
+  box-shadow: none !important;
+}
+.ant-select-focused .ant-select-selector {
+  border-color: #2aa98b !important;
+  box-shadow: none !important;
+}
+
+.ant-table-thead > tr > th {
+  background: white !important;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500 !important;
+  line-height: 17px;
+  color: #bdbdbd !important;
+}
+
+.ant-checkbox-checked .ant-checkbox-inner {
+  background: #2aa98b !important;
+  border-color: #2aa98b !important;
+}
+
+.ant-checkbox-inner:after {
+  background: #2aa98b !important;
+}
+
+.ant-table-wrapper .ant-table-tbody .ant-table-row.ant-table-row-selected > .ant-table-cell {
+  background: #effcf5 !important;
+}
+
+.ant-tag-green {
+  color: #28ca6e !important;
+  background: #dff7e9 !important;
+  border-color: #dff7e9 !important;
+  height: 25px;
+}
+
+.ant-tag-red {
+  color: #ff5b5b !important;
+  background: #ffe6e6 !important;
+  border-color: #ffe6e6 !important;
+  height: 25px;
+}
+
+.ant-pagination .ant-pagination-item-active a {
+  color: #ffffff !important;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px;
+}
+.ant-pagination .ant-pagination-item-active {
+  background: #2aa98b !important;
+  border-color: #2aa98b !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.ant-form-item-required {
+  &::before {
+    display: none !important;
+  }
+}
+
+label.ant-form-item-required {
+  &::after {
+    display: block !important;
+    content: '*' !important;
+    color: red;
+    visibility: unset !important;
+  }
+}
+
+.ant-radio-inner {
+  border-color: #637381 !important;
+}
+
+.ant-radio-wrapper .ant-radio-checked .ant-radio-inner {
+  background: #fff !important;
+  border-color: #2aa98b !important;
+  &::after {
+    width: 20px;
+    height: 20px;
+    margin-block-start: -10px;
+    margin-inline-start: -10px;
+    background: #2aa98b !important;
+  }
+}
+
+.ant-btn-default {
+  border-radius: 4px;
+  &:hover {
+    border-color: #2aa98b !important;
+    color: #2aa98b !important;
+  }
+}

@@ -1,0 +1,52 @@
+.container {
+  display: flex;
+  width: 300px;
+  flex-direction: column;
+  border-right: 1px solid #e8e8e8;
+  height: 100dvh;
+}
+
+.header {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.image {
+  width: 32px;
+  height: 28px;
+}
+
+.content {
+  padding: 34px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.menu {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  &:hover {
+    background-color: #effcf5;
+  }
+}
+
+.menuActive {
+  background-color: #effcf5;
+
+  p {
+    color: #2aa98b;
+  }
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+}

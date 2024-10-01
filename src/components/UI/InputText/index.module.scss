@@ -1,0 +1,119 @@
+.inputText {
+  background: white;
+  border-radius: 8px;
+  font-weight: 400;
+  font-size: 14px;
+  padding: 12px;
+  line-height: 20px;
+  color: #131313;
+  width: 100%;
+  border: 1px solid #d5d5d5;
+
+  &::-webkit-input-placeholder {
+    /* Edge */
+    color: var(--neutral-color-gray-5-disable, #babfca);
+  }
+
+  &:-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: var(--neutral-color-gray-5-disable, #babfca);
+  }
+
+  &::placeholder {
+    color: var(--neutral-color-gray-5-disable, #babfca);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 22px;
+  }
+
+  &:hover,
+  &:focus,
+  &:active,
+  &:visited,
+  &:focus-visible,
+  &:focus-within,
+  &:target {
+    input {
+      background: white;
+    }
+    border-color: #2aa98b;
+    box-shadow: none;
+    background: white;
+  }
+}
+
+// .hasIcon {
+//   padding: 12px 16px;
+//   background: white;
+//   box-shadow: inset 0px 2px 2px -1px rgba(74, 74, 104, 0.1);
+//   border-radius: 10px;
+//   border: 1px solid #d5d5d5;
+
+//   &:placeholder-shown {
+//     border: 1px solid #d5d5d5;
+//   }
+//   &:focus,
+//   &:active,
+//   &:visited,
+//   &:focus-visible {
+//     box-shadow: none;
+//     border: 1px solid #2aa98b;
+//     background: white;
+//   }
+//   input {
+//     color: #131313;
+//     background: white;
+//     font-weight: 400;
+//     font-size: 14px;
+//     line-height: 20px;
+
+//     &::-webkit-input-placeholder {
+//       /* Edge */
+//       color: #888888;
+//     }
+
+//     &:-ms-input-placeholder {
+//       /* Internet Explorer 10-11 */
+//       color: #888888;
+//     }
+
+//     &::placeholder {
+//       color: #888888;
+//     }
+//   }
+
+//   :global {
+//     .ant-input-prefix {
+//       margin-right: 15px;
+//     }
+//     .ant-input-suffix {
+//       margin-left: 15px;
+//     }
+//   }
+//   &:global(.ant-input-affix-wrapper-focused) {
+//     background: white !important;
+//     input {
+//       background: white !important;
+//     }
+//   }
+
+//   &:global(.ant-input-affix-wrapper-disabled) {
+//     // color: $gray-3 !important;
+//     border: 1px solid transparent !important;
+//   }
+// }
+
+.error {
+  margin: 4px 0 0;
+}
+
+.errorText {
+  // color: $gray-1;
+  font-weight: 400;
+  font-size: 12px;
+}
+.logoError {
+  display: flex;
+  align-items: center;
+}

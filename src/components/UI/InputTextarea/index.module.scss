@@ -1,0 +1,15 @@
+.inputTextarea {
+  &:hover {
+    border: 1px solid #2aa98b;
+    border-color: #2aa98b;
+  }
+
+  &:focus,
+  &:active,
+  &:visited,
+  &:focus-visible {
+    box-shadow: none;
+    border: 1px solid #2aa98b;
+    background: white;
+  }
+}

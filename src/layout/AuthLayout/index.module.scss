@@ -1,0 +1,59 @@
+.mainContainer {
+  height: 100%;
+}
+
+.leftContainer {
+  display: flex;
+  // border: 1px solid #d9d9d9;
+  // border-top: 0px;
+  height: 100dvh;
+  position: relative;
+  align-items: center;
+  background: #08a288;
+  justify-content: center;
+  align-items: center;
+  // background-image: url('../../../public/static/images/Group 42155.png');
+  // background-repeat: no-repeat;
+  // background-size: 100% 100%;
+  // background-size: cover;
+
+  .logoContainer {
+    margin-top: 36px;
+    margin-left: 34px;
+
+    .image {
+      width: 62px !important;
+      height: 52px;
+    }
+  }
+}
+// .imageBgLogin {
+//   // position: absolute;
+//   // top: 56%;
+//   // left: 70%;
+
+//   // transform: translate(-50%, -50%);
+
+//   .image {
+//     width: auto !important;
+//     height: auto !important;
+//   }
+// }
+.imageLab {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  .image {
+    width: auto !important;
+    height: 606px;
+  }
+}
+
+.rightContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100dvh;
+  background: white;
+}
