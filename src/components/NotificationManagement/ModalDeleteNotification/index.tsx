@@ -7,22 +7,36 @@ import { Button as ButtonAntd, Row, Space } from 'antd';
 
 import Button from '@components/UI/Button/Button';
 import CustomModal from '@components/UI/CustomModal';
+import { openNotification } from '@utils/common';
 
 import styles from './index.module.scss';
+import { useDeleteNotification } from '../service';
 
-interface IProps {}
+interface IProps {
+  reloadList: VoidFunction;
+}
 
 const ModalDeleteNotification = (props: IProps, ref: any) => {
-  const {} = props;
+  const { reloadList } = props;
   const [visible, setVisible] = useState(false);
-  const [idDelete, setIdDelete] = useState(0);
+  const [idDelete, setIdDelete] = useState<string>('');
+  const requestDeleteNotification = useDeleteNotification({
+    onSuccess: () => {
+      onVisible();
+      reloadList();
+      openNotification('Delete notification successfully', 'success');
+    },
+    onError(e) {
+      openNotification(e?.errors?.[0] || e?.message, 'error');
+    },
+  });
 
   const onVisible = () => {
     setVisible(!visible);
   };
   useImperativeHandle(ref, () => {
     return {
-      onOpen: (id: number) => {
+      onOpen: (id: string) => {
         setIdDelete(id);
         setVisible(true);
       },
@@ -30,7 +44,9 @@ const ModalDeleteNotification = (props: IProps, ref: any) => {
     };
   });
 
-  const onDelete = () => {};
+  const onDelete = () => {
+    requestDeleteNotification.run(idDelete);
+  };
   return (
     <>
       <CustomModal
@@ -49,7 +65,13 @@ const ModalDeleteNotification = (props: IProps, ref: any) => {
             <ButtonAntd onClick={onVisible} className={styles.btn} size='large' type='default'>
               Không
             </ButtonAntd>
-            <Button className={styles.btn} type='green'>
+            <Button
+              onClick={onDelete}
+              loading={requestDeleteNotification.loading}
+              size='large'
+              className={styles.btn}
+              type='green'
+            >
               Có
             </Button>
           </Row>

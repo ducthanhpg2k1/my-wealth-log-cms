@@ -1,3 +1,5 @@
+import { message } from 'antd';
+
 export const ROUTE_PATH = {
   Home: '/',
   USER: '/user',
@@ -14,4 +16,14 @@ export enum STATUS_USER {
 
 export const capitalizeFirstLetter = (str: string) => {
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+};
+
+type MessageType = 'success' | 'info' | 'warning' | 'error';
+
+export const openNotification = (textMessage: string, type: MessageType) => {
+  if (type === 'success') {
+    message.success(textMessage);
+  } else {
+    message.error(textMessage);
+  }
 };

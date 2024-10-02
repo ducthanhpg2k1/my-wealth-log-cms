@@ -5,17 +5,21 @@ import { forwardRef, useImperativeHandle, useState } from 'react';
 
 import { CloseOutlined } from '@ant-design/icons';
 import { Button as ButtonAntd, Col, Drawer, Row, Space } from 'antd';
+import dayjs from 'dayjs';
 import Image from 'next/image';
 
 import Button from '@components/UI/Button/Button';
 import Text from '@components/UI/Text';
 
 import styles from './index.module.scss';
+import { useGetDetailNotification } from '../service';
 
 const DrawerDetailNotification = (props: any, ref: any) => {
   const { refDrawerAddNotification, refModalDeleteNotification } = props;
   const [open, setOpen] = useState(false);
   const [idDetail, setIdDetail] = useState<any>('');
+
+  const { dataDetail, run: runGetDetail } = useGetDetailNotification();
 
   const onVisible = () => {
     setOpen(false);
@@ -26,10 +30,15 @@ const DrawerDetailNotification = (props: any, ref: any) => {
       onOpen: (id: string) => {
         setOpen(true);
         setIdDetail(id);
+        if (id) {
+          runGetDetail(id);
+        }
       },
       onClose: () => setOpen(false),
     };
   });
+
+  console.log(dataDetail, 'dataDetail');
 
   return (
     <Drawer
@@ -64,7 +73,7 @@ const DrawerDetailNotification = (props: any, ref: any) => {
             </Col>
             <Col span={16}>
               <Text type='font-14-400' color='text-primary'>
-                Thông báo 01
+                {dataDetail?.data?.name}
               </Text>
             </Col>
           </Row>
@@ -76,7 +85,7 @@ const DrawerDetailNotification = (props: any, ref: any) => {
             </Col>
             <Col span={16}>
               <Text type='font-14-400' color='text-primary'>
-                Lorem ipsum dolor sit amet consectetur. Ac nibh et urna volutpat non malesuada.
+                {dataDetail?.data?.content}
               </Text>
             </Col>
           </Row>
@@ -88,7 +97,7 @@ const DrawerDetailNotification = (props: any, ref: any) => {
             </Col>
             <Col span={16}>
               <Text type='font-14-400' color='text-primary'>
-                Hàng tháng
+                {dataDetail?.data?.frequencyId?.name}
               </Text>
             </Col>
           </Row>
@@ -138,14 +147,14 @@ const DrawerDetailNotification = (props: any, ref: any) => {
                     alt=''
                   />
                   <Text type='font-14-400' color='text-primary'>
-                    12:00 AM
+                    {dayjs(dataDetail?.data?.hourSendAt).format('hh:mm A')}
                   </Text>
                 </Row>
                 <Text type='font-14-400' color='text-primary'>
                   -
                 </Text>
                 <Text type='font-14-400' color='text-primary'>
-                  01/01/2011
+                  {dayjs(dataDetail?.data?.daySendAt).format('DD/MM/YYYY')}
                 </Text>
               </Space>
             </Col>
@@ -161,8 +170,9 @@ const DrawerDetailNotification = (props: any, ref: any) => {
             Xóa
           </ButtonAntd>
           <Button
+            size='large'
             onClick={() => {
-              refDrawerAddNotification.current.onOpen(idDetail);
+              refDrawerAddNotification.current.onOpen(dataDetail);
               onVisible();
             }}
             className={styles.btn}

@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/no-null */
 /* eslint-disable unicorn/consistent-function-scoping */
 /* eslint-disable require-await */
 /* eslint-disable no-console */
@@ -17,19 +18,49 @@ import {
   Upload,
 } from 'antd';
 import { UploadProps } from 'antd/lib';
+import dayjs from 'dayjs';
 import Image from 'next/image';
 
 import Button from '@components/UI/Button/Button';
 import InputText from '@components/UI/InputText';
 import InputTextarea from '@components/UI/InputTextarea';
 import Text from '@components/UI/Text';
+import { openNotification } from '@utils/common';
 
 import styles from './index.module.scss';
+import { useCreateNotifications, useEditNotifications, useGetAllFrequencies } from '../service';
 
 const DrawerAddNotification = (props: any, ref: any) => {
+  const { reloadList } = props;
   const [open, setOpen] = useState(false);
   const [form] = Form.useForm();
-  const [idEdit, setIdEdit] = useState<any>('');
+  const [dataDetail, setDataDetail] = useState<any>({});
+
+  const { dataFrequencies } = useGetAllFrequencies();
+
+  const requestCreateNotifications = useCreateNotifications({
+    onSuccess: () => {
+      onVisible();
+      form.resetFields();
+      reloadList();
+      openNotification('Create notification successfully', 'success');
+    },
+    onError(e) {
+      openNotification(e?.errors?.[0] || e?.message, 'error');
+    },
+  });
+
+  const requestEditNotifications = useEditNotifications({
+    onSuccess: () => {
+      onVisible();
+      form.resetFields();
+      reloadList();
+      openNotification('Edit notification successfully', 'success');
+    },
+    onError(e) {
+      openNotification(e?.errors?.[0] || e?.message, 'error');
+    },
+  });
 
   const { Dragger } = Upload;
 
@@ -49,17 +80,41 @@ const DrawerAddNotification = (props: any, ref: any) => {
 
   useImperativeHandle(ref, () => {
     return {
-      onOpen: (id: string) => {
-        console.log(id, 'id');
-
+      onOpen: (data: any) => {
         setOpen(true);
-        setIdEdit(id);
+        setDataDetail(data?.data);
+
+        form.setFieldsValue({
+          name: data?.data?.name,
+          content: data?.data?.content,
+          frequencyId: data?.data?.frequencyId,
+          hourSendAt: dayjs(data?.data?.hourSendAt),
+          daySendAt: dayjs(data?.data?.daySendAt),
+          repeat: data?.data?.repeat,
+        });
       },
       onClose: () => setOpen(false),
     };
   });
   const onSubmit = async (values: any) => {
-    console.log(values);
+    const formattedhourSendAt = values?.hourSendAt
+      ? dayjs(values?.hourSendAt)?.toISOString()
+      : null;
+    const formatteddaySendAt = values?.daySendAt ? dayjs(values?.daySendAt)?.toISOString() : null;
+
+    const body = {
+      name: values?.name,
+      content: values?.content,
+      frequencyId: values?.frequencyId,
+      hourSendAt: formattedhourSendAt,
+      daySendAt: formatteddaySendAt,
+      repeat: values?.repeat,
+    };
+    if (dataDetail?.id) {
+      requestEditNotifications.run(body, dataDetail?.id);
+    } else {
+      requestCreateNotifications?.run(body);
+    }
   };
   return (
     <Drawer
@@ -72,7 +127,7 @@ const DrawerAddNotification = (props: any, ref: any) => {
     >
       <Row align='middle' justify='space-between' className={styles.header}>
         <Text color='text-primary' type='font-24-600'>
-          {idEdit ? 'Sửa thông báo' : 'Thêm mới thông báo'}
+          {dataDetail?.id ? 'Sửa thông báo' : 'Thêm mới thông báo'}
         </Text>
         <ButtonAntd
           shape='circle'
@@ -125,12 +180,16 @@ const DrawerAddNotification = (props: any, ref: any) => {
           </Form.Item>
           <Row align={'top'} style={{ gap: '16px' }}>
             <Text type='font-14-400'>Tần suất:</Text>
-            <Form.Item name='repeat_weekly' label={''}>
+            <Form.Item name='frequencyId' label={''}>
               <Radio.Group>
                 <Space direction='vertical'>
-                  <Radio value={1}>Hàng ngày</Radio>
-                  <Radio value={2}>Hàng tuần</Radio>
-                  <Radio value={3}>Hàng tháng</Radio>
+                  {dataFrequencies?.data?.map((item: any) => {
+                    return (
+                      <Radio key={item?.code} value={item?.code}>
+                        {item?.name}
+                      </Radio>
+                    );
+                  })}
                 </Space>
               </Radio.Group>
             </Form.Item>
@@ -138,14 +197,14 @@ const DrawerAddNotification = (props: any, ref: any) => {
           <Row align={'middle'} style={{ gap: '12px' }}>
             <Text type='font-14-400'>Thời gian gửi</Text>
             <Row align={'middle'} style={{ gap: '4px' }}>
-              <Form.Item noStyle name='time' label={''}>
+              <Form.Item noStyle name='hourSendAt' label={''}>
                 <TimePicker
                   style={{
                     maxWidth: '120px',
                   }}
                 />
               </Form.Item>
-              <Form.Item noStyle name='date' label={''}>
+              <Form.Item noStyle name='daySendAt' label={''}>
                 <DatePicker />
               </Form.Item>
             </Row>
@@ -159,7 +218,13 @@ const DrawerAddNotification = (props: any, ref: any) => {
             >
               Hủy bỏ
             </ButtonAntd>
-            <Button className={styles.btn} type='green'>
+            <Button
+              size='large'
+              htmlType='submit'
+              loading={requestCreateNotifications?.loading || requestEditNotifications?.loading}
+              className={styles.btn}
+              type='green'
+            >
               Lưu
             </Button>
           </div>

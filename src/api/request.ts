@@ -3,6 +3,7 @@
 import TokenManager, { injectBearer } from 'brainless-token-manager';
 import { extend } from 'umi-request';
 
+import { getAccessToken } from '@store/auth';
 import { ENV } from 'src/utils/env';
 
 const REQ_TIMEOUT = 25 * 1000;
@@ -20,10 +21,9 @@ const request = extend({
 
 const tokenManager = new TokenManager({
   getAccessToken: async () => {
-    // const token = getAccessToken();
+    const token = getAccessToken();
 
-    // return token || '';
-    return '';
+    return token || '';
   },
   getRefreshToken: async () => {
     // const refreshToken = getRefreshToken();

@@ -3,7 +3,7 @@
 import { useRef } from 'react';
 
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
-import { Dropdown, Row, Space, Table, Button as ButtonAntd, Checkbox } from 'antd';
+import { Dropdown, Row, Space, Table, Button as ButtonAntd, Checkbox, Form } from 'antd';
 import type { TableColumnsType, TableProps } from 'antd';
 import Image from 'next/image';
 
@@ -16,68 +16,28 @@ import DrawerAddNotification from './DrawerAddNotification';
 import DrawerDetailNotification from './DrawerDetailNotification';
 import styles from './index.module.scss';
 import ModalDeleteNotification from './ModalDeleteNotification';
-
-interface DataType {
-  key: React.Key;
-  name: string;
-  content: {
-    text: string;
-    url: string;
-  };
-  repeat: boolean;
-  repeat_weekly: string;
-}
-
-const data: DataType[] = [
-  {
-    key: '1',
-    name: 'Thông báo Abc',
-    content: {
-      text: 'Lorem ipsum dolor sit amet consectetur. Semper nibh sit tincidunt posuere aliquam tellus. Aliquam semper convallis. Lorem ipsum dolor sit amet consectetur. Semper nibh sit tincidunt posuere aliquam tellus. Aliquam semper convallis.',
-      url: '',
-    },
-    repeat: true,
-    repeat_weekly: 'Hàng tháng',
-  },
-  {
-    key: '2',
-    name: 'Thông báo Abc',
-    content: {
-      text: 'Lorem ipsum dolor sit amet consectetur. Semper nibh sit tincidunt posuere aliquam tellus. Aliquam semper convallis. Lorem ipsum dolor sit amet consectetur. Semper nibh sit tincidunt posuere aliquam tellus. Aliquam semper convallis.',
-      url: '/images/img-content.png',
-    },
-    repeat: false,
-    repeat_weekly: 'Hàng tháng',
-  },
-  {
-    key: '3',
-    name: 'Thông báo Abc',
-    content: {
-      text: 'Lorem ipsum dolor sit amet consectetur. Semper nibh sit tincidunt posuere aliquam tellus. Aliquam semper convallis. Lorem ipsum dolor sit amet consectetur. Semper nibh sit tincidunt posuere aliquam tellus. Aliquam semper convallis.',
-      url: '',
-    },
-    repeat: true,
-    repeat_weekly: 'Hàng tháng',
-  },
-];
+import { useGetNotifications } from './service';
 
 const NotificationManagement = () => {
   const refDrawerAddNotification: any = useRef();
   const refModalDeleteNotification: any = useRef();
   const refDrawerDetailNotification: any = useRef();
+  const [form] = Form.useForm();
+
+  const { dataNotifications, onChange, loading, run } = useGetNotifications();
 
   const onClickAction =
     (record: any) =>
     ({ key }: any) => {
       if (key === 'edit') {
-        refDrawerDetailNotification.current.onOpen(record?.key);
+        refDrawerDetailNotification.current.onOpen(record?.id);
       }
       if (key === 'delete') {
-        refModalDeleteNotification?.current?.onOpen(record?.key);
+        refModalDeleteNotification?.current?.onOpen(record?.id);
       }
     };
 
-  const columns: TableColumnsType<DataType> = [
+  const columns: TableColumnsType<any> = [
     {
       title: 'Tên thông báo',
       dataIndex: 'name',
@@ -98,7 +58,7 @@ const NotificationManagement = () => {
         return (
           <Space direction='vertical' size={12}>
             <Text className={styles.textContent} type='font-14-400' color='text-primary'>
-              {record?.content?.text}
+              {record?.content}
             </Text>
             {record?.content?.url && (
               <Image
@@ -121,7 +81,7 @@ const NotificationManagement = () => {
       width: 150,
       dataIndex: 'repeat',
       render: (_, record) => {
-        return <Checkbox className={styles.checkboxCustom} defaultChecked={record.repeat} />;
+        return <Checkbox className={styles.checkboxCustom} checked={record.repeat} />;
       },
     },
     {
@@ -130,7 +90,7 @@ const NotificationManagement = () => {
       render: (_, record) => {
         return (
           <Text type='font-14-400' color='text-primary'>
-            {record?.repeat_weekly}
+            {record?.frequencyId?.name}
           </Text>
         );
       },
@@ -193,67 +153,87 @@ const NotificationManagement = () => {
     },
   ];
 
-  const rowSelection: TableProps<DataType>['rowSelection'] = {
-    onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
+  const rowSelection: TableProps<any>['rowSelection'] = {
+    onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {
       console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows:', selectedRows);
     },
+  };
+  const onHandleFilter = (values: any) => {
+    const filter = {
+      content: values?.content,
+      repeat: values?.repeat,
+    };
+    onChange(filter);
   };
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>
-        <Text type='font-18-600'>Tìm kiếm</Text>
-        <div className={styles.cardFilter}>
-          <div className={styles.leftFilter}>
+      <Form form={form} layout='vertical' onFinish={onHandleFilter}>
+        <div className={styles.header}>
+          <Text type='font-18-600'>Tìm kiếm</Text>
+          <div className={styles.cardFilter}>
+            <div className={styles.leftFilter}>
+              <Space size={12}>
+                <Text type='font-14-400' color='text-primary'>
+                  Nội dung :
+                </Text>
+                <Form.Item noStyle name='content'>
+                  <InputText
+                    style={{
+                      minWidth: '603px',
+                    }}
+                    size='large'
+                    placeholder='Nhập nội dung tìm kiếm'
+                  />
+                </Form.Item>
+              </Space>
+              <Space size={8}>
+                <Text type='font-14-400' color='text-primary'>
+                  Lặp lại :
+                </Text>
+                <Form.Item valuePropName='checked' noStyle name='repeat'>
+                  <Checkbox className={styles.checkboxCustom} />
+                </Form.Item>
+              </Space>
+            </div>
             <Space size={12}>
-              <Text type='font-14-400' color='text-primary'>
-                Nội dung :
-              </Text>
-              <InputText
-                style={{
-                  minWidth: '603px',
-                }}
-                size='large'
-                placeholder='Nhập nội dung tìm kiếm'
-              />
+              <Button size='large' htmlType='submit' className={styles.btnSearch} type='green'>
+                <Row align={'middle'} style={{ gap: '4px' }}>
+                  <Image
+                    src={'/svgIcon/ic-search.svg'}
+                    width={24}
+                    height={24}
+                    alt=''
+                    className={styles.icSearch}
+                  />
+                  <Text color='background-default' type='font-14-400'>
+                    Tìm kiếm
+                  </Text>
+                </Row>
+              </Button>
+              <Button
+                onClick={() => refDrawerAddNotification.current.onOpen()}
+                className={styles.btnSearch}
+                type='blue'
+              >
+                <Row align={'middle'} style={{ gap: '8px' }}>
+                  <PlusOutlined size={24} />
+                  <Text color='background-default' type='font-14-400'>
+                    Thêm mới
+                  </Text>
+                </Row>
+              </Button>
             </Space>
           </div>
-          <Space size={12}>
-            <Button className={styles.btnSearch} type='green'>
-              <Row align={'middle'} style={{ gap: '4px' }}>
-                <Image
-                  src={'/svgIcon/ic-search.svg'}
-                  width={24}
-                  height={24}
-                  alt=''
-                  className={styles.icSearch}
-                />
-                <Text color='background-default' type='font-14-400'>
-                  Tìm kiếm
-                </Text>
-              </Row>
-            </Button>
-            <Button
-              onClick={() => refDrawerAddNotification.current.onOpen()}
-              className={styles.btnSearch}
-              type='blue'
-            >
-              <Row align={'middle'} style={{ gap: '8px' }}>
-                <PlusOutlined size={24} />
-                <Text color='background-default' type='font-14-400'>
-                  Thêm mới
-                </Text>
-              </Row>
-            </Button>
-          </Space>
         </div>
-      </div>
+      </Form>
+
       <div className={styles.content}>
         <Space size={4}>
           <Text type='font-18-600'>
             Kết quả tìm kiếm{' '}
             <Text element='span' color='neutral-400' type='font-14-400'>
-              (3 bảng ghi)
+              {`(${dataNotifications?.data?.length}bảng ghi)`}
             </Text>
           </Text>
         </Space>
@@ -261,12 +241,13 @@ const NotificationManagement = () => {
           locale={{ emptyText: <NoDataTable /> }}
           rowSelection={{ ...rowSelection }}
           columns={columns}
-          dataSource={data}
+          dataSource={dataNotifications?.data}
+          loading={loading}
         />
       </div>
 
-      <DrawerAddNotification ref={refDrawerAddNotification} />
-      <ModalDeleteNotification ref={refModalDeleteNotification} />
+      <DrawerAddNotification reloadList={run} ref={refDrawerAddNotification} />
+      <ModalDeleteNotification reloadList={run} ref={refModalDeleteNotification} />
       <DrawerDetailNotification
         refModalDeleteNotification={refModalDeleteNotification}
         refDrawerAddNotification={refDrawerAddNotification}
