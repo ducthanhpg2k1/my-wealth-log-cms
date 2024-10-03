@@ -5,18 +5,20 @@ import { useRef } from 'react';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { Dropdown, Row, Space, Table, Button as ButtonAntd, Checkbox, Form } from 'antd';
 import type { TableColumnsType, TableProps } from 'antd';
+import FileSaver from 'file-saver';
 import Image from 'next/image';
 
 import Button from '@components/UI/Button/Button';
 import InputText from '@components/UI/InputText';
 import NoDataTable from '@components/UI/NoDataTable';
 import Text from '@components/UI/Text';
+import { openNotification } from '@utils/common';
 
 import DrawerAddNotification from './DrawerAddNotification';
 import DrawerDetailNotification from './DrawerDetailNotification';
 import styles from './index.module.scss';
 import ModalDeleteNotification from './ModalDeleteNotification';
-import { useGetNotifications } from './service';
+import { useExportFileNotification, useGetNotifications } from './service';
 
 const NotificationManagement = () => {
   const refDrawerAddNotification: any = useRef();
@@ -26,16 +28,16 @@ const NotificationManagement = () => {
 
   const { dataNotifications, onChange, loading, run } = useGetNotifications();
 
-  // const requestExportFileJobSetup = useExportFileNotification({
-  //   onSuccess: (res) => {
-  //     openNotification('Export file success', 'success');
+  const requestExportFileNotification = useExportFileNotification({
+    onSuccess: (res) => {
+      openNotification('Export file success', 'success');
 
-  //     FileSaver.saveAs(res, 'Notification.xlsx');
-  //   },
-  //   onError(e) {
-  //     openNotification(e?.errors?.[0] || e?.message, 'error');
-  //   },
-  // });
+      FileSaver.saveAs(res, 'Notification.xlsx');
+    },
+    onError(e) {
+      openNotification(e?.errors?.[0] || e?.message, 'error');
+    },
+  });
 
   const onClickAction =
     (record: any) =>
@@ -164,9 +166,9 @@ const NotificationManagement = () => {
     },
   ];
 
-  // const handleExportExcel = () => {
-  //   requestExportFileJobSetup?.run();
-  // };
+  const handleExportExcel = () => {
+    requestExportFileNotification?.run();
+  };
 
   const rowSelection: TableProps<any>['rowSelection'] = {
     onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {
@@ -235,6 +237,26 @@ const NotificationManagement = () => {
                   <PlusOutlined size={24} />
                   <Text color='background-default' type='font-14-400'>
                     Thêm mới
+                  </Text>
+                </Row>
+              </Button>
+              <Button
+                onClick={handleExportExcel}
+                size='large'
+                loading={requestExportFileNotification?.loading}
+                className={styles.btnSearch}
+                type='blue'
+              >
+                <Row align={'middle'} style={{ gap: '4px' }}>
+                  <Image
+                    src={'/svgIcon/ic-upload_file.svg'}
+                    width={24}
+                    height={24}
+                    alt=''
+                    className={styles.icSearch}
+                  />
+                  <Text color='background-default' type='font-14-400'>
+                    Xuất excel
                   </Text>
                 </Row>
               </Button>

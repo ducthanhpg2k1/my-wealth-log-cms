@@ -38,8 +38,6 @@ const DrawerDetailNotification = (props: any, ref: any) => {
     };
   });
 
-  console.log(dataDetail, 'dataDetail');
-
   return (
     <Drawer
       className={styles.drawer}
