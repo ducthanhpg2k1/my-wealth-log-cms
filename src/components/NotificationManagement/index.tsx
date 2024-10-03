@@ -26,6 +26,17 @@ const NotificationManagement = () => {
 
   const { dataNotifications, onChange, loading, run } = useGetNotifications();
 
+  // const requestExportFileJobSetup = useExportFileNotification({
+  //   onSuccess: (res) => {
+  //     openNotification('Export file success', 'success');
+
+  //     FileSaver.saveAs(res, 'Notification.xlsx');
+  //   },
+  //   onError(e) {
+  //     openNotification(e?.errors?.[0] || e?.message, 'error');
+  //   },
+  // });
+
   const onClickAction =
     (record: any) =>
     ({ key }: any) => {
@@ -152,6 +163,10 @@ const NotificationManagement = () => {
       },
     },
   ];
+
+  // const handleExportExcel = () => {
+  //   requestExportFileJobSetup?.run();
+  // };
 
   const rowSelection: TableProps<any>['rowSelection'] = {
     onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {

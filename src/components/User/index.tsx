@@ -3,20 +3,32 @@
 import { DatePicker, Form, Row, Space, Table, Tag } from 'antd';
 import type { TableColumnsType, TableProps } from 'antd';
 import dayjs from 'dayjs';
+import FileSaver from 'file-saver';
 import Image from 'next/image';
 
 import Button from '@components/UI/Button/Button';
 import NoDataTable from '@components/UI/NoDataTable';
 import SelectCustom from '@components/UI/SelectCustom';
 import Text from '@components/UI/Text';
-import { STATUS_USER } from '@utils/common';
+import { openNotification, STATUS_USER } from '@utils/common';
 
 import styles from './index.module.scss';
-import { useGetUser } from './service';
+import { useExportFileUser, useGetUser } from './service';
 
 const User = () => {
   const { dataUsers, onChange, loading } = useGetUser();
   const [form] = Form.useForm();
+
+  const requestExportFileJobSetup = useExportFileUser({
+    onSuccess: (res) => {
+      openNotification('Export file success', 'success');
+
+      FileSaver.saveAs(res, 'User.xlsx');
+    },
+    onError(e) {
+      openNotification(e?.errors?.[0] || e?.message, 'error');
+    },
+  });
 
   const columns: TableColumnsType<any> = [
     {
@@ -72,6 +84,10 @@ const User = () => {
       isActived: values?.isActived === STATUS_USER.ACTIVE,
     };
     onChange(1, filter);
+  };
+
+  const handleExportExcel = () => {
+    requestExportFileJobSetup?.run();
   };
 
   return (
@@ -135,7 +151,13 @@ const User = () => {
                   </Text>
                 </Row>
               </Button>
-              <Button size='large' className={styles.btnSearch} type='blue'>
+              <Button
+                onClick={handleExportExcel}
+                size='large'
+                loading={requestExportFileJobSetup?.loading}
+                className={styles.btnSearch}
+                type='blue'
+              >
                 <Row align={'middle'} style={{ gap: '4px' }}>
                   <Image
                     src={'/svgIcon/ic-upload_file.svg'}

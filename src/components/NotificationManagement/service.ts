@@ -1,3 +1,4 @@
+/* eslint-disable require-await */
 /* eslint-disable unicorn/prefer-logical-operator-over-ternary */
 /* eslint-disable unicorn/no-null */
 import { useRequest } from 'ahooks';
@@ -128,4 +129,17 @@ export const useDeleteNotification = (options?: IOptionsRequest) => {
       ...options,
     },
   );
+};
+
+export const serviceExportFileNotification = async () => {
+  return privateRequest(request.post, API_PATH.EXPORT_FILE_NOTIFICATIONS, {
+    responseType: 'blob',
+  });
+};
+
+export const useExportFileNotification = (options?: IOptionsRequest) => {
+  return useRequest(serviceExportFileNotification, {
+    manual: true,
+    ...options,
+  });
 };

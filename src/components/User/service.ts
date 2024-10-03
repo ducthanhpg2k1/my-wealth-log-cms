@@ -1,3 +1,4 @@
+/* eslint-disable require-await */
 import { useRequest } from 'ahooks';
 
 import { API_PATH } from '@api/constant';
@@ -7,6 +8,11 @@ export interface IFilter {
   isActived: boolean;
   createdAtFrom: string | null;
   createdAtTo: string | null;
+}
+
+interface IOptionsRequest {
+  onSuccess?: (r: any) => void;
+  onError?: (e: any) => void;
 }
 
 const serviceGetUser = async (page?: number, filter?: IFilter) => {
@@ -36,4 +42,17 @@ export const useGetUser = () => {
     onChange,
     refreshAsync,
   };
+};
+
+export const serviceExportFileUser = async () => {
+  return privateRequest(request.post, API_PATH.EXPORT_FILE_USER, {
+    responseType: 'blob',
+  });
+};
+
+export const useExportFileUser = (options?: IOptionsRequest) => {
+  return useRequest(serviceExportFileUser, {
+    manual: true,
+    ...options,
+  });
 };
