@@ -9,8 +9,10 @@ export interface IFilter {
   createdAtTo: string | null;
 }
 
-const serviceGetUser = async (filter?: IFilter) => {
+const serviceGetUser = async (page?: number, filter?: IFilter) => {
   const params = {
+    page: page || 1,
+    page_size: 10,
     isActived: filter?.isActived,
     createdAtFrom: filter?.createdAtFrom,
     createdAtTo: filter?.createdAtTo,
@@ -19,11 +21,13 @@ const serviceGetUser = async (filter?: IFilter) => {
 };
 
 export const useGetUser = () => {
-  const { data, loading, run, refreshAsync } = useRequest(async (filter?: IFilter) => {
-    return await serviceGetUser(filter);
-  });
-  const onChange = (filter?: IFilter) => {
-    run(filter);
+  const { data, loading, run, refreshAsync } = useRequest(
+    async (page?: number, filter?: IFilter) => {
+      return await serviceGetUser(page, filter);
+    },
+  );
+  const onChange = (page?: number, filter?: IFilter) => {
+    run(page, filter);
   };
   return {
     dataUsers: data,

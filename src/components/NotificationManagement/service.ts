@@ -25,8 +25,10 @@ interface IBodyNotifications {
   repeat: boolean;
 }
 
-const serviceGetNotifications = async (filter?: IFilter) => {
+const serviceGetNotifications = async (page?: number, filter?: IFilter) => {
   const params = {
+    page: page || 1,
+    page_size: 10,
     content: filter?.content,
     repeat: filter?.repeat ? filter?.repeat : null,
   };
@@ -34,11 +36,13 @@ const serviceGetNotifications = async (filter?: IFilter) => {
 };
 
 export const useGetNotifications = () => {
-  const { data, loading, run, refreshAsync } = useRequest(async (filter?: IFilter) => {
-    return await serviceGetNotifications(filter);
-  });
-  const onChange = (filter?: IFilter) => {
-    run(filter);
+  const { data, loading, run, refreshAsync } = useRequest(
+    async (page?: number, filter?: IFilter) => {
+      return await serviceGetNotifications(page, filter);
+    },
+  );
+  const onChange = (page?: number, filter?: IFilter) => {
+    run(page, filter);
   };
   return {
     dataNotifications: data,

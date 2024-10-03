@@ -71,7 +71,7 @@ const User = () => {
       createdAtTo: formattedCreatedAtTo,
       isActived: values?.isActived === STATUS_USER.ACTIVE,
     };
-    onChange(filter);
+    onChange(1, filter);
   };
 
   return (
@@ -159,7 +159,7 @@ const User = () => {
           <Text type='font-18-600'>
             Kết quả tìm kiếm{' '}
             <Text element='span' color='neutral-400' type='font-14-400'>
-              {`(${dataUsers?.data?.length}bảng ghi)`}
+              {`(${dataUsers?.data?.items?.length}bảng ghi)`}
             </Text>
           </Text>
         </Space>
@@ -168,7 +168,14 @@ const User = () => {
           rowSelection={{ ...rowSelection }}
           columns={columns}
           loading={loading}
-          dataSource={dataUsers?.data}
+          dataSource={dataUsers?.data?.items}
+          pagination={{
+            current: dataUsers?.data?.page,
+            total: dataUsers?.data?.total,
+            showSizeChanger: false,
+            onChange: (page: number) => onChange(page),
+            pageSize: dataUsers?.data?.pageSize,
+          }}
         />
       </div>
     </div>

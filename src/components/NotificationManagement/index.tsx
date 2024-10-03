@@ -163,7 +163,7 @@ const NotificationManagement = () => {
       content: values?.content,
       repeat: values?.repeat,
     };
-    onChange(filter);
+    onChange(1, filter);
   };
 
   return (
@@ -233,7 +233,7 @@ const NotificationManagement = () => {
           <Text type='font-18-600'>
             Kết quả tìm kiếm{' '}
             <Text element='span' color='neutral-400' type='font-14-400'>
-              {`(${dataNotifications?.data?.length}bảng ghi)`}
+              {`(${dataNotifications?.data?.items?.length}bảng ghi)`}
             </Text>
           </Text>
         </Space>
@@ -241,8 +241,15 @@ const NotificationManagement = () => {
           locale={{ emptyText: <NoDataTable /> }}
           rowSelection={{ ...rowSelection }}
           columns={columns}
-          dataSource={dataNotifications?.data}
+          dataSource={dataNotifications?.data?.items}
           loading={loading}
+          pagination={{
+            current: dataNotifications?.data?.page,
+            total: dataNotifications?.data?.total,
+            showSizeChanger: false,
+            onChange: (page: number) => onChange(page),
+            pageSize: dataNotifications?.data?.pageSize,
+          }}
         />
       </div>
 

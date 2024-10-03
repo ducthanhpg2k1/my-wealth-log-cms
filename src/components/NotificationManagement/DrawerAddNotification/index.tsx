@@ -66,6 +66,7 @@ const DrawerAddNotification = (props: any, ref: any) => {
 
   const onVisible = () => {
     setOpen(false);
+    form.resetFields();
   };
   const propsUpload: UploadProps = {
     name: 'file',
@@ -87,7 +88,7 @@ const DrawerAddNotification = (props: any, ref: any) => {
         form.setFieldsValue({
           name: data?.data?.name,
           content: data?.data?.content,
-          frequencyId: data?.data?.frequencyId,
+          frequencyId: data?.data?.frequencyId?.code,
           hourSendAt: dayjs(data?.data?.hourSendAt),
           daySendAt: dayjs(data?.data?.daySendAt),
           repeat: data?.data?.repeat,
