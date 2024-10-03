@@ -29,7 +29,7 @@ const DATA_NOTE = [
   },
 ];
 
-const CardSituation = () => {
+const CardSituation = ({ data }: any) => {
   const options: any = {
     indexAxis: 'y',
     plugins: {
@@ -54,12 +54,12 @@ const CardSituation = () => {
     maintainAspectRatio: false,
   };
 
-  const data = {
+  const dataLoan = {
     labels: ['', ''],
     datasets: [
       {
-        data: [25, 50],
-        backgroundColor: ['#17B899', '#FDD76D'],
+        data: [data?.borrow, data?.loan],
+        backgroundColor: ['#FDD76D', '#17B899'],
         barThickness: 40,
       },
     ],
@@ -88,7 +88,7 @@ const CardSituation = () => {
         </Row>
       </Row>
       <div style={{ width: '100%', height: '230px' }}>
-        <Bar data={data} options={options} />
+        <Bar data={dataLoan} options={options} />
       </div>
     </div>
   );

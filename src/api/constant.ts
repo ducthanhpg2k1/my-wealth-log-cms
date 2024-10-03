@@ -17,4 +17,10 @@ export const API_PATH = {
   REPORT_NOTIFICATIONS: '/api/v1/notifications/report',
 
   REPORT_TRANSACTIONS: '/api/v1/transactions/all-report',
+
+  REPORT_TRANSACTIONS_BY_TYPE: '/api/v1/transactions/report-by-type',
+
+  REPORT_TRANSACTIONS_BY_CREATE_TYPE: '/api/v1/transactions/report-by-create-type',
+
+  REPORT_LOAN: '/api/v1/loans/report-all',
 };

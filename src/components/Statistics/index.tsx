@@ -1,4 +1,8 @@
+import { useMemo } from 'react';
+
+import { useMount } from 'ahooks';
 import { Col, DatePicker, Form, Row, Space, Spin } from 'antd';
+import dayjs from 'dayjs';
 
 import Button from '@components/UI/Button/Button';
 import Text from '@components/UI/Text';
@@ -8,14 +12,27 @@ import CardTransactionComplicated from './CardTransactionComplicated';
 import CardTransactionType from './CardTransactionType';
 import styles from './index.module.scss';
 import {
+  useGetReportLoan,
   useGetReportNewAssets,
   useGetReportNewUser,
   useGetReportNotifications,
   useGetReportTransactions,
+  useGetReportTransactionsByCreateType,
+  useGetReportTransactionsByType,
 } from './service';
 
 const Statistics = () => {
   const [form] = Form.useForm();
+  const firstDayOfMonth = dayjs().startOf('month').toISOString();
+  const currentDayOfMonth = dayjs().toISOString();
+
+  const filterDate = useMemo(() => {
+    const filter = {
+      createdAtFrom: firstDayOfMonth,
+      createdAtTo: currentDayOfMonth,
+    };
+    return filter;
+  }, [firstDayOfMonth, currentDayOfMonth]);
 
   const { dataNewUser, onChange: onChangeNewUser, loading: loadingNewUser } = useGetReportNewUser();
   const {
@@ -36,6 +53,33 @@ const Statistics = () => {
     loading: loadingTransactions,
   } = useGetReportTransactions();
 
+  const {
+    dataTransactionsByType,
+    onChange: onChangeTransactionsByType,
+    loading: loadingTransactionsByType,
+    run: runGetTransactionsByType,
+  } = useGetReportTransactionsByType();
+
+  const {
+    dataTransactionsByCreateType,
+    onChange: onChangeTransactionsByCreateType,
+    loading: loadingTransactionsByCreateType,
+    run: runGetTransactionsByCreateType,
+  } = useGetReportTransactionsByCreateType();
+
+  const {
+    dataTransactionsLoan,
+    onChange: onChangeLoan,
+    loading: loadingLoan,
+    run: runGetLoan,
+  } = useGetReportLoan();
+
+  useMount(() => {
+    runGetTransactionsByType(filterDate);
+    runGetTransactionsByCreateType(filterDate);
+    runGetLoan(filterDate);
+  });
+
   const onHandleFilter = (values: any) => {
     const filter = {
       createdAtFrom: values?.createdAtFrom,
@@ -45,11 +89,22 @@ const Statistics = () => {
     onChangeNotifications(filter);
     onChangeTransactions(filter);
     onChangeNewUser(filter);
+    onChangeLoan(filter);
+    onChangeTransactionsByCreateType(filter);
+    onChangeTransactionsByType(filter);
   };
 
   return (
     <Spin
-      spinning={loadingNewUser || loadingNewAssets || loadingNotifications || loadingTransactions}
+      spinning={
+        loadingLoan ||
+        loadingTransactionsByCreateType ||
+        loadingTransactionsByType ||
+        loadingNewUser ||
+        loadingNewAssets ||
+        loadingNotifications ||
+        loadingTransactions
+      }
     >
       <div className={styles.container}>
         <Row align={'middle'} justify={'space-between'}>
@@ -76,6 +131,9 @@ const Statistics = () => {
 
                 <Button
                   loading={
+                    loadingLoan ||
+                    loadingTransactionsByCreateType ||
+                    loadingTransactionsByType ||
                     loadingNewUser ||
                     loadingNewAssets ||
                     loadingNotifications ||
@@ -112,13 +170,13 @@ const Statistics = () => {
         </Row>
         <Row gutter={16}>
           <Col span={12}>
-            <CardTransactionType />
+            <CardTransactionType data={dataTransactionsByType?.data} />
           </Col>
           <Col span={12}>
-            <CardTransactionComplicated />
+            <CardTransactionComplicated data={dataTransactionsByCreateType?.data} />
           </Col>
         </Row>
-        <CardSituation />
+        <CardSituation data={dataTransactionsLoan?.data} />
       </div>
     </Spin>
   );

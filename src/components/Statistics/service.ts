@@ -119,3 +119,96 @@ export const useGetReportTransactions = () => {
     refreshAsync,
   };
 };
+
+const serviceGetReportTransactionsByType = async (filter: IFilterReport) => {
+  const params = {
+    createdAtFrom: filter?.createdAtFrom,
+    createdAtTo: filter?.createdAtTo,
+  };
+  return await privateRequest(request.get, API_PATH.REPORT_TRANSACTIONS_BY_TYPE, { params });
+};
+
+export const useGetReportTransactionsByType = () => {
+  const { data, loading, run, refreshAsync } = useRequest(
+    async (filter: IFilterReport) => {
+      return await serviceGetReportTransactionsByType(filter);
+    },
+    {
+      manual: true,
+    },
+  );
+
+  const onChange = (filter: IFilterReport) => {
+    run(filter);
+  };
+
+  return {
+    onChange,
+    dataTransactionsByType: data,
+    run,
+    loading,
+    refreshAsync,
+  };
+};
+
+const serviceGetReportTransactionsByCreateType = async (filter: IFilterReport) => {
+  const params = {
+    createdAtFrom: filter?.createdAtFrom,
+    createdAtTo: filter?.createdAtTo,
+  };
+  return await privateRequest(request.get, API_PATH.REPORT_TRANSACTIONS_BY_CREATE_TYPE, { params });
+};
+
+export const useGetReportTransactionsByCreateType = () => {
+  const { data, loading, run, refreshAsync } = useRequest(
+    async (filter: IFilterReport) => {
+      return await serviceGetReportTransactionsByCreateType(filter);
+    },
+    {
+      manual: true,
+    },
+  );
+
+  const onChange = (filter: IFilterReport) => {
+    run(filter);
+  };
+
+  return {
+    onChange,
+    dataTransactionsByCreateType: data,
+    run,
+    loading,
+    refreshAsync,
+  };
+};
+
+const serviceGetReportLoan = async (filter: IFilterReport) => {
+  const params = {
+    createdAtFrom: filter?.createdAtFrom,
+    createdAtTo: filter?.createdAtTo,
+  };
+  return await privateRequest(request.get, API_PATH.REPORT_LOAN, { params });
+};
+
+export const useGetReportLoan = () => {
+  const { data, loading, run, refreshAsync } = useRequest(
+    async (filter: IFilterReport) => {
+      return await serviceGetReportLoan(filter);
+    },
+    {
+      manual: true,
+    },
+  );
+
+  const onChange = (filter: IFilterReport) => {
+    run(filter);
+  };
+
+  return {
+    onChange,
+    dataTransactionsLoan: data,
+    run,
+    loading,
+    refreshAsync,
+  };
+};

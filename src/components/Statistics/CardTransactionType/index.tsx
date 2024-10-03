@@ -40,7 +40,7 @@ const DATA_NOTE = [
   },
 ];
 
-const CardTransactionType = () => {
+const CardTransactionType = ({ data }: { data: any }) => {
   const doughnutOptions = {
     responsive: true,
     plugins: {
@@ -58,8 +58,8 @@ const CardTransactionType = () => {
     ],
     datasets: [
       {
-        data: [25, 25, 25, 25],
-        backgroundColor: ['#17B899', '#F08C8C', '#23B9E4', '#FDD76D'],
+        data: [data?.expense, data?.income, data?.income_expenditure, data?.transfer],
+        backgroundColor: ['#F08C8C', '#17B899', '#23B9E4', '#FDD76D'],
       },
     ],
   };

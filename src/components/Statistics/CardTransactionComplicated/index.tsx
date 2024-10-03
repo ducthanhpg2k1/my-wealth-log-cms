@@ -35,7 +35,7 @@ const DATA_NOTE = [
   },
 ];
 
-const CardTransactionComplicated = () => {
+const CardTransactionComplicated = ({ data }: any) => {
   const doughnutOptions = {
     responsive: true,
     plugins: {
@@ -48,8 +48,8 @@ const CardTransactionComplicated = () => {
     labels: ['Tạo thủ công', 'Hệ thống tự sinh', 'Quét QR'],
     datasets: [
       {
-        data: [25, 25, 25, 25],
-        backgroundColor: ['#23B9E4', '#17B899', '#FDD76D'],
+        data: [data?.automatic_generation, data?.hand_crafted, data?.qr_scan],
+        backgroundColor: ['#17B899', '#23B9E4', '#FDD76D'],
       },
     ],
   };
