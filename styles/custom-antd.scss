@@ -29,6 +29,12 @@
   color: #bdbdbd !important;
 }
 
+.ant-checkbox-wrapper:hover {
+  span {
+    border-color: #2aa98b !important;
+  }
+}
+
 .ant-checkbox-checked .ant-checkbox-inner {
   background: #2aa98b !important;
   border-color: #2aa98b !important;
@@ -107,4 +113,8 @@ label.ant-form-item-required {
     border-color: #2aa98b !important;
     color: #2aa98b !important;
   }
+}
+
+.ant-spin .ant-spin-dot-holder {
+  color: #2aa98b !important;
 }

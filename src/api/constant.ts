@@ -9,4 +9,12 @@ export const API_PATH = {
   EXPORT_FILE_USER: '/api/v1/users/export',
 
   EXPORT_FILE_NOTIFICATIONS: '/api/v1/notifications/export',
+
+  REPORT_NEW_USER: '/api/v1/users/report',
+
+  REPORT_NEW_ASSETS: '/api/v1/assets/report-new-assets',
+
+  REPORT_NOTIFICATIONS: '/api/v1/notifications/report',
+
+  REPORT_TRANSACTIONS: '/api/v1/transactions/all-report',
 };
