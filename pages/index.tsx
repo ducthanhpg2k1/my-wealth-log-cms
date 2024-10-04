@@ -1,20 +1,14 @@
-import { ReactElement, useEffect } from 'react';
+import { ReactElement } from 'react';
 
 import { Breadcrumb, DatePicker, Steps } from 'antd';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import Home from '@components/Home';
 import MainLayout from '@layout/MainLayout';
-import { ROUTE_PATH } from '@utils/common';
 
 const HomePage = () => {
-  const router = useRouter();
-  useEffect(() => {
-    router.push(ROUTE_PATH.USER);
-  }, []);
   return (
     <div>
       <Home />

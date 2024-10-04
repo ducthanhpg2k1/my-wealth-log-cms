@@ -23,4 +23,6 @@ export const API_PATH = {
   REPORT_TRANSACTIONS_BY_CREATE_TYPE: '/api/v1/transactions/report-by-create-type',
 
   REPORT_LOAN: '/api/v1/loans/report-all',
+
+  GET_USER: '/api/v1/users/me',
 };

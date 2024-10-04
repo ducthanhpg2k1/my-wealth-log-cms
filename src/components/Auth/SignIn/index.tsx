@@ -6,6 +6,7 @@ import Button from '@components/UI/Button/Button';
 import InputText, { PasswordInput } from '@components/UI/InputText';
 import Text from '@components/UI/Text';
 import { setAuthCookies } from '@store/auth';
+import { useProfileInitial } from '@store/profile/useProfileInitial';
 import { openNotification, ROUTE_PATH } from '@utils/common';
 
 import styles from './index.module.scss';
@@ -14,6 +15,7 @@ import { useLoginUserName } from './service';
 const SignIn = () => {
   const [form] = Form.useForm();
   const router = useRouter();
+  const { requestGetProfile } = useProfileInitial();
 
   const requestLogin = useLoginUserName({
     onSuccess: (res: any) => {
@@ -22,6 +24,7 @@ const SignIn = () => {
       });
       router.push(ROUTE_PATH.USER);
       openNotification('Login successfully', 'success');
+      requestGetProfile();
     },
     onError(e) {
       openNotification(e?.errors?.[0] || e?.message, 'error');
