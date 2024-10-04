@@ -5,6 +5,8 @@ export const ROUTE_PATH = {
   USER: '/user',
   NOTI_MANAGEMENT: '/noti-management',
   STATISTICS: '/statistics',
+
+  UPLOAD_FILE: '/api/v1/configs/files/upload',
 };
 
 export const REG_EMAIL = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
@@ -26,4 +28,15 @@ export const openNotification = (textMessage: string, type: MessageType) => {
   } else {
     message.error(textMessage);
   }
+};
+
+export const EXT_IMAGE = ['jpg', 'jpeg', 'png'];
+export const isImage = (file: any) => {
+  if (!file) {
+    return false;
+  }
+
+  const name = file?.name?.split('.');
+
+  return file.type?.includes('image') && EXT_IMAGE.includes(name[name?.length - 1]?.toLowerCase());
 };

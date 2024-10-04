@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable unicorn/no-null */
 /* eslint-disable unicorn/consistent-function-scoping */
 /* eslint-disable require-await */
@@ -25,16 +26,22 @@ import Button from '@components/UI/Button/Button';
 import InputText from '@components/UI/InputText';
 import InputTextarea from '@components/UI/InputTextarea';
 import Text from '@components/UI/Text';
-import { openNotification } from '@utils/common';
+import { isImage, openNotification } from '@utils/common';
 
 import styles from './index.module.scss';
-import { useCreateNotifications, useEditNotifications, useGetAllFrequencies } from '../service';
+import {
+  useCreateNotifications,
+  useEditNotifications,
+  useGetAllFrequencies,
+  useUploadImage,
+} from '../service';
 
 const DrawerAddNotification = (props: any, ref: any) => {
   const { reloadList } = props;
   const [open, setOpen] = useState(false);
   const [form] = Form.useForm();
   const [dataDetail, setDataDetail] = useState<any>({});
+  const [dataUpload, setDataUpload] = useState<any>({});
 
   const { dataFrequencies } = useGetAllFrequencies();
 
@@ -62,6 +69,22 @@ const DrawerAddNotification = (props: any, ref: any) => {
     },
   });
 
+  const requestUploadImage = useUploadImage({
+    onSuccess: (res) => {
+      const fileName = res?.fileUrl.split('/').pop();
+      const newData = {
+        url: res?.fileUrl,
+        fileName,
+      };
+      setDataUpload(newData);
+    },
+    onError(e) {
+      openNotification(e?.errors?.[0] || e?.message, 'error');
+    },
+  });
+
+  console.log(dataUpload, 'dataUpload');
+
   const { Dragger } = Upload;
 
   const onVisible = () => {
@@ -71,11 +94,16 @@ const DrawerAddNotification = (props: any, ref: any) => {
   const propsUpload: UploadProps = {
     name: 'file',
     accept: '.jpg, .jpeg, .png',
+    multiple: false,
+    showUploadList: false,
     onChange(info) {
-      console.log(info.file, info.fileList);
-    },
-    onDrop(e) {
-      console.log('Dropped files', e.dataTransfer.files);
+      if (!isImage(info?.file)) {
+        return;
+      }
+      if (info.file?.originFileObj) {
+        const file = info.file.originFileObj;
+        requestUploadImage?.run(file, 'notification');
+      }
     },
   };
 
@@ -85,7 +113,6 @@ const DrawerAddNotification = (props: any, ref: any) => {
         setOpen(true);
         setDataDetail(data?.data);
 
-        console.log(data, 'data');
         if (data?.data?.id) {
           form.setFieldsValue({
             name: data?.data?.name,
@@ -94,6 +121,11 @@ const DrawerAddNotification = (props: any, ref: any) => {
             hourSendAt: dayjs(data?.data?.hourSendAt),
             daySendAt: dayjs(data?.data?.daySendAt),
             repeat: data?.data?.repeat,
+          });
+          const fileName = data?.data?.image.split('/').pop();
+          setDataUpload({
+            url: data?.data?.image,
+            fileName,
           });
         }
       },
@@ -113,12 +145,16 @@ const DrawerAddNotification = (props: any, ref: any) => {
       hourSendAt: formattedhourSendAt,
       daySendAt: formatteddaySendAt,
       repeat: values?.repeat,
+      image: dataUpload?.url,
     };
     if (dataDetail?.id) {
       requestEditNotifications.run(body, dataDetail?.id);
     } else {
       requestCreateNotifications?.run(body);
     }
+  };
+  const handleRemoveFile = () => {
+    setDataUpload({});
   };
   return (
     <Drawer
@@ -161,23 +197,39 @@ const DrawerAddNotification = (props: any, ref: any) => {
           </Form.Item>
           <div className={styles.contentUpload}>
             <Text type='font-14-400'>Hình ảnh đính kèm</Text>
-            <Dragger className={styles.dragger} {...propsUpload}>
-              <Space direction='vertical' size={4}>
-                <Image
-                  src={'/images/img-upload.png'}
-                  alt=''
-                  width={32}
-                  height={32}
-                  className={styles.imgUpload}
-                />
-                <Text type='font-14-400' color='text-primary'>
-                  Tải ảnh lên (1/1)
-                </Text>
-                <Text color='neutral-800' type='font-12-400'>
-                  JPG, JPEG, PNG tối đa 10MB
-                </Text>
-              </Space>
-            </Dragger>
+            <Space direction='vertical' size={12}>
+              <Dragger className={styles.dragger} {...propsUpload}>
+                <Space direction='vertical' size={4}>
+                  <Image
+                    src={'/images/img-upload.png'}
+                    alt=''
+                    width={32}
+                    height={32}
+                    className={styles.imgUpload}
+                  />
+                  <Text type='font-14-400' color='text-primary'>
+                    Tải ảnh lên (1/1)
+                  </Text>
+                  <Text color='neutral-800' type='font-12-400'>
+                    JPG, JPEG, PNG tối đa 10MB
+                  </Text>
+                </Space>
+              </Dragger>
+              {dataUpload?.url && (
+                <>
+                  <Row align={'middle'} justify={'space-between'}>
+                    <Text type='font-14-400'>{dataUpload?.fileName}</Text>
+                    <ButtonAntd
+                      shape='circle'
+                      type='text'
+                      size='small'
+                      onClick={() => handleRemoveFile()}
+                      icon={<CloseOutlined />}
+                    />
+                  </Row>
+                </>
+              )}
+            </Space>
           </div>
           <Form.Item valuePropName='checked' name='repeat' label={''}>
             <Checkbox>Lặp lại</Checkbox>

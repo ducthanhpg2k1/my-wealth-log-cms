@@ -73,9 +73,9 @@ const NotificationManagement = () => {
             <Text className={styles.textContent} type='font-14-400' color='text-primary'>
               {record?.content}
             </Text>
-            {record?.content?.url && (
+            {record?.image && (
               <Image
-                src={record?.content?.url}
+                src={record?.image}
                 alt=''
                 width={56}
                 height={56}

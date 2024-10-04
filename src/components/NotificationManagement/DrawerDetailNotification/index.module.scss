@@ -43,3 +43,10 @@
 .btn {
   width: 100%;
 }
+
+.fileName {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 250px;
+}

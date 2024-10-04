@@ -4,7 +4,7 @@
 import { forwardRef, useImperativeHandle, useState } from 'react';
 
 import { CloseOutlined } from '@ant-design/icons';
-import { Button as ButtonAntd, Col, Drawer, Row, Space } from 'antd';
+import { Button as ButtonAntd, Col, Drawer, Row, Space, Tooltip } from 'antd';
 import dayjs from 'dayjs';
 import Image from 'next/image';
 
@@ -109,7 +109,7 @@ const DrawerDetailNotification = (props: any, ref: any) => {
               <div className={styles.contentImage}>
                 <Row align={'middle'} style={{ gap: '12px' }}>
                   <Image
-                    src={'/images/img-content.png'}
+                    src={dataDetail?.data?.image}
                     alt=''
                     width={56}
                     height={56}
@@ -118,9 +118,13 @@ const DrawerDetailNotification = (props: any, ref: any) => {
                       height: '56px',
                     }}
                   />
-                  <Text type='font-14-400' color='text-primary'>
-                    event-image01.png
-                  </Text>
+                  <Tooltip title={dataDetail?.data?.image.split('/').pop()}>
+                    <a>
+                      <Text type='font-14-400' color='text-primary' className={styles.fileName}>
+                        {dataDetail?.data?.image.split('/').pop()}
+                      </Text>
+                    </a>
+                  </Tooltip>
                 </Row>
               </div>
             </Col>

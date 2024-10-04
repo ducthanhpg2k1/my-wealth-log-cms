@@ -5,6 +5,7 @@ import { useRequest } from 'ahooks';
 
 import { API_PATH } from '@api/constant';
 import { privateRequest, request } from '@api/request';
+import { ROUTE_PATH } from '@utils/common';
 
 export interface IFilter {
   content: string | null;
@@ -139,6 +140,23 @@ export const serviceExportFileNotification = async () => {
 
 export const useExportFileNotification = (options?: IOptionsRequest) => {
   return useRequest(serviceExportFileNotification, {
+    manual: true,
+    ...options,
+  });
+};
+
+export const serviceUploadImage = async (file: any, type: string) => {
+  const formData = new FormData();
+
+  formData.append('file', file);
+
+  return privateRequest(request.post, `${ROUTE_PATH.UPLOAD_FILE}/?type=${type}`, {
+    data: formData,
+  });
+};
+
+export const useUploadImage = (options?: IOptionsRequest) => {
+  return useRequest(serviceUploadImage, {
     manual: true,
     ...options,
   });
