@@ -24,7 +24,7 @@ export const toast = {
             color='success-main'
             onClick={() => t.dismiss(id)}
           /> */}
-          <Text type='caption2' color='text-primary'>
+          <Text type='font-14-400' color='text-primary'>
             {message}
           </Text>
         </Row>
@@ -47,7 +47,7 @@ export const toast = {
             color='error-main'
             onClick={() => t.dismiss(id)}
           /> */}
-          <Text type='caption2' color='text-primary'>
+          <Text type='font-14-400' color='text-primary'>
             {message}
           </Text>
         </Row>

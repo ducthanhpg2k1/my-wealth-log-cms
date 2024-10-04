@@ -48,7 +48,7 @@ const CustomModal = (props: ModalProps) => {
     zIndex,
   } = props;
 
-  const IconVal = closeIcon || <CloseOutlined style={{ marginTop: '5px' }} rev={undefined} />;
+  const IconVal = closeIcon || <CloseOutlined style={{ marginTop: '5px' }} />;
 
   return (
     <Modal
