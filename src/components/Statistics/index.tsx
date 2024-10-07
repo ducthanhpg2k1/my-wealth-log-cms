@@ -118,7 +118,7 @@ const Statistics = () => {
                   Từ:
                 </Text>
                 <Form.Item noStyle name='createdAtFrom'>
-                  <DatePicker />
+                  <DatePicker size='large' />
                 </Form.Item>
               </Space>
               <Space size={8}>
@@ -126,7 +126,7 @@ const Statistics = () => {
                   Đến:
                 </Text>
                 <Form.Item noStyle name='createdAtTo'>
-                  <DatePicker />
+                  <DatePicker size='large' />
                 </Form.Item>
 
                 <Button
@@ -140,7 +140,7 @@ const Statistics = () => {
                     loadingTransactions
                   }
                   htmlType='submit'
-                  size='medium'
+                  size='large'
                   className={styles.btn}
                   type='green'
                 >
