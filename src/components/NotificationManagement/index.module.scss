@@ -60,3 +60,14 @@
   width: 24px;
   height: 24px;
 }
+
+.inputSearch {
+  min-width: 603px;
+
+  @media (min-width: 1280px) and (max-width: 1599px) {
+    min-width: 300px !important;
+  }
+  @media (min-width: 1440px) and (max-width: 1599px) {
+    min-width: 400px !important;
+  }
+}

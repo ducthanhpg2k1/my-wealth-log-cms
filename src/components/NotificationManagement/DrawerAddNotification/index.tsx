@@ -191,7 +191,7 @@ const DrawerAddNotification = (props: any, ref: any) => {
           <Form.Item
             rules={[{ required: true, message: 'Vui lòng nhập nội dung thông báo' }]}
             name='content'
-            label={'Nội dung đăng nhập'}
+            label={'Nội dung thông báo'}
           >
             <InputTextarea maxLength={500} rows={5} size='large' placeholder='Nội dung thông báo' />
           </Form.Item>

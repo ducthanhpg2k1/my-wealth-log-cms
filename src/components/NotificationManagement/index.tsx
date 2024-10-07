@@ -224,9 +224,7 @@ const NotificationManagement = () => {
                 </Text>
                 <Form.Item noStyle name='content'>
                   <InputText
-                    style={{
-                      minWidth: '603px',
-                    }}
+                    className={styles.inputSearch}
                     size='large'
                     placeholder='Nhập nội dung tìm kiếm'
                   />

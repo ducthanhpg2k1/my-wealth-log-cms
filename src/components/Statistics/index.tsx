@@ -152,20 +152,22 @@ const Statistics = () => {
         </Row>
         <Row gutter={16}>
           <Col span={6}>
-            <CardHeader count={dataNewUser?.data?.count} title='USER ĐĂNG KÝ MỚI' />
+            <CardHeader count={dataNewUser?.data?.count || 0} title='USER ĐĂNG KÝ MỚI' />
           </Col>
           <Col span={6}>
-            <CardHeader title='tài sản' count={dataNewAssets?.data?.count} />
+            <CardHeader title='tài sản' count={dataNewAssets?.data?.count || 0} />
           </Col>
           <Col span={6}>
             <CardHeader
               title='thông báo đã đọc/ đã gửi'
-              count={`${dataNotifications?.data?.countRead}/${dataNotifications?.data?.countAll}`}
+              count={`${dataNotifications?.data?.countRead || 0}/${
+                dataNotifications?.data?.countAll || 0
+              }`}
             />
           </Col>
 
           <Col span={6}>
-            <CardHeader title='lượt tạo giao dịch' count={dataTransactions?.data?.count} />
+            <CardHeader title='lượt tạo giao dịch' count={dataTransactions?.data?.count || 0} />
           </Col>
         </Row>
         <Row gutter={16}>
