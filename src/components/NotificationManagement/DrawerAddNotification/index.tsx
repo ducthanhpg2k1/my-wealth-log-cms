@@ -50,7 +50,7 @@ const DrawerAddNotification = (props: any, ref: any) => {
       onVisible();
       form.resetFields();
       reloadList();
-      openNotification('Create notification successfully', 'success');
+      openNotification('Thêm mới thông báo thành công', 'success');
     },
     onError(e) {
       openNotification(e?.errors?.[0] || e?.message, 'error');
@@ -62,7 +62,7 @@ const DrawerAddNotification = (props: any, ref: any) => {
       onVisible();
       form.resetFields();
       reloadList();
-      openNotification('Edit notification successfully', 'success');
+      openNotification('Sửa thông báo thành công', 'success');
     },
     onError(e) {
       openNotification(e?.errors?.[0] || e?.message, 'error');
@@ -186,14 +186,14 @@ const DrawerAddNotification = (props: any, ref: any) => {
             name='name'
             label={'Tên đăng nhập'}
           >
-            <InputText size='large' placeholder='Tên thông báo' />
+            <InputText maxLength={225} size='large' placeholder='Tên thông báo' />
           </Form.Item>
           <Form.Item
             rules={[{ required: true, message: 'Vui lòng nhập nội dung thông báo' }]}
             name='content'
             label={'Nội dung đăng nhập'}
           >
-            <InputTextarea rows={5} size='large' placeholder='Nội dung thông báo' />
+            <InputTextarea maxLength={500} rows={5} size='large' placeholder='Nội dung thông báo' />
           </Form.Item>
           <div className={styles.contentUpload}>
             <Text type='font-14-400'>Hình ảnh đính kèm</Text>

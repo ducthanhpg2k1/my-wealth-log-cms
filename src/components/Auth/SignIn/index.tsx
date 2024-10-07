@@ -51,10 +51,28 @@ const SignIn = () => {
             </Text>
           </Space>
           <div>
-            <Form.Item name='username' label={'Tên đăng nhập'}>
+            <Form.Item
+              rules={[
+                {
+                  required: true,
+                  message: 'Vui lòng nhập tên đăng nhập',
+                },
+              ]}
+              name='username'
+              label={'Tên đăng nhập'}
+            >
               <InputText size='large' placeholder='Tên đăng nhập' />
             </Form.Item>
-            <Form.Item name='password' label={'Mật khẩu'}>
+            <Form.Item
+              rules={[
+                {
+                  required: true,
+                  message: 'Vui lòng nhập mật khẩu',
+                },
+              ]}
+              name='password'
+              label={'Mật khẩu'}
+            >
               <PasswordInput size='large' placeholder='Mật khẩu' />
             </Form.Item>
             <Button

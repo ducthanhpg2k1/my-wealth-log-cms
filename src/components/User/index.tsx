@@ -154,6 +154,7 @@ const User = () => {
                 <Form.Item noStyle name='isActived'>
                   <SelectCustom
                     style={{ minWidth: '140px' }}
+                    defaultValue={STATUS_USER.ACTIVE}
                     options={[
                       {
                         label: 'Active',

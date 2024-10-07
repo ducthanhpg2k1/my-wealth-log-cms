@@ -24,7 +24,7 @@ const ModalDeleteNotification = (props: IProps, ref: any) => {
     onSuccess: () => {
       onVisible();
       reloadList();
-      openNotification('Delete notification successfully', 'success');
+      openNotification('Xóa thông báo thành công', 'success');
     },
     onError(e) {
       openNotification(e?.errors?.[0] || e?.message, 'error');

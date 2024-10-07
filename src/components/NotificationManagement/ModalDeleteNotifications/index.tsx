@@ -24,7 +24,7 @@ const ModalDeleteNotifications = (props: IProps, ref: any) => {
     onSuccess: () => {
       onVisible();
       reloadList();
-      openNotification('Delete notifications successfully', 'success');
+      openNotification('Xóa những thông báo đã chọn thành công', 'success');
     },
     onError(e) {
       openNotification(e?.errors?.[0] || e?.message, 'error');
@@ -58,7 +58,9 @@ const ModalDeleteNotifications = (props: IProps, ref: any) => {
         <div className={styles.wrap}>
           <Space direction='vertical' size={8}>
             <p className={styles.title}>{'Xoá thông báo'}</p>
-            <span className={styles.des}>Bạn có chắc chắn muốn xóa những thông báo không ?</span>
+            <span className={styles.des}>
+              Bạn có chắc chắn muốn xóa những thông báo đã chọn không ?
+            </span>
           </Space>
 
           <Row align={'middle'} justify={'center'} style={{ gap: '12px', marginTop: '20px' }}>
