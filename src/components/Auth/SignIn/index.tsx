@@ -80,6 +80,7 @@ const SignIn = () => {
               htmlType='submit'
               className={styles.btnLogin}
               type='green'
+              size='large'
             >
               Đăng nhập
             </Button>

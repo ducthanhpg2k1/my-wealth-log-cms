@@ -45,7 +45,7 @@ const CardTransactionComplicated = ({ data }: any) => {
     },
   };
   const transactionTypeData = {
-    labels: ['Tạo thủ công', 'Hệ thống tự sinh', 'Quét QR'],
+    labels: ['Hệ thống tự sinh', 'Tạo thủ công', 'Quét QR'],
     datasets: [
       {
         data: [data?.automatic_generation, data?.hand_crafted, data?.qr_scan],

@@ -55,6 +55,7 @@ const MainLayout = ({ children }: any) => {
           <Dropdown
             placement='bottomRight'
             arrow
+            trigger={['click']}
             menu={{ items: profileSettings, onClick: onClickProfile }}
           >
             <a onClick={(e) => e.preventDefault()}>

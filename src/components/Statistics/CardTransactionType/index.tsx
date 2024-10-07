@@ -51,10 +51,10 @@ const CardTransactionType = ({ data }: { data: any }) => {
   };
   const transactionTypeData = {
     labels: [
-      'Giao dịch thu nhập',
       'Giao dịch chi phí',
-      'Giao dịch thu nợ',
-      'Giao dịch định chuyển',
+      'Giao dịch thu nhập',
+      'Giao dịch thu chi',
+      'Giao dịch điều chuyển',
     ],
     datasets: [
       {

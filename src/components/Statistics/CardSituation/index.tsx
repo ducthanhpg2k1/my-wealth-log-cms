@@ -58,8 +58,8 @@ const CardSituation = ({ data }: any) => {
     labels: ['', ''],
     datasets: [
       {
-        data: [data?.borrow, data?.loan],
-        backgroundColor: ['#FDD76D', '#17B899'],
+        data: [data?.loan, data?.borrow],
+        backgroundColor: ['#17B899', '#FDD76D'],
         barThickness: 40,
       },
     ],
