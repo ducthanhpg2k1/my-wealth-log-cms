@@ -296,7 +296,7 @@ const NotificationManagement = () => {
           <Text type='font-18-600'>
             Kết quả tìm kiếm{' '}
             <Text element='span' color='neutral-400' type='font-14-400'>
-              {`(${dataNotifications?.data?.items?.length}bảng ghi)`}
+              {`(${dataNotifications?.data?.items?.length} bản ghi)`}
             </Text>
           </Text>
         </Space>
