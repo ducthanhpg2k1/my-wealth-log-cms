@@ -132,6 +132,19 @@ export const useDeleteNotification = (options?: IOptionsRequest) => {
   );
 };
 
+const serviceDeleteNotifications = (body: { ids: string[] }) => {
+  return privateRequest(request.post, API_PATH.DELETE_NOTIFICATIONS, {
+    data: body,
+  });
+};
+
+export const useDeleteNotifications = (options: IOptionsRequest) => {
+  return useRequest(serviceDeleteNotifications, {
+    manual: true,
+    ...options,
+  });
+};
+
 export const serviceExportFileNotification = async () => {
   return privateRequest(request.post, API_PATH.EXPORT_FILE_NOTIFICATIONS, {
     responseType: 'blob',

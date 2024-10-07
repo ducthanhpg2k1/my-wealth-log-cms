@@ -29,6 +29,10 @@
   color: #bdbdbd !important;
 }
 
+.ant-table-thead > tr > th::before {
+  display: none !important;
+}
+
 .ant-checkbox-wrapper:hover {
   span {
     border-color: #2aa98b !important;

@@ -56,3 +56,15 @@ export const useExportFileUser = (options?: IOptionsRequest) => {
     ...options,
   });
 };
+
+export const useDeleteUsers = (options?: IOptionsRequest) => {
+  return useRequest(
+    (id: any) => {
+      return privateRequest(request.delete, API_PATH.EDIT_NOTIFICATIONS(id), {});
+    },
+    {
+      manual: true,
+      ...options,
+    },
+  );
+};

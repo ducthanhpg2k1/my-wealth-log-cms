@@ -1,6 +1,6 @@
 /* eslint-disable indent */
 /* eslint-disable no-console */
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { Dropdown, Row, Space, Table, Button as ButtonAntd, Checkbox, Form } from 'antd';
@@ -18,13 +18,17 @@ import DrawerAddNotification from './DrawerAddNotification';
 import DrawerDetailNotification from './DrawerDetailNotification';
 import styles from './index.module.scss';
 import ModalDeleteNotification from './ModalDeleteNotification';
+import ModalDeleteNotifications from './ModalDeleteNotifications';
 import { useExportFileNotification, useGetNotifications } from './service';
 
 const NotificationManagement = () => {
   const refDrawerAddNotification: any = useRef();
   const refModalDeleteNotification: any = useRef();
+  const refModalDeleteNotifications: any = useRef();
+
   const refDrawerDetailNotification: any = useRef();
   const [form] = Form.useForm();
+  const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
 
   const { dataNotifications, onChange, loading, run } = useGetNotifications();
 
@@ -110,7 +114,31 @@ const NotificationManagement = () => {
     },
 
     {
-      title: '',
+      title: (
+        <>
+          <ButtonAntd
+            type='text'
+            shape='circle'
+            onClick={() => refModalDeleteNotifications?.current?.onOpen(selectedRowKeys)}
+            size='middle'
+            icon={
+              <Image
+                width={20}
+                height={20}
+                alt=''
+                style={{
+                  width: '20px',
+                  height: '20px',
+                }}
+                src={'/svgIcon/ic-delete1.svg'}
+              />
+            }
+            style={{
+              visibility: selectedRowKeys?.length > 0 ? 'visible' : 'hidden',
+            }}
+          />
+        </>
+      ),
       align: 'end',
       dataIndex: 'action',
       render: (_, record) => {
@@ -171,8 +199,8 @@ const NotificationManagement = () => {
   };
 
   const rowSelection: TableProps<any>['rowSelection'] = {
-    onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {
-      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows:', selectedRows);
+    onChange: (selectedRowKeys: React.Key[]) => {
+      setSelectedRowKeys(selectedRowKeys);
     },
   };
   const onHandleFilter = (values: any) => {
@@ -278,6 +306,7 @@ const NotificationManagement = () => {
           locale={{ emptyText: <NoDataTable /> }}
           rowSelection={{ ...rowSelection }}
           columns={columns}
+          rowKey='id'
           dataSource={dataNotifications?.data?.items}
           loading={loading}
           pagination={{
@@ -297,6 +326,7 @@ const NotificationManagement = () => {
         refDrawerAddNotification={refDrawerAddNotification}
         ref={refDrawerDetailNotification}
       />
+      <ModalDeleteNotifications reloadList={run} ref={refModalDeleteNotifications} />
     </div>
   );
 };

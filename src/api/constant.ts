@@ -4,6 +4,8 @@ export const API_PATH = {
   USER: '/api/v1/users',
   NOTIFICATIONS: '/api/v1/notifications',
   EDIT_NOTIFICATIONS: (id: string) => `/api/v1/notifications/${id}`,
+  DELETE_NOTIFICATIONS: '/api/v1/notifications/delele-multiple',
+
   FREQUENCIES: '/api/v1/configs/rental-frequencies',
 
   EXPORT_FILE_USER: '/api/v1/users/export',

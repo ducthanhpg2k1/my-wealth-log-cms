@@ -1,6 +1,8 @@
 /* eslint-disable unicorn/no-null */
 /* eslint-disable no-console */
-import { DatePicker, Form, Row, Space, Table, Tag } from 'antd';
+import { useRef, useState } from 'react';
+
+import { DatePicker, Form, Row, Space, Table, Tag, Button as ButtonAntd } from 'antd';
 import type { TableColumnsType, TableProps } from 'antd';
 import dayjs from 'dayjs';
 import FileSaver from 'file-saver';
@@ -13,11 +15,14 @@ import Text from '@components/UI/Text';
 import { openNotification, STATUS_USER } from '@utils/common';
 
 import styles from './index.module.scss';
+import ModalDeleteUsers from './ModalDeleteUsers';
 import { useExportFileUser, useGetUser } from './service';
 
 const User = () => {
-  const { dataUsers, onChange, loading } = useGetUser();
+  const { dataUsers, onChange, loading, run } = useGetUser();
   const [form] = Form.useForm();
+  const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
+  const refModalDeleteUsers: any = useRef();
 
   const requestExportFileJobSetup = useExportFileUser({
     onSuccess: (res) => {
@@ -64,13 +69,42 @@ const User = () => {
         );
       },
     },
+    {
+      title: (
+        <>
+          <ButtonAntd
+            type='text'
+            shape='circle'
+            size='middle'
+            onClick={() => refModalDeleteUsers?.current?.onOpen(selectedRowKeys)}
+            icon={
+              <Image
+                width={20}
+                height={20}
+                alt=''
+                style={{
+                  width: '20px',
+                  height: '20px',
+                }}
+                src={'/svgIcon/ic-delete1.svg'}
+              />
+            }
+            style={{
+              visibility: selectedRowKeys?.length > 0 ? 'visible' : 'hidden',
+            }}
+          />
+        </>
+      ),
+      align: 'end',
+      dataIndex: 'action',
+    },
   ];
-
   const rowSelection: TableProps<any>['rowSelection'] = {
-    onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {
-      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows:', selectedRows);
+    onChange: (selectedRowKeys: React.Key[]) => {
+      setSelectedRowKeys(selectedRowKeys);
     },
   };
+
   const onHandleFilter = (values: any) => {
     const formattedCreatedAtFrom = values?.createdAtFrom
       ? dayjs(values?.createdAtFrom)?.toISOString()
@@ -189,6 +223,7 @@ const User = () => {
           locale={{ emptyText: <NoDataTable /> }}
           rowSelection={{ ...rowSelection }}
           columns={columns}
+          rowKey='id'
           loading={loading}
           dataSource={dataUsers?.data?.items}
           pagination={{
@@ -200,6 +235,7 @@ const User = () => {
           }}
         />
       </div>
+      <ModalDeleteUsers reloadList={run} ref={refModalDeleteUsers} />
     </div>
   );
 };
