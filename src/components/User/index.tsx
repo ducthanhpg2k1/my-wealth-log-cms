@@ -216,7 +216,7 @@ const User = () => {
           <Text type='font-18-600'>
             Kết quả tìm kiếm{' '}
             <Text element='span' color='neutral-400' type='font-14-400'>
-              {`(${dataUsers?.data?.items?.length} bản ghi)`}
+              {dataUsers?.data?.items?.length > 0 && `(${dataUsers?.data?.items?.length} bản ghi)`}
             </Text>
           </Text>
         </Space>
