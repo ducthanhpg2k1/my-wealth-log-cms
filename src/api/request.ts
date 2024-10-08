@@ -19,6 +19,7 @@ const request = extend({
       deleteAuthCookies();
       window.location.href = '/auth/sign-in';
     }
+    throw error?.data || error?.response;
   },
 });
 
