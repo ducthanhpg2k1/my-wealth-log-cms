@@ -41,3 +41,19 @@ export const isImage = (file: any) => {
 
   return file.type?.includes('image') && EXT_IMAGE.includes(name[name?.length - 1]?.toLowerCase());
 };
+
+export enum TYPE_DATE {
+  DAILY = 'daily',
+  MONTHLY = 'monthly',
+  WEEKLY = 'weekly',
+}
+
+export enum TYPE_DATE_SEND {
+  MONDAY = 1,
+  TUESDAY = 2,
+  WEBNESDAY = 3,
+  THURSDAY = 4,
+  FRIDAY = 5,
+  SATURDAY = 6,
+  SUNDAY = 0,
+}

@@ -9,6 +9,7 @@ import { CloseOutlined } from '@ant-design/icons';
 import {
   Button as ButtonAntd,
   Checkbox,
+  Col,
   DatePicker,
   Drawer,
   Form,
@@ -25,16 +26,61 @@ import Image from 'next/image';
 import Button from '@components/UI/Button/Button';
 import InputText from '@components/UI/InputText';
 import InputTextarea from '@components/UI/InputTextarea';
+import SelectCustom from '@components/UI/SelectCustom';
 import Text from '@components/UI/Text';
-import { isImage, openNotification } from '@utils/common';
+import { isImage, openNotification, TYPE_DATE, TYPE_DATE_SEND } from '@utils/common';
 
 import styles from './index.module.scss';
-import {
-  useCreateNotifications,
-  useEditNotifications,
-  useGetAllFrequencies,
-  useUploadImage,
-} from '../service';
+import { useCreateNotifications, useEditNotifications, useUploadImage } from '../service';
+
+const DATA_DATE_SEND = [
+  {
+    label: 'Thứ 2',
+    value: TYPE_DATE_SEND.MONDAY,
+  },
+  {
+    label: 'Thứ 3',
+    value: TYPE_DATE_SEND.TUESDAY,
+  },
+  {
+    label: 'Thứ 4',
+    value: TYPE_DATE_SEND.WEBNESDAY,
+  },
+  {
+    label: 'Thứ 5',
+    value: TYPE_DATE_SEND.THURSDAY,
+  },
+  {
+    label: 'Thứ 6',
+    value: TYPE_DATE_SEND.FRIDAY,
+  },
+  {
+    label: 'Thứ 7',
+    value: TYPE_DATE_SEND.SATURDAY,
+  },
+  {
+    label: 'Chủ nhật',
+    value: TYPE_DATE_SEND.SUNDAY,
+  },
+];
+
+const dataFrequencies = [
+  {
+    id: 1,
+    label: 'Hàng ngày',
+    value: TYPE_DATE.DAILY,
+  },
+  {
+    id: 2,
+    label: 'Hàng tháng',
+    value: TYPE_DATE.MONTHLY,
+  },
+  {
+    id: 3,
+    label: 'Hàng tuần',
+    value: TYPE_DATE.WEEKLY,
+  },
+];
 
 const DrawerAddNotification = (props: any, ref: any) => {
   const { reloadList } = props;
@@ -42,8 +88,6 @@ const DrawerAddNotification = (props: any, ref: any) => {
   const [form] = Form.useForm();
   const [dataDetail, setDataDetail] = useState<any>({});
   const [dataUpload, setDataUpload] = useState<any>({});
-
-  const { dataFrequencies } = useGetAllFrequencies();
 
   const requestCreateNotifications = useCreateNotifications({
     onSuccess: () => {
@@ -83,13 +127,12 @@ const DrawerAddNotification = (props: any, ref: any) => {
     },
   });
 
-  console.log(dataUpload, 'dataUpload');
-
   const { Dragger } = Upload;
 
   const onVisible = () => {
     setOpen(false);
     form.resetFields();
+    setDataUpload({});
   };
   const propsUpload: UploadProps = {
     name: 'file',
@@ -156,6 +199,7 @@ const DrawerAddNotification = (props: any, ref: any) => {
   const handleRemoveFile = () => {
     setDataUpload({});
   };
+
   return (
     <Drawer
       className={styles.drawer}
@@ -180,7 +224,18 @@ const DrawerAddNotification = (props: any, ref: any) => {
         />
       </Row>
       <div className={styles.content}>
-        <Form form={form} layout='vertical' onFinish={onSubmit}>
+        <Form
+          initialValues={{
+            repeat: false,
+            sendAt: dayjs(),
+            hourSendAt: dayjs(),
+            daySendAt: TYPE_DATE_SEND.MONDAY,
+            frequencyId: TYPE_DATE.WEEKLY,
+          }}
+          form={form}
+          layout='vertical'
+          onFinish={onSubmit}
+        >
           <Form.Item
             rules={[{ required: true, message: 'Vui lòng nhập tên thông báo' }]}
             name='name'
@@ -234,37 +289,106 @@ const DrawerAddNotification = (props: any, ref: any) => {
           <Form.Item valuePropName='checked' name='repeat' label={''}>
             <Checkbox>Lặp lại</Checkbox>
           </Form.Item>
-          <Row align={'top'} style={{ gap: '16px' }}>
-            <Text type='font-14-400'>Tần suất:</Text>
-            <Form.Item name='frequencyId' label={''}>
-              <Radio.Group>
-                <Space direction='vertical'>
-                  {dataFrequencies?.data?.map((item: any) => {
-                    return (
-                      <Radio key={item?.code} value={item?.code}>
-                        {item?.name}
-                      </Radio>
-                    );
-                  })}
-                </Space>
-              </Radio.Group>
+          <Form.Item dependencies={['repeat']} noStyle>
+            {({ getFieldValue }) => {
+              const isRepeat = getFieldValue('repeat');
+              return (
+                <>
+                  {isRepeat && (
+                    <Row align={'top'} style={{ gap: '16px' }}>
+                      <Text type='font-14-400'>Tần suất:</Text>
+                      <Form.Item name='frequencyId' label={''}>
+                        <Radio.Group defaultValue={TYPE_DATE.WEEKLY}>
+                          <Space direction='vertical'>
+                            {dataFrequencies?.map((item: any) => {
+                              return (
+                                <Radio key={item?.id} value={item?.value}>
+                                  {item?.label}
+                                </Radio>
+                              );
+                            })}
+                          </Space>
+                        </Radio.Group>
+                      </Form.Item>
+                    </Row>
+                  )}
+                </>
+              );
+            }}
+          </Form.Item>
+          <Row gutter={12}>
+            <Form.Item dependencies={['frequencyId', 'repeat']} noStyle>
+              {({ getFieldValue }) => {
+                const frequencyId = getFieldValue('frequencyId');
+                const repeat = getFieldValue('repeat');
+
+                if (repeat && frequencyId === TYPE_DATE.DAILY) {
+                  return (
+                    <Col span={8}>
+                      <Form.Item name='hourSendAt' label={'Giờ gửi thông báo'}>
+                        <TimePicker
+                          defaultValue={dayjs()}
+                          format='HH:mm'
+                          style={{
+                            width: '100%',
+                          }}
+                        />
+                      </Form.Item>
+                    </Col>
+                  );
+                }
+
+                return null;
+              }}
+            </Form.Item>
+            <Form.Item dependencies={['frequencyId', 'repeat']} noStyle>
+              {({ getFieldValue }) => {
+                const frequencyId = getFieldValue('frequencyId');
+                const repeat = getFieldValue('repeat');
+
+                if (!repeat || (repeat && frequencyId === TYPE_DATE.MONTHLY)) {
+                  return (
+                    <Col span={10}>
+                      <Form.Item name='sendAt' label={'Thời gian gửi'}>
+                        <DatePicker
+                          showTime={{ format: 'HH:mm' }}
+                          style={{
+                            width: '100%',
+                          }}
+                          defaultValue={dayjs()}
+                        />
+                      </Form.Item>
+                    </Col>
+                  );
+                }
+
+                return null;
+              }}
+            </Form.Item>
+            <Form.Item dependencies={['frequencyId', 'repeat']} noStyle>
+              {({ getFieldValue }) => {
+                const frequencyId = getFieldValue('frequencyId');
+                const repeat = getFieldValue('repeat');
+
+                if (repeat && frequencyId === TYPE_DATE.WEEKLY) {
+                  return (
+                    <Col span={8}>
+                      <Form.Item name='daySendAt' label={'Ngày gửi thông báo'}>
+                        <SelectCustom
+                          options={DATA_DATE_SEND}
+                          size='middle'
+                          defaultValue={TYPE_DATE_SEND.MONDAY}
+                        />
+                      </Form.Item>
+                    </Col>
+                  );
+                }
+
+                return null;
+              }}
             </Form.Item>
           </Row>
-          <Row align={'middle'} style={{ gap: '12px' }}>
-            <Text type='font-14-400'>Thời gian gửi</Text>
-            <Row align={'middle'} style={{ gap: '4px' }}>
-              <Form.Item noStyle name='hourSendAt' label={''}>
-                <TimePicker
-                  style={{
-                    maxWidth: '120px',
-                  }}
-                />
-              </Form.Item>
-              <Form.Item noStyle name='daySendAt' label={''}>
-                <DatePicker />
-              </Form.Item>
-            </Row>
-          </Row>
+
           <div className={styles.footerAction}>
             <ButtonAntd
               onClick={() => setOpen(false)}
