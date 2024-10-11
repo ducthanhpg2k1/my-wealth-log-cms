@@ -65,7 +65,11 @@
   border-color: #ffe6e6 !important;
   height: 25px;
 }
-
+.ant-pagination .ant-pagination-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .ant-pagination .ant-pagination-item-active a {
   color: #ffffff !important;
   font-size: 14px;

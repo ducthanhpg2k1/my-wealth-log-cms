@@ -104,6 +104,7 @@ const NotificationManagement = () => {
     },
     {
       title: 'Tần suất lặp lại',
+      width: 200,
       dataIndex: 'repeat_weekly',
       render: (_, record) => {
         return (
