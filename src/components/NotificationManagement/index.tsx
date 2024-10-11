@@ -2,13 +2,14 @@
 /* eslint-disable no-console */
 import { useRef, useState } from 'react';
 
-import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined } from '@ant-design/icons';
 import { Dropdown, Row, Space, Table, Button as ButtonAntd, Checkbox, Form } from 'antd';
 import type { TableColumnsType, TableProps } from 'antd';
 import FileSaver from 'file-saver';
 import Image from 'next/image';
 
 import Button from '@components/UI/Button/Button';
+import { IconDots } from '@components/UI/Icons';
 import InputText from '@components/UI/InputText';
 import NoDataTable from '@components/UI/NoDataTable';
 import Text from '@components/UI/Text';
@@ -186,7 +187,7 @@ const NotificationManagement = () => {
                 onClick: onClickAction(record),
               }}
             >
-              <ButtonAntd type='text' shape='circle' icon={<MoreOutlined size={24} />} />
+              <ButtonAntd type='text' shape='circle' icon={<IconDots />} />
             </Dropdown>
           </a>
         );

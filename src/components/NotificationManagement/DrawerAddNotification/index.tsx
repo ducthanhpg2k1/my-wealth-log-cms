@@ -33,7 +33,7 @@ import { isImage, openNotification, TYPE_DATE, TYPE_DATE_SEND } from '@utils/com
 import styles from './index.module.scss';
 import { useCreateNotifications, useEditNotifications, useUploadImage } from '../service';
 
-const DATA_DATE_SEND = [
+export const DATA_DATE_SEND = [
   {
     label: 'Thứ 2',
     value: TYPE_DATE_SEND.MONDAY,
@@ -161,11 +161,12 @@ const DrawerAddNotification = (props: any, ref: any) => {
             name: data?.data?.name,
             content: data?.data?.content,
             frequencyId: data?.data?.frequencyId?.code,
-            hourSendAt: dayjs(data?.data?.hourSendAt),
-            daySendAt: dayjs(data?.data?.daySendAt),
+            hourSendAt: data?.data?.hourSendAt ? dayjs(data?.data?.hourSendAt) : dayjs(),
+            sendAt: data?.data?.sendAt ? dayjs(data?.data?.sendAt) : dayjs(),
+            daySendAt: data?.data?.daySendAt,
             repeat: data?.data?.repeat,
           });
-          const fileName = data?.data?.image.split('/').pop();
+          const fileName = data?.data?.image?.split('/')?.pop();
           setDataUpload({
             url: data?.data?.image,
             fileName,
@@ -179,14 +180,15 @@ const DrawerAddNotification = (props: any, ref: any) => {
     const formattedhourSendAt = values?.hourSendAt
       ? dayjs(values?.hourSendAt)?.toISOString()
       : null;
-    const formatteddaySendAt = values?.daySendAt ? dayjs(values?.daySendAt)?.toISOString() : null;
+    const formatteddaySendAt = values?.sendAt ? dayjs(values?.sendAt)?.toISOString() : null;
 
     const body = {
       name: values?.name,
       content: values?.content,
       frequencyId: values?.frequencyId,
       hourSendAt: formattedhourSendAt,
-      daySendAt: formatteddaySendAt,
+      daySendAt: values?.daySendAt,
+      sendAt: formatteddaySendAt,
       repeat: values?.repeat,
       image: dataUpload?.url,
     };
@@ -345,6 +347,7 @@ const DrawerAddNotification = (props: any, ref: any) => {
               {({ getFieldValue }) => {
                 const frequencyId = getFieldValue('frequencyId');
                 const repeat = getFieldValue('repeat');
+                console.log({ frequencyId, repeat });
 
                 if (!repeat || (repeat && frequencyId === TYPE_DATE.MONTHLY)) {
                   return (

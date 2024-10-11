@@ -21,9 +21,9 @@ interface IBodyNotifications {
   userId?: string;
   content: string;
   frequencyId?: string;
-  sendAt?: string;
-  hourSendAt: string | null;
-  daySendAt: string | null;
+  sendAt?: any;
+  hourSendAt?: string | null;
+  daySendAt?: string | null;
   repeat: boolean;
 }
 
