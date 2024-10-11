@@ -47,6 +47,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
           name='viewport'
           content='width=device-width,initial-scale=1,maximum-scale=2,shrink-to-fit=no'
         />
+        <meta http-equiv='Content-Security-Policy' content='upgrade-insecure-requests' />
       </Head>
       <style jsx global>{`
         :root {
