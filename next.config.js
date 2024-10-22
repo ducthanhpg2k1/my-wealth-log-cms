@@ -64,6 +64,15 @@ const nextConfig = {
 
     return [
       {
+        source: "/(.*)",
+        headers: [
+          {
+            key: "Content-Security-Policy",
+            value: "" // Xóa chính sách upgrade-insecure-requests
+          }
+        ]
+      },
+      {
         source: '/:path*',
         headers: securityHeaders,
       },
