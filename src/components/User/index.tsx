@@ -112,6 +112,8 @@ const User = () => {
     const formattedCreatedAtTo = values?.createdAtTo
       ? dayjs(values?.createdAtTo)?.toISOString()
       : null;
+    console.log(values, 'values');
+
     const filter = {
       createdAtFrom: formattedCreatedAtFrom,
       createdAtTo: formattedCreatedAtTo,

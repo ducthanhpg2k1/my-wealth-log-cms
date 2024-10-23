@@ -5,7 +5,7 @@ import { API_PATH } from '@api/constant';
 import { privateRequest, request } from '@api/request';
 
 export interface IFilter {
-  isActived: boolean;
+  isActived: boolean | null;
   createdAtFrom: string | null;
   createdAtTo: string | null;
 }
@@ -19,7 +19,7 @@ const serviceGetUser = async (page?: number, filter?: IFilter) => {
   const params = {
     page: page || 1,
     page_size: 10,
-    isActived: filter?.isActived || true,
+    isActived: filter?.isActived === undefined ? true : filter?.isActived,
     createdAtFrom: filter?.createdAtFrom,
     createdAtTo: filter?.createdAtTo,
   };
