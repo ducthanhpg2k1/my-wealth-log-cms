@@ -4,6 +4,10 @@
   flex-direction: column;
   border-right: 1px solid #e8e8e8;
   height: 100dvh;
+  transition: width 0.18s ease;
+  &.collapsed {
+    width: 80px;
+  }
 }
 
 .header {
@@ -14,9 +18,21 @@
   border-bottom: 1px solid #e8e8e8;
 }
 
+.collapsedHeader {
+  padding: 20px 8px !important;
+  justify-content: center;
+  align-items: center;
+}
+
 .image {
   width: 32px;
   height: 28px;
+}
+
+.collapsedContent {
+  padding: 24px 8px !important;
+  justify-content: center;
+  align-items: center;
 }
 
 .content {

@@ -1,10 +1,18 @@
+/* eslint-disable import/no-cycle */
+/* eslint-disable multiline-ternary */
 /* eslint-disable unicorn/consistent-function-scoping */
 import { useMemo, useRef } from 'react';
 
-import { CaretDownOutlined, UserOutlined } from '@ant-design/icons';
-import { Avatar, Dropdown, Space } from 'antd';
+import {
+  CaretDownOutlined,
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
+import { Avatar, Button, Dropdown, Space } from 'antd';
 import { MenuProps } from 'antd/lib';
 import classNames from 'classnames';
+import { atom, useAtom } from 'jotai';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
@@ -16,10 +24,13 @@ import styles from './index.module.scss';
 import ModalLogout from './ModalLogout';
 import Siderbar from './Siderbar';
 
+export const expandedAtom = atom(true);
+
 const MainLayout = ({ children }: any) => {
   const router = useRouter();
   const refModalLogout: any = useRef();
   const { profile } = useProfile();
+  const [isExpanded, setIsExpanded] = useAtom(expandedAtom);
 
   const pathName = useMemo(() => {
     return router.pathname;
@@ -52,6 +63,19 @@ const MainLayout = ({ children }: any) => {
       <Siderbar />
       <div className={styles.contentMain}>
         <div className={styles.headerMain}>
+          <Button
+            type='text'
+            className={styles.toggleButton}
+            shape='circle'
+            onClick={() => setIsExpanded(!isExpanded)}
+            icon={
+              isExpanded ? (
+                <MenuUnfoldOutlined style={{ fontSize: '20px' }} />
+              ) : (
+                <MenuFoldOutlined style={{ fontSize: '20px' }} />
+              )
+            }
+          />
           <Dropdown
             placement='bottomRight'
             arrow

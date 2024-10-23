@@ -1,14 +1,19 @@
+/* eslint-disable linebreak-style */
+/* eslint-disable import/no-cycle */
+/* eslint-disable linebreak-style */
 /* eslint-disable multiline-ternary */
 /* eslint-disable linebreak-style */
 import { useMemo } from 'react';
 
 import classNames from 'classnames';
+import { useAtom } from 'jotai';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
 import Text from '@components/UI/Text';
 import { ROUTE_PATH } from '@utils/common';
 
+import { expandedAtom } from '..';
 import styles from './index.module.scss';
 
 const MENUS = [
@@ -31,6 +36,7 @@ const MENUS = [
 
 const Siderbar = () => {
   const router = useRouter();
+  const [isExpanded] = useAtom(expandedAtom);
 
   const renderIcon = (url: string, active: boolean) => {
     if (url === ROUTE_PATH.USER) {
@@ -111,8 +117,16 @@ const Siderbar = () => {
     router.push(url);
   };
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
+    <div
+      className={classNames(styles.container, {
+        [styles.collapsed]: !isExpanded,
+      })}
+    >
+      <div
+        className={classNames(styles.header, {
+          [styles.collapsedHeader]: !isExpanded,
+        })}
+      >
         <Image
           className={styles.image}
           width={32}
@@ -120,9 +134,13 @@ const Siderbar = () => {
           src='/images/logo-green.png'
           alt=''
         />
-        <Text type='font-14-400'>My Wealth Log</Text>
+        {isExpanded && <Text type='font-14-400'>My Wealth Log</Text>}
       </div>
-      <div className={classNames(styles.content, {})}>
+      <div
+        className={classNames(styles.content, {
+          [styles.collapsedContent]: !isExpanded,
+        })}
+      >
         {MENUS?.map((item) => {
           return (
             <div
@@ -133,9 +151,11 @@ const Siderbar = () => {
               })}
             >
               <>{renderIcon(item?.href, item?.href === pathName)}</>
-              <Text type='font-14-400' color='text-primary'>
-                {item?.label}
-              </Text>
+              {isExpanded && (
+                <Text type='font-14-400' color='text-primary'>
+                  {item?.label}
+                </Text>
+              )}
             </div>
           );
         })}

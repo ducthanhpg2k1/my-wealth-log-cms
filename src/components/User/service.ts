@@ -3,9 +3,10 @@ import { useRequest } from 'ahooks';
 
 import { API_PATH } from '@api/constant';
 import { privateRequest, request } from '@api/request';
+import { STATUS_USER } from '@utils/common';
 
 export interface IFilter {
-  isActived: boolean | null;
+  isActived: boolean | any;
   createdAtFrom: string | null;
   createdAtTo: string | null;
 }
@@ -19,7 +20,7 @@ const serviceGetUser = async (page?: number, filter?: IFilter) => {
   const params = {
     page: page || 1,
     page_size: 10,
-    isActived: filter?.isActived === undefined ? true : filter?.isActived,
+    isActived: filter?.isActived === STATUS_USER?.ACTIVE || '',
     createdAtFrom: filter?.createdAtFrom,
     createdAtTo: filter?.createdAtTo,
   };
@@ -30,6 +31,9 @@ export const useGetUser = () => {
   const { data, loading, run, refreshAsync } = useRequest(
     async (page?: number, filter?: IFilter) => {
       return await serviceGetUser(page, filter);
+    },
+    {
+      manual: true,
     },
   );
   const onChange = (page?: number, filter?: IFilter) => {

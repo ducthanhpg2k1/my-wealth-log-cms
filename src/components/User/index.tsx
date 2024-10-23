@@ -2,6 +2,7 @@
 /* eslint-disable no-console */
 import { useRef, useState } from 'react';
 
+import { useMount } from 'ahooks';
 import { DatePicker, Form, Row, Space, Table, Tag, Button as ButtonAntd } from 'antd';
 import type { TableColumnsType, TableProps } from 'antd';
 import dayjs from 'dayjs';
@@ -105,6 +106,22 @@ const User = () => {
     },
   };
 
+  useMount(() => {
+    const valuesFilter = form.getFieldsValue();
+    const formattedCreatedAtFrom = valuesFilter?.createdAtFrom
+      ? dayjs(valuesFilter?.createdAtFrom)?.toISOString()
+      : null;
+    const formattedCreatedAtTo = valuesFilter?.createdAtTo
+      ? dayjs(valuesFilter?.createdAtTo)?.toISOString()
+      : null;
+    const filter = {
+      createdAtFrom: formattedCreatedAtFrom,
+      createdAtTo: formattedCreatedAtTo,
+      isActived: valuesFilter?.isActived,
+    };
+    run(1, filter);
+  });
+
   const onHandleFilter = (values: any) => {
     const formattedCreatedAtFrom = values?.createdAtFrom
       ? dayjs(values?.createdAtFrom)?.toISOString()
@@ -112,12 +129,11 @@ const User = () => {
     const formattedCreatedAtTo = values?.createdAtTo
       ? dayjs(values?.createdAtTo)?.toISOString()
       : null;
-    console.log(values, 'values');
 
     const filter = {
       createdAtFrom: formattedCreatedAtFrom,
       createdAtTo: formattedCreatedAtTo,
-      isActived: values?.isActived === STATUS_USER.ACTIVE,
+      isActived: values?.isActived,
     };
     onChange(1, filter);
   };
@@ -133,7 +149,7 @@ const User = () => {
     const filter = {
       createdAtFrom: formattedCreatedAtFrom,
       createdAtTo: formattedCreatedAtTo,
-      isActived: valuesFilter?.isActived === STATUS_USER.ACTIVE,
+      isActived: valuesFilter?.isActived,
     };
 
     requestExportFileJobSetup?.run(filter);
@@ -175,6 +191,7 @@ const User = () => {
                 </Text>
                 <Form.Item noStyle name='isActived'>
                   <SelectCustom
+                    allowClear
                     style={{ minWidth: '140px' }}
                     defaultValue={STATUS_USER.ACTIVE}
                     options={[
