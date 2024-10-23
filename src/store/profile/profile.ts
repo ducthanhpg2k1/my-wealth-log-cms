@@ -5,6 +5,8 @@ export interface InitProfile {
   name: string;
   email: string;
   username: string;
+  displayName?: string;
+  phoneNumber?: string | number;
 }
 
 export const initialProfile: InitProfile = {

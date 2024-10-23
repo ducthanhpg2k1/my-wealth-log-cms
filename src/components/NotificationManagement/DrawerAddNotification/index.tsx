@@ -143,7 +143,7 @@ const DrawerAddNotification = (props: any, ref: any) => {
       if (!isImage(info?.file)) {
         return;
       }
-      if (info.file?.originFileObj) {
+      if (info.file.status === 'done' && info.file?.originFileObj) {
         const file = info.file.originFileObj;
         requestUploadImage?.run(file, 'notification');
       }

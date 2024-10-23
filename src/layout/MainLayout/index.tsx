@@ -63,7 +63,11 @@ const MainLayout = ({ children }: any) => {
                 <Space>
                   <Avatar size={32} icon={<UserOutlined />} />
                   <Text color='text-primary' type='font-14-400'>
-                    {profile?.username}
+                    {profile?.displayName ||
+                      profile?.username ||
+                      profile?.phoneNumber ||
+                      profile?.email ||
+                      '-'}
                   </Text>
                 </Space>
                 <CaretDownOutlined

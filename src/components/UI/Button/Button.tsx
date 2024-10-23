@@ -19,7 +19,8 @@ export interface ButtonProps {
     | 'xhome-purple-negative-primary'
     | 'xhome-purple-negative-secondary'
     | 'green'
-    | 'blue';
+    | 'blue'
+    | 'yellow';
 
   size?: 'large' | 'medium';
   isFullWidth?: boolean;

@@ -30,7 +30,7 @@ const NotificationManagement = () => {
   const refDrawerDetailNotification: any = useRef();
   const [form] = Form.useForm();
   const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
-
+  const [errorImages, setErrorImages] = useState<string[]>([]);
   const { dataNotifications, onChange, loading, run } = useGetNotifications();
 
   const requestExportFileNotification = useExportFileNotification({
@@ -80,9 +80,12 @@ const NotificationManagement = () => {
             </Text>
             {record?.image && (
               <Image
-                src={record?.image}
+                src={errorImages.includes(record?.id) ? '/images/default-image.jpg' : record?.image}
                 alt=''
                 width={56}
+                onError={() => {
+                  setErrorImages((prev) => [...prev, record?.id]);
+                }}
                 height={56}
                 style={{
                   width: '56px',
@@ -197,7 +200,13 @@ const NotificationManagement = () => {
   ];
 
   const handleExportExcel = () => {
-    requestExportFileNotification?.run();
+    const valuesFilter = form.getFieldsValue();
+
+    const filter = {
+      content: valuesFilter?.content,
+      repeat: valuesFilter?.repeat,
+    };
+    requestExportFileNotification?.run(filter);
   };
 
   const rowSelection: TableProps<any>['rowSelection'] = {
@@ -273,7 +282,7 @@ const NotificationManagement = () => {
                 size='large'
                 loading={requestExportFileNotification?.loading}
                 className={styles.btnSearch}
-                type='blue'
+                type='yellow'
               >
                 <Row align={'middle'} style={{ gap: '4px' }}>
                   <Image
@@ -297,10 +306,11 @@ const NotificationManagement = () => {
         <Space size={4}>
           <Text type='font-18-600'>
             Kết quả tìm kiếm{' '}
-            <Text element='span' color='neutral-400' type='font-14-400'>
-              {dataNotifications?.data?.items?.length > 0 &&
-                `(${dataNotifications?.data?.items?.length} bản ghi)`}
-            </Text>
+            {dataNotifications?.data?.items?.length > 0 && (
+              <Text element='span' color='neutral-400' type='font-14-400'>
+                {`(${dataNotifications?.data?.total} bản ghi)`}
+              </Text>
+            )}
           </Text>
         </Space>
         <Table

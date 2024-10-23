@@ -54,6 +54,24 @@
   }
 }
 
+.yellow {
+  background-color: #ffce47;
+  border-radius: 4px;
+  color: white;
+  height: 40px;
+  border: none;
+  padding: 12px;
+  font-weight: 400;
+  line-height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
 .blue {
   background-color: #23b9e4;
   border-radius: 4px;

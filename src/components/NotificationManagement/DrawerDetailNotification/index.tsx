@@ -5,7 +5,7 @@
 import { forwardRef, useImperativeHandle, useState } from 'react';
 
 import { CloseOutlined } from '@ant-design/icons';
-import { Button as ButtonAntd, Col, Drawer, Row, Space, Tooltip } from 'antd';
+import { Button as ButtonAntd, Col, Drawer, Row, Space, Spin, Tooltip } from 'antd';
 import dayjs from 'dayjs';
 import Image from 'next/image';
 
@@ -21,8 +21,9 @@ const DrawerDetailNotification = (props: any, ref: any) => {
   const { refDrawerAddNotification, refModalDeleteNotification } = props;
   const [open, setOpen] = useState(false);
   const [idDetail, setIdDetail] = useState<any>('');
+  const [errorImage, setErrorImage] = useState(false);
 
-  const { dataDetail, run: runGetDetail } = useGetDetailNotification();
+  const { dataDetail, run: runGetDetail, loading } = useGetDetailNotification();
 
   const onVisible = () => {
     setOpen(false);
@@ -41,6 +42,8 @@ const DrawerDetailNotification = (props: any, ref: any) => {
     };
   });
 
+  console.log(errorImage, 'errorImage');
+
   return (
     <Drawer
       className={styles.drawer}
@@ -50,123 +53,166 @@ const DrawerDetailNotification = (props: any, ref: any) => {
       onClose={onVisible}
       open={open}
     >
-      <div className={styles.container}>
-        <Row align='middle' justify='space-between' className={styles.header}>
-          <Text color='text-primary' type='font-24-600'>
-            Chi tiết thông báo
-          </Text>
-          <ButtonAntd
-            shape='circle'
-            type='text'
-            size='middle'
-            onClick={() => {
-              setOpen(false);
-            }}
-            icon={<CloseOutlined />}
-          />
-        </Row>
-        <div className={styles.content}>
-          <Row align={'middle'}>
-            <Col span={8}>
-              <Text type='font-14-400' color='neutral-700'>
-                Tên thông báo
-              </Text>
-            </Col>
-            <Col span={16}>
-              <Text type='font-14-400' color='text-primary'>
-                {dataDetail?.data?.name}
-              </Text>
-            </Col>
+      <Spin spinning={loading}>
+        <div className={styles.container}>
+          <Row align='middle' justify='space-between' className={styles.header}>
+            <Text color='text-primary' type='font-24-600'>
+              Chi tiết thông báo
+            </Text>
+            <ButtonAntd
+              shape='circle'
+              type='text'
+              size='middle'
+              onClick={() => {
+                setOpen(false);
+              }}
+              icon={<CloseOutlined />}
+            />
           </Row>
-          <Row align={'middle'}>
-            <Col span={8}>
-              <Text type='font-14-400' color='neutral-700'>
-                Nội dung thông báo
-              </Text>
-            </Col>
-            <Col span={16}>
-              <Text type='font-14-400' color='text-primary'>
-                {dataDetail?.data?.content}
-              </Text>
-            </Col>
-          </Row>
-          <Row align={'middle'}>
-            <Col span={8}>
-              <Text type='font-14-400' color='neutral-700'>
-                Tần suất
-              </Text>
-            </Col>
-            <Col span={16}>
-              <Text type='font-14-400' color='text-primary'>
-                {dataDetail?.data?.frequencyId?.name}
-              </Text>
-            </Col>
-          </Row>
-          <Row align={'middle'}>
-            <Col span={8}>
-              <Text type='font-14-400' color='neutral-700'>
-                Hình ảnh đính kèm
-              </Text>
-            </Col>
-            <Col span={16}>
-              {dataDetail?.data?.image && (
-                <div className={styles.contentImage}>
-                  <Row align={'middle'} style={{ gap: '12px' }}>
-                    <Image
-                      src={dataDetail?.data?.image || ''}
-                      alt=''
-                      width={56}
-                      height={56}
-                      style={{
-                        width: '56px',
-                        height: '56px',
-                      }}
-                    />
-
-                    <Tooltip title={dataDetail?.data?.image?.split('/')?.pop() || ''}>
-                      <a>
-                        <Text type='font-14-400' color='text-primary' className={styles.fileName}>
-                          {dataDetail?.data?.image?.split('/')?.pop() || ''}
-                        </Text>
-                      </a>
-                    </Tooltip>
-                  </Row>
-                </div>
-              )}
-            </Col>
-          </Row>
-          {dataDetail?.data?.repeat && dataDetail?.data?.frequencyId.code === TYPE_DATE.DAILY && (
+          <div className={styles.content}>
             <Row align={'middle'}>
               <Col span={8}>
                 <Text type='font-14-400' color='neutral-700'>
-                  Giờ gửi thông báo
+                  Tên thông báo
                 </Text>
               </Col>
-              {dataDetail?.data?.hourSendAt && (
-                <Col span={16}>
-                  <Space size={12}>
-                    <Row align={'middle'} style={{ gap: '4px' }}>
-                      <IconTime />
-                      <Text type='font-14-400' color='text-primary'>
-                        {dayjs(dataDetail?.data?.hourSendAt).format('hh:mm A')}
-                      </Text>
-                    </Row>
-                  </Space>
-                </Col>
-              )}
+              <Col span={16}>
+                <Text type='font-14-400' color='text-primary'>
+                  {dataDetail?.data?.name}
+                </Text>
+              </Col>
             </Row>
-          )}
+            <Row align={'middle'}>
+              <Col span={8}>
+                <Text type='font-14-400' color='neutral-700'>
+                  Nội dung thông báo
+                </Text>
+              </Col>
+              <Col span={16}>
+                <Text type='font-14-400' color='text-primary'>
+                  {dataDetail?.data?.content}
+                </Text>
+              </Col>
+            </Row>
+            <Row align={'middle'}>
+              <Col span={8}>
+                <Text type='font-14-400' color='neutral-700'>
+                  Tần suất
+                </Text>
+              </Col>
+              <Col span={16}>
+                <Text type='font-14-400' color='text-primary'>
+                  {dataDetail?.data?.frequencyId?.name}
+                </Text>
+              </Col>
+            </Row>
+            <Row align={'middle'}>
+              <Col span={8}>
+                <Text type='font-14-400' color='neutral-700'>
+                  Hình ảnh đính kèm
+                </Text>
+              </Col>
+              <Col span={16}>
+                {dataDetail?.data?.image && (
+                  <div className={styles.contentImage}>
+                    <Row align={'middle'} style={{ gap: '12px' }}>
+                      <Image
+                        src={
+                          errorImage ? '/images/default-image.jpg' : dataDetail?.data?.image || ''
+                        }
+                        alt=''
+                        width={56}
+                        height={56}
+                        style={{
+                          width: '56px',
+                          height: '56px',
+                        }}
+                        onError={() => {
+                          setErrorImage(true);
+                        }}
+                      />
 
-          {!dataDetail?.data?.repeat ||
-            (dataDetail?.data?.repeat &&
-              dataDetail?.data?.frequencyId.code === TYPE_DATE.MONTHLY && (
+                      <Tooltip title={dataDetail?.data?.image?.split('/')?.pop() || ''}>
+                        <a>
+                          <Text type='font-14-400' color='text-primary' className={styles.fileName}>
+                            {dataDetail?.data?.image?.split('/')?.pop() || ''}
+                          </Text>
+                        </a>
+                      </Tooltip>
+                    </Row>
+                  </div>
+                )}
+              </Col>
+            </Row>
+            {dataDetail?.data?.repeat && dataDetail?.data?.frequencyId.code === TYPE_DATE.DAILY && (
+              <Row align={'middle'}>
+                <Col span={8}>
+                  <Text type='font-14-400' color='neutral-700'>
+                    Giờ gửi thông báo
+                  </Text>
+                </Col>
+                {dataDetail?.data?.hourSendAt && (
+                  <Col span={16}>
+                    <Space size={12}>
+                      <Row align={'middle'} style={{ gap: '4px' }}>
+                        <IconTime />
+                        <Text type='font-14-400' color='text-primary'>
+                          {dayjs(dataDetail?.data?.hourSendAt).format('hh:mm A')}
+                        </Text>
+                      </Row>
+                    </Space>
+                  </Col>
+                )}
+              </Row>
+            )}
+
+            {!dataDetail?.data?.repeat ||
+              (dataDetail?.data?.repeat &&
+                dataDetail?.data?.frequencyId.code === TYPE_DATE.MONTHLY && (
+                  <Row align={'middle'}>
+                    <Col span={8}>
+                      <Text type='font-14-400' color='neutral-700'>
+                        Thời gian gửi
+                      </Text>
+                    </Col>
+                    {dataDetail?.data?.sendAt && (
+                      <Col span={16}>
+                        <Space size={12}>
+                          <Row align={'middle'} style={{ gap: '4px' }}>
+                            <Image
+                              src='/svgIcon/ic-date.svg'
+                              width={20}
+                              height={20}
+                              style={{
+                                width: '20px',
+                                height: '20px',
+                              }}
+                              alt=''
+                            />
+                            <Text type='font-14-400' color='text-primary'>
+                              {dayjs(dataDetail?.data?.sendAt).format('hh:mm A')}
+                            </Text>
+                          </Row>
+                          <Text type='font-14-400' color='text-primary'>
+                            -
+                          </Text>
+                          <Text type='font-14-400' color='text-primary'>
+                            {dayjs(dataDetail?.data?.sendAt).format('DD/MM/YYYY')}
+                          </Text>
+                        </Space>
+                      </Col>
+                    )}
+                  </Row>
+                ))}
+            {dataDetail?.data?.repeat &&
+              dataDetail?.data?.frequencyId.code === TYPE_DATE.WEEKLY && (
                 <Row align={'middle'}>
                   <Col span={8}>
                     <Text type='font-14-400' color='neutral-700'>
-                      Thời gian gửi
+                      Ngày gửi thông báo
                     </Text>
                   </Col>
-                  {dataDetail?.data?.sendAt && (
+                  {dataDetail?.data?.daySendAt && (
                     <Col span={16}>
                       <Space size={12}>
                         <Row align={'middle'} style={{ gap: '4px' }}>
@@ -180,77 +226,44 @@ const DrawerDetailNotification = (props: any, ref: any) => {
                             }}
                             alt=''
                           />
+
                           <Text type='font-14-400' color='text-primary'>
-                            {dayjs(dataDetail?.data?.sendAt).format('hh:mm A')}
+                            {
+                              DATA_DATE_SEND.find(
+                                (item) => item.value === dataDetail?.data?.daySendAt,
+                              )?.label
+                            }
                           </Text>
                         </Row>
-                        <Text type='font-14-400' color='text-primary'>
-                          -
-                        </Text>
-                        <Text type='font-14-400' color='text-primary'>
-                          {dayjs(dataDetail?.data?.sendAt).format('DD/MM/YYYY')}
-                        </Text>
                       </Space>
                     </Col>
                   )}
                 </Row>
-              ))}
-          {dataDetail?.data?.repeat && dataDetail?.data?.frequencyId.code === TYPE_DATE.WEEKLY && (
-            <Row align={'middle'}>
-              <Col span={8}>
-                <Text type='font-14-400' color='neutral-700'>
-                  Ngày gửi thông báo
-                </Text>
-              </Col>
-              {dataDetail?.data?.daySendAt && (
-                <Col span={16}>
-                  <Space size={12}>
-                    <Row align={'middle'} style={{ gap: '4px' }}>
-                      <Image
-                        src='/svgIcon/ic-date.svg'
-                        width={20}
-                        height={20}
-                        style={{
-                          width: '20px',
-                          height: '20px',
-                        }}
-                        alt=''
-                      />
-                      <Text type='font-14-400' color='text-primary'>
-                        {
-                          DATA_DATE_SEND.find((item) => item.value === dataDetail?.data?.daySendAt)
-                            ?.label
-                        }
-                      </Text>
-                    </Row>
-                  </Space>
-                </Col>
               )}
-            </Row>
-          )}
+          </div>
+          <div className={styles.footerAction}>
+            <ButtonAntd
+              onClick={() => refModalDeleteNotification.current.onOpen(idDetail)}
+              size='large'
+              className={styles.btn}
+              type='default'
+            >
+              Xóa
+            </ButtonAntd>
+            <Button
+              size='large'
+              onClick={() => {
+                refDrawerAddNotification.current.onOpen(dataDetail);
+                onVisible();
+              }}
+              className={styles.btn}
+              type='green'
+            >
+              Sửa
+            </Button>
+          </div>
         </div>
-        <div className={styles.footerAction}>
-          <ButtonAntd
-            onClick={() => refModalDeleteNotification.current.onOpen(idDetail)}
-            size='large'
-            className={styles.btn}
-            type='default'
-          >
-            Xóa
-          </ButtonAntd>
-          <Button
-            size='large'
-            onClick={() => {
-              refDrawerAddNotification.current.onOpen(dataDetail);
-              onVisible();
-            }}
-            className={styles.btn}
-            type='green'
-          >
-            Sửa
-          </Button>
-        </div>
-      </div>
+      </Spin>
     </Drawer>
   );
 };

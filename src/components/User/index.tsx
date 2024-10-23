@@ -121,12 +121,32 @@ const User = () => {
   };
 
   const handleExportExcel = () => {
-    requestExportFileJobSetup?.run();
+    const valuesFilter = form.getFieldsValue();
+    const formattedCreatedAtFrom = valuesFilter?.createdAtFrom
+      ? dayjs(valuesFilter?.createdAtFrom)?.toISOString()
+      : null;
+    const formattedCreatedAtTo = valuesFilter?.createdAtTo
+      ? dayjs(valuesFilter?.createdAtTo)?.toISOString()
+      : null;
+    const filter = {
+      createdAtFrom: formattedCreatedAtFrom,
+      createdAtTo: formattedCreatedAtTo,
+      isActived: valuesFilter?.isActived === STATUS_USER.ACTIVE,
+    };
+
+    requestExportFileJobSetup?.run(filter);
   };
 
   return (
     <div className={styles.container}>
-      <Form form={form} layout='vertical' onFinish={onHandleFilter}>
+      <Form
+        initialValues={{
+          isActived: STATUS_USER.ACTIVE,
+        }}
+        form={form}
+        layout='vertical'
+        onFinish={onHandleFilter}
+      >
         <div className={styles.header}>
           <Text type='font-18-600'>Tìm kiếm</Text>
           <div className={styles.cardFilter}>
@@ -191,7 +211,7 @@ const User = () => {
                 size='large'
                 loading={requestExportFileJobSetup?.loading}
                 className={styles.btnSearch}
-                type='blue'
+                type='yellow'
               >
                 <Row align={'middle'} style={{ gap: '4px' }}>
                   <Image
@@ -215,9 +235,11 @@ const User = () => {
         <Space size={4}>
           <Text type='font-18-600'>
             Kết quả tìm kiếm{' '}
-            <Text element='span' color='neutral-400' type='font-14-400'>
-              {dataUsers?.data?.items?.length > 0 && `(${dataUsers?.data?.items?.length} bản ghi)`}
-            </Text>
+            {dataUsers?.data?.items?.length > 0 && (
+              <Text element='span' color='neutral-400' type='font-14-400'>
+                {`(${dataUsers?.data?.total} bản ghi)`}
+              </Text>
+            )}
           </Text>
         </Space>
         <Table

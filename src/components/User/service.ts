@@ -19,7 +19,7 @@ const serviceGetUser = async (page?: number, filter?: IFilter) => {
   const params = {
     page: page || 1,
     page_size: 10,
-    isActived: filter?.isActived,
+    isActived: filter?.isActived || true,
     createdAtFrom: filter?.createdAtFrom,
     createdAtTo: filter?.createdAtTo,
   };
@@ -44,8 +44,9 @@ export const useGetUser = () => {
   };
 };
 
-export const serviceExportFileUser = async () => {
+export const serviceExportFileUser = async (filter: IFilter) => {
   return privateRequest(request.post, API_PATH.EXPORT_FILE_USER, {
+    params: filter,
     responseType: 'blob',
   });
 };

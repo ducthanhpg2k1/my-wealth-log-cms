@@ -145,8 +145,9 @@ export const useDeleteNotifications = (options: IOptionsRequest) => {
   });
 };
 
-export const serviceExportFileNotification = async () => {
+export const serviceExportFileNotification = async (filter: IFilter) => {
   return privateRequest(request.post, API_PATH.EXPORT_FILE_NOTIFICATIONS, {
+    params: filter,
     responseType: 'blob',
   });
 };

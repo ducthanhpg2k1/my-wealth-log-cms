@@ -16,7 +16,7 @@ export const useProfileInitial = () => {
         res.json(),
       );
       setProfile({
-        ...res?.data?.user,
+        ...res?.data?.result,
       });
     };
     init();

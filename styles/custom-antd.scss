@@ -19,7 +19,17 @@
   border-color: #2aa98b !important;
   box-shadow: none !important;
 }
-
+.ant-table-wrapper .ant-table-tbody > tr:last-child > td {
+  border-bottom: none !important;
+}
+.ant-table-wrapper .ant-table-selection-column {
+  padding-inline-end: 16px !important;
+  padding-inline-start: 16px !important;
+}
+.ant-pagination .ant-pagination-jump-next {
+  display: flex;
+  align-items: center;
+}
 .ant-table-thead > tr > th {
   background: white !important;
   font-size: 14px;

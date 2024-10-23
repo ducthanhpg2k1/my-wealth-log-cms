@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import { useMount } from 'ahooks';
 import { Col, DatePicker, Form, Row, Space, Spin } from 'antd';
 import dayjs from 'dayjs';
+import Image from 'next/image';
 
 import Button from '@components/UI/Button/Button';
 import Text from '@components/UI/Text';
@@ -144,7 +145,21 @@ const Statistics = () => {
                   className={styles.btn}
                   type='green'
                 >
-                  Tìm kiếm
+                  <Row align={'middle'} style={{ gap: '4px' }}>
+                    <Image
+                      src={'/svgIcon/ic-search.svg'}
+                      width={24}
+                      height={24}
+                      alt=''
+                      style={{
+                        width: '24px',
+                        height: '24px',
+                      }}
+                    />
+                    <Text color='background-default' type='font-14-400'>
+                      Tìm kiếm
+                    </Text>
+                  </Row>
                 </Button>
               </Space>
             </Space>
