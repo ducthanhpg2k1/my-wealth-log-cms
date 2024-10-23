@@ -1,3 +1,5 @@
+/* eslint-disable no-void */
+/* eslint-disable no-unused-expressions */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable unicorn/no-null */
 /* eslint-disable unicorn/consistent-function-scoping */
@@ -139,14 +141,13 @@ const DrawerAddNotification = (props: any, ref: any) => {
     accept: '.jpg, .jpeg, .png',
     multiple: false,
     showUploadList: false,
-    onChange(info) {
-      if (!isImage(info?.file)) {
+    beforeUpload(file) {
+      if (!isImage(file)) {
         return;
       }
-      if (info.file.status === 'done' && info.file?.originFileObj) {
-        const file = info.file.originFileObj;
-        requestUploadImage?.run(file, 'notification');
-      }
+      requestUploadImage?.run(file, 'notification');
+
+      return false;
     },
   };
 

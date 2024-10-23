@@ -42,8 +42,6 @@ const DrawerDetailNotification = (props: any, ref: any) => {
     };
   });
 
-  console.log(errorImage, 'errorImage');
-
   return (
     <Drawer
       className={styles.drawer}
