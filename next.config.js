@@ -24,7 +24,6 @@ const securityHeaders = [
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  assetPrefix: process.env.NODE_ENV === 'development' ? undefined : 'http://139.162.6.217:3333',
   // i18n
   i18n,
   swcMinify: true,
@@ -64,15 +63,6 @@ const nextConfig = {
     if (process.env.NODE_ENV === 'development') return [];
 
     return [
-      {
-        source: "/(.*)",
-        headers: [
-          {
-            key: "Content-Security-Policy",
-            value: "" // Xóa chính sách upgrade-insecure-requests
-          }
-        ]
-      },
       {
         source: '/:path*',
         headers: securityHeaders,
