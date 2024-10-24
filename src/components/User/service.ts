@@ -20,7 +20,9 @@ const serviceGetUser = async (page?: number, filter?: IFilter) => {
   const params = {
     page: page || 1,
     page_size: 10,
-    isActived: filter?.isActived === STATUS_USER?.ACTIVE || '',
+    isActived: [STATUS_USER?.ACTIVE, STATUS_USER.INACTIVE].includes(filter?.isActived)
+      ? filter?.isActived === STATUS_USER?.ACTIVE
+      : '',
     createdAtFrom: filter?.createdAtFrom,
     createdAtTo: filter?.createdAtTo,
   };

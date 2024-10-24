@@ -5,6 +5,7 @@
 /* eslint-disable linebreak-style */
 import { useMemo } from 'react';
 
+import { Tooltip } from 'antd';
 import classNames from 'classnames';
 import { useAtom } from 'jotai';
 import Image from 'next/image';
@@ -150,7 +151,15 @@ const Siderbar = () => {
                 [styles.menuActive]: item?.href === pathName,
               })}
             >
-              <>{renderIcon(item?.href, item?.href === pathName)}</>
+              <>
+                {isExpanded ? (
+                  <>{renderIcon(item?.href, item?.href === pathName)}</>
+                ) : (
+                  <Tooltip title={item.label} placement='right'>
+                    {renderIcon(item?.href, item?.href === pathName)}
+                  </Tooltip>
+                )}
+              </>
               {isExpanded && (
                 <Text type='font-14-400' color='text-primary'>
                   {item?.label}

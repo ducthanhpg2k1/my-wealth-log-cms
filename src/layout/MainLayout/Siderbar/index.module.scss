@@ -7,6 +7,12 @@
   transition: width 0.18s ease;
   &.collapsed {
     width: 80px;
+
+    p {
+      transform: translateX(-20px);
+      opacity: 0;
+      transition: none;
+    }
   }
 }
 
@@ -16,6 +22,14 @@
   align-items: center;
   gap: 4px;
   border-bottom: 1px solid #e8e8e8;
+
+  p {
+    transform: translateX(0);
+    opacity: 1;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease-in-out;
+    transition-delay: 0.1s;
+    white-space: nowrap;
+  }
 }
 
 .collapsedHeader {
@@ -36,7 +50,7 @@
 }
 
 .content {
-  padding: 34px 24px;
+  padding: 32px 20px;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -51,6 +65,12 @@
   cursor: pointer;
   &:hover {
     background-color: #effcf5;
+  }
+  p {
+    transform: translateX(0);
+    opacity: 1;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease-in-out;
+    white-space: nowrap;
   }
 }
 
