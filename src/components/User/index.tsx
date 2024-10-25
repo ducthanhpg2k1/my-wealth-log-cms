@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/no-nested-ternary */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable indent */
 /* eslint-disable unicorn/no-null */
@@ -162,7 +163,9 @@ const User = () => {
       ? {
           createdAtFrom: formattedCreatedAtFrom,
           createdAtTo: formattedCreatedAtTo,
-          isActived: valuesFilter?.isActived,
+          isActived: [STATUS_USER.ACTIVE, STATUS_USER.INACTIVE].includes(valuesFilter?.isActived)
+            ? valuesFilter?.isActived === STATUS_USER.ACTIVE
+            : null,
           ids: selectedRowKeys,
         }
       : {
@@ -172,7 +175,11 @@ const User = () => {
           createdAtTo: valueChangeFilter
             ? valueFilter.createdAtTo
             : dayjs()?.endOf('day')?.toISOString(),
-          isActived: valueChangeFilter ? valueFilter.isActived : STATUS_USER.ACTIVE,
+          isActived: valueChangeFilter
+            ? [STATUS_USER.ACTIVE, STATUS_USER.INACTIVE].includes(valueFilter?.isActived)
+              ? valueFilter?.isActived === STATUS_USER.ACTIVE
+              : null
+            : true,
           ids: selectedRowKeys,
         };
 
