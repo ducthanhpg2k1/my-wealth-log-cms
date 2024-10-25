@@ -108,6 +108,10 @@ label.ant-form-item-required {
     visibility: unset !important;
   }
 }
+.ant-form-item .ant-form-item-explain-error {
+  margin-top: 6px;
+  margin-bottom: 24px;
+}
 
 .ant-radio-inner {
   border-color: #637381 !important;
@@ -135,4 +139,22 @@ label.ant-form-item-required {
 
 .ant-spin .ant-spin-dot-holder {
   color: #2aa98b !important;
+}
+.ant-input-affix-wrapper-lg {
+  input {
+    &::placeholder {
+      font-size: 14px !important;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 17.5px;
+    }
+  }
+}
+
+.ant-picker-large .ant-picker-input > input {
+  font-size: 14px;
+}
+
+span.ant-select-selection-item {
+  font-size: 14px;
 }

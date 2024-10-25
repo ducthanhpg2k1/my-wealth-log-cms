@@ -9,6 +9,7 @@ export interface IFilter {
   isActived: boolean | any;
   createdAtFrom: string | null;
   createdAtTo: string | null;
+  user_ids?: string[];
 }
 
 interface IOptionsRequest {
@@ -50,9 +51,14 @@ export const useGetUser = () => {
   };
 };
 
-export const serviceExportFileUser = async (filter: IFilter) => {
+export const serviceExportFileUser = async (filter?: IFilter) => {
+  const params = {
+    ...filter,
+    user_ids: filter?.user_ids?.length ? filter?.user_ids : [],
+  };
+
   return privateRequest(request.post, API_PATH.EXPORT_FILE_USER, {
-    params: filter,
+    params,
     responseType: 'blob',
   });
 };

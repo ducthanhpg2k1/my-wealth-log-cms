@@ -23,11 +23,11 @@ const SignIn = () => {
         token: `${res?.data.accessToken}`,
       });
       router.push(ROUTE_PATH.USER);
-      openNotification('Login successfully', 'success');
+      openNotification('Đăng nhập thành công', 'success');
       requestGetProfile();
     },
     onError(e) {
-      openNotification(e?.errors?.[0] || e?.message, 'error');
+      openNotification(e?.errors, 'error');
     },
   });
 
@@ -61,7 +61,7 @@ const SignIn = () => {
               name='username'
               label={'Tên đăng nhập'}
             >
-              <InputText size='large' placeholder='Tên đăng nhập' />
+              <InputText size='large' placeholder='Nhập tên đăng nhập' />
             </Form.Item>
             <Form.Item
               rules={[
@@ -73,7 +73,7 @@ const SignIn = () => {
               name='password'
               label={'Mật khẩu'}
             >
-              <PasswordInput size='large' placeholder='Mật khẩu' />
+              <PasswordInput size='large' placeholder='Nhập mật khẩu' />
             </Form.Item>
             <Button
               loading={requestLogin?.loading}

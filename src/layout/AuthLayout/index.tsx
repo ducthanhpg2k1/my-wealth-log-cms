@@ -21,15 +21,6 @@ const AuthLayout = ({ children }: any) => {
                 alt=''
               />
             </div>
-            {/* <div className={styles.imageBgLogin}>
-              <Image
-                className={styles.image}
-                width={1138}
-                height={1024}
-                src='/images/bg-login.png'
-                alt=''
-              />
-            </div> */}
 
             <div className={styles.imageLab}>
               <Image

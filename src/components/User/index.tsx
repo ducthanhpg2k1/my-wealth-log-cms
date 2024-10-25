@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable indent */
 /* eslint-disable unicorn/no-null */
 /* eslint-disable no-console */
 import { useRef, useState } from 'react';
 
 import { useMount } from 'ahooks';
-import { DatePicker, Form, Row, Space, Table, Tag, Button as ButtonAntd } from 'antd';
+import { DatePicker, Form, Row, Space, Table, Tag } from 'antd';
 import type { TableColumnsType, TableProps } from 'antd';
 import dayjs from 'dayjs';
 import FileSaver from 'file-saver';
@@ -23,6 +25,7 @@ const User = () => {
   const { dataUsers, onChange, loading, run } = useGetUser();
   const [form] = Form.useForm();
   const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
+  const [isFilter, setIsFilter] = useState(false);
   const refModalDeleteUsers: any = useRef();
 
   const requestExportFileJobSetup = useExportFileUser({
@@ -73,7 +76,7 @@ const User = () => {
     {
       title: (
         <>
-          <ButtonAntd
+          {/* <ButtonAntd
             type='text'
             shape='circle'
             size='middle'
@@ -93,7 +96,7 @@ const User = () => {
             style={{
               visibility: selectedRowKeys?.length > 0 ? 'visible' : 'hidden',
             }}
-          />
+          /> */}
         </>
       ),
       align: 'end',
@@ -136,6 +139,7 @@ const User = () => {
       isActived: values?.isActived,
     };
     onChange(1, filter);
+    setIsFilter(true);
   };
 
   const handleExportExcel = () => {
@@ -146,21 +150,49 @@ const User = () => {
     const formattedCreatedAtTo = valuesFilter?.createdAtTo
       ? dayjs(valuesFilter?.createdAtTo)?.toISOString()
       : null;
-    const filter = {
-      createdAtFrom: formattedCreatedAtFrom,
-      createdAtTo: formattedCreatedAtTo,
-      isActived: valuesFilter?.isActived,
-    };
+    const filter = isFilter
+      ? {
+          createdAtFrom: formattedCreatedAtFrom,
+          createdAtTo: formattedCreatedAtTo,
+          isActived: valuesFilter?.isActived,
+          user_ids: selectedRowKeys,
+        }
+      : {
+          createdAtFrom: null,
+          createdAtTo: null,
+          isActived: null,
+          user_ids: selectedRowKeys,
+        };
 
     requestExportFileJobSetup?.run(filter);
   };
+  const disabledDateFrom = (current: any) => {
+    const toDate = form.getFieldValue('createdAtTo');
+    if (!toDate) {
+      return false;
+    }
+    return current && current > dayjs(toDate);
+  };
 
+  const disabledDateTo = (current: any) => {
+    const fromDate = form.getFieldValue('createdAtFrom');
+    if (!fromDate) {
+      return false;
+    }
+    return current && current < dayjs(fromDate);
+  };
+  const onValuesChange = (values: any) => {
+    setIsFilter(false);
+  };
   return (
     <div className={styles.container}>
       <Form
         initialValues={{
           isActived: STATUS_USER.ACTIVE,
+          createdAtFrom: dayjs().startOf('month'),
+          createdAtTo: dayjs(),
         }}
+        onValuesChange={onValuesChange}
         form={form}
         layout='vertical'
         onFinish={onHandleFilter}
@@ -174,7 +206,7 @@ const User = () => {
                   Đăng kí mới từ:
                 </Text>
                 <Form.Item noStyle name='createdAtFrom'>
-                  <DatePicker size='large' format='DD-MM-YYYY' />
+                  <DatePicker disabledDate={disabledDateFrom} size='large' format='DD-MM-YYYY' />
                 </Form.Item>
               </Space>
               <Space size={12}>
@@ -182,7 +214,7 @@ const User = () => {
                   Đến:
                 </Text>
                 <Form.Item noStyle name='createdAtTo'>
-                  <DatePicker size='large' format='DD-MM-YYYY' />
+                  <DatePicker disabledDate={disabledDateTo} size='large' format='DD-MM-YYYY' />
                 </Form.Item>
               </Space>
               <Space size={12}>
@@ -192,7 +224,7 @@ const User = () => {
                 <Form.Item noStyle name='isActived'>
                   <SelectCustom
                     allowClear
-                    style={{ minWidth: '140px' }}
+                    style={{ minWidth: '160px' }}
                     defaultValue={STATUS_USER.ACTIVE}
                     options={[
                       {
