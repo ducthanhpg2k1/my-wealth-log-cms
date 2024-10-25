@@ -51,14 +51,14 @@ export const useGetUser = () => {
   };
 };
 
-export const serviceExportFileUser = async (filter?: IFilter, filterDefault?: IFilter) => {
+export const serviceExportFileUser = async (filter?: IFilter) => {
   const params = {
     ...filter,
     ids: filter?.ids?.length ? filter?.ids : [],
   };
 
   return privateRequest(request.post, API_PATH.EXPORT_FILE_USER, {
-    params: filter?.createdAtFrom ? params : filterDefault,
+    params,
     responseType: 'blob',
   });
 };

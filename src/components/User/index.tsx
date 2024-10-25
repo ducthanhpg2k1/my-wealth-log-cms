@@ -26,6 +26,8 @@ const User = () => {
   const [form] = Form.useForm();
   const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
   const [isFilter, setIsFilter] = useState(false);
+  const [valueChangeFilter, setValueChangeFilter] = useState(false);
+
   const [valueFilter, setValueFilter] = useState<any>({});
 
   const refModalDeleteUsers: any = useRef();
@@ -117,7 +119,7 @@ const User = () => {
       ? dayjs(valuesFilter?.createdAtFrom)?.toISOString()
       : null;
     const formattedCreatedAtTo = valuesFilter?.createdAtTo
-      ? dayjs(valuesFilter?.createdAtTo)?.toISOString()
+      ? dayjs(valuesFilter?.createdAtTo)?.endOf('day')?.toISOString()
       : null;
     const filter = {
       createdAtFrom: formattedCreatedAtFrom,
@@ -132,7 +134,7 @@ const User = () => {
       ? dayjs(values?.createdAtFrom)?.toISOString()
       : null;
     const formattedCreatedAtTo = values?.createdAtTo
-      ? dayjs(values?.createdAtTo)?.toISOString()
+      ? dayjs(values?.createdAtTo)?.endOf('day')?.toISOString()
       : null;
 
     const filter = {
@@ -144,6 +146,7 @@ const User = () => {
     onChange(1, filter);
     setSelectedRowKeys([]);
     setIsFilter(true);
+    setValueChangeFilter(true);
   };
 
   const handleExportExcel = () => {
@@ -152,13 +155,9 @@ const User = () => {
       ? dayjs(valuesFilter?.createdAtFrom)?.toISOString()
       : null;
     const formattedCreatedAtTo = valuesFilter?.createdAtTo
-      ? dayjs(valuesFilter?.createdAtTo)?.toISOString()
+      ? dayjs(valuesFilter?.createdAtTo)?.endOf('day')?.toISOString()
       : null;
-    const filterDefault = {
-      isActived: STATUS_USER.ACTIVE,
-      createdAtFrom: dayjs().startOf('month').toISOString(),
-      createdAtTo: dayjs().toISOString(),
-    };
+
     const filter = isFilter
       ? {
           createdAtFrom: formattedCreatedAtFrom,
@@ -167,13 +166,17 @@ const User = () => {
           ids: selectedRowKeys,
         }
       : {
-          createdAtFrom: valueFilter.createdAtFrom,
-          createdAtTo: valueFilter.createdAtTo,
-          isActived: valueFilter.isActived,
+          createdAtFrom: valueChangeFilter
+            ? valueFilter.createdAtFrom
+            : dayjs().startOf('month').toISOString(),
+          createdAtTo: valueChangeFilter
+            ? valueFilter.createdAtTo
+            : dayjs()?.endOf('day')?.toISOString(),
+          isActived: valueChangeFilter ? valueFilter.isActived : STATUS_USER.ACTIVE,
           ids: selectedRowKeys,
         };
 
-    requestExportFileJobSetup?.run(filter, filterDefault);
+    requestExportFileJobSetup?.run(filter);
   };
   const disabledDateFrom = (current: any) => {
     const toDate = form.getFieldValue('createdAtTo');
