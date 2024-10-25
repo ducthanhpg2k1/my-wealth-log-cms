@@ -15,8 +15,9 @@
   background-size: cover;
 
   .logoContainer {
-    margin-top: 36px;
-    margin-left: 34px;
+    position: absolute;
+    top: 36px;
+    left: 34px;
 
     .image {
       width: 62px !important;

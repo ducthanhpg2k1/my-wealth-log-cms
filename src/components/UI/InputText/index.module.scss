@@ -11,15 +11,12 @@
 
   &::-webkit-input-placeholder {
     /* Edge */
-    color: var(--neutral-color-gray-5-disable, #888888);
   }
 
   &:-ms-input-placeholder {
-    color: var(--neutral-color-gray-5-disable, #888888);
   }
 
   &::placeholder {
-    color: var(--neutral-color-gray-5-disable, #888888);
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
