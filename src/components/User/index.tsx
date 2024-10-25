@@ -154,21 +154,26 @@ const User = () => {
     const formattedCreatedAtTo = valuesFilter?.createdAtTo
       ? dayjs(valuesFilter?.createdAtTo)?.toISOString()
       : null;
+    const filterDefault = {
+      isActived: STATUS_USER.ACTIVE,
+      createdAtFrom: dayjs().startOf('month').toISOString(),
+      createdAtTo: dayjs().toISOString(),
+    };
     const filter = isFilter
       ? {
           createdAtFrom: formattedCreatedAtFrom,
           createdAtTo: formattedCreatedAtTo,
           isActived: valuesFilter?.isActived,
-          user_ids: selectedRowKeys,
+          ids: selectedRowKeys,
         }
       : {
           createdAtFrom: valueFilter.createdAtFrom,
           createdAtTo: valueFilter.createdAtTo,
           isActived: valueFilter.isActived,
-          user_ids: selectedRowKeys,
+          ids: selectedRowKeys,
         };
 
-    requestExportFileJobSetup?.run(filter);
+    requestExportFileJobSetup?.run(filter, filterDefault);
   };
   const disabledDateFrom = (current: any) => {
     const toDate = form.getFieldValue('createdAtTo');

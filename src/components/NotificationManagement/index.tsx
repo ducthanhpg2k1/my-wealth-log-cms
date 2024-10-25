@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable indent */
 /* eslint-disable no-console */
 import { useRef, useState } from 'react';
@@ -32,6 +33,8 @@ const NotificationManagement = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
   const [errorImages, setErrorImages] = useState<string[]>([]);
   const { dataNotifications, onChange, loading, run } = useGetNotifications();
+  const [isFilter, setIsFilter] = useState(false);
+  const [valueFilter, setValueFilter] = useState<any>({});
 
   const requestExportFileNotification = useExportFileNotification({
     onSuccess: (res) => {
@@ -200,12 +203,19 @@ const NotificationManagement = () => {
   ];
 
   const handleExportExcel = () => {
-    const valuesFilter = form.getFieldsValue();
+    const formFilter = form.getFieldsValue();
 
-    const filter = {
-      content: valuesFilter?.content,
-      repeat: valuesFilter?.repeat,
-    };
+    const filter = isFilter
+      ? {
+          content: formFilter?.content,
+          repeat: formFilter?.repeat,
+          ids: selectedRowKeys,
+        }
+      : {
+          content: valueFilter?.content,
+          repeat: valueFilter?.repeat,
+          ids: selectedRowKeys,
+        };
     requestExportFileNotification?.run(filter);
   };
 
@@ -220,11 +230,16 @@ const NotificationManagement = () => {
       repeat: values?.repeat,
     };
     onChange(1, filter);
+    setSelectedRowKeys([]);
+    setIsFilter(true);
+    setValueFilter(filter);
   };
-
+  const onValuesChange = (values: any) => {
+    setIsFilter(false);
+  };
   return (
     <div className={styles.container}>
-      <Form form={form} layout='vertical' onFinish={onHandleFilter}>
+      <Form form={form} layout='vertical' onValuesChange={onValuesChange} onFinish={onHandleFilter}>
         <div className={styles.header}>
           <Text type='font-18-600'>Tìm kiếm</Text>
           <div className={styles.cardFilter}>
@@ -315,7 +330,7 @@ const NotificationManagement = () => {
         </Space>
         <Table
           locale={{ emptyText: <NoDataTable /> }}
-          rowSelection={{ ...rowSelection }}
+          rowSelection={{ ...rowSelection, selectedRowKeys }}
           columns={columns}
           rowKey='id'
           dataSource={dataNotifications?.data?.items}
