@@ -26,6 +26,8 @@ const User = () => {
   const [form] = Form.useForm();
   const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
   const [isFilter, setIsFilter] = useState(false);
+  const [valueFilter, setValueFilter] = useState<any>({});
+
   const refModalDeleteUsers: any = useRef();
 
   const requestExportFileJobSetup = useExportFileUser({
@@ -138,7 +140,9 @@ const User = () => {
       createdAtTo: formattedCreatedAtTo,
       isActived: values?.isActived,
     };
+    setValueFilter(filter);
     onChange(1, filter);
+    setSelectedRowKeys([]);
     setIsFilter(true);
   };
 
@@ -158,9 +162,9 @@ const User = () => {
           user_ids: selectedRowKeys,
         }
       : {
-          createdAtFrom: null,
-          createdAtTo: null,
-          isActived: null,
+          createdAtFrom: valueFilter.createdAtFrom,
+          createdAtTo: valueFilter.createdAtTo,
+          isActived: valueFilter.isActived,
           user_ids: selectedRowKeys,
         };
 
@@ -295,7 +299,7 @@ const User = () => {
         </Space>
         <Table
           locale={{ emptyText: <NoDataTable /> }}
-          rowSelection={{ ...rowSelection }}
+          rowSelection={{ ...rowSelection, selectedRowKeys }}
           columns={columns}
           rowKey='id'
           loading={loading}
