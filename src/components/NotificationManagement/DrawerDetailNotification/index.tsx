@@ -203,39 +203,37 @@ const DrawerDetailNotification = (props: any, ref: any) => {
                   </Row>
                 ))}
             {dataDetail?.data?.repeat &&
-              dataDetail?.data?.frequencyId.code === TYPE_DATE.WEEKLY && (
+              dataDetail?.data?.frequencyId?.code === TYPE_DATE.WEEKLY && (
                 <Row align={'middle'}>
                   <Col span={8}>
                     <Text type='font-14-400' color='neutral-700'>
                       Ngày gửi thông báo
                     </Text>
                   </Col>
-                  {dataDetail?.data?.daySendAt && (
-                    <Col span={16}>
-                      <Space size={12}>
-                        <Row align={'middle'} style={{ gap: '4px' }}>
-                          <Image
-                            src='/svgIcon/ic-date.svg'
-                            width={20}
-                            height={20}
-                            style={{
-                              width: '20px',
-                              height: '20px',
-                            }}
-                            alt=''
-                          />
+                  <Col span={16}>
+                    <Space size={12}>
+                      <Row align={'middle'} style={{ gap: '4px' }}>
+                        <Image
+                          src='/svgIcon/ic-date.svg'
+                          width={20}
+                          height={20}
+                          style={{
+                            width: '20px',
+                            height: '20px',
+                          }}
+                          alt=''
+                        />
 
-                          <Text type='font-14-400' color='text-primary'>
-                            {
-                              DATA_DATE_SEND.find(
-                                (item) => item.value === dataDetail?.data?.daySendAt,
-                              )?.label
-                            }
-                          </Text>
-                        </Row>
-                      </Space>
-                    </Col>
-                  )}
+                        <Text type='font-14-400' color='text-primary'>
+                          {
+                            DATA_DATE_SEND.find(
+                              (item) => item.value === dataDetail?.data?.daySendAt,
+                            )?.label
+                          }
+                        </Text>
+                      </Row>
+                    </Space>
+                  </Col>
                 </Row>
               )}
           </div>

@@ -25,9 +25,14 @@ const serviceGetReportNewUser = async (filter: IFilterReport) => {
 };
 
 export const useGetReportNewUser = () => {
-  const { data, loading, run, refreshAsync } = useRequest(async (filter: IFilterReport) => {
-    return await serviceGetReportNewUser(filter);
-  });
+  const { data, loading, run, refreshAsync } = useRequest(
+    async (filter: IFilterReport) => {
+      return await serviceGetReportNewUser(filter);
+    },
+    {
+      manual: true,
+    },
+  );
 
   const onChange = (filter: IFilterReport) => {
     run(filter);
@@ -51,9 +56,14 @@ const serviceGetReportNewAssets = async (filter: IFilterReport) => {
 };
 
 export const useGetReportNewAssets = () => {
-  const { data, loading, run, refreshAsync } = useRequest(async (filter: IFilterReport) => {
-    return await serviceGetReportNewAssets(filter);
-  });
+  const { data, loading, run, refreshAsync } = useRequest(
+    async (filter: IFilterReport) => {
+      return await serviceGetReportNewAssets(filter);
+    },
+    {
+      manual: true,
+    },
+  );
 
   const onChange = (filter: IFilterReport) => {
     run(filter);
@@ -77,9 +87,14 @@ const serviceGetReportNotifications = async (filter: IFilterReport) => {
 };
 
 export const useGetReportNotifications = () => {
-  const { data, loading, run, refreshAsync } = useRequest(async (filter: IFilterReport) => {
-    return await serviceGetReportNotifications(filter);
-  });
+  const { data, loading, run, refreshAsync } = useRequest(
+    async (filter: IFilterReport) => {
+      return await serviceGetReportNotifications(filter);
+    },
+    {
+      manual: true,
+    },
+  );
 
   const onChange = (filter: IFilterReport) => {
     run(filter);
@@ -103,9 +118,14 @@ const serviceGetReportTransactions = async (filter: IFilterReport) => {
 };
 
 export const useGetReportTransactions = () => {
-  const { data, loading, run, refreshAsync } = useRequest(async (filter: IFilterReport) => {
-    return await serviceGetReportTransactions(filter);
-  });
+  const { data, loading, run, refreshAsync } = useRequest(
+    async (filter: IFilterReport) => {
+      return await serviceGetReportTransactions(filter);
+    },
+    {
+      manual: true,
+    },
+  );
 
   const onChange = (filter: IFilterReport) => {
     run(filter);

@@ -24,7 +24,7 @@ import {
 
 const Statistics = () => {
   const [form] = Form.useForm();
-  const firstDayOfMonth = dayjs().startOf('month').toISOString();
+  const firstDayOfMonth = dayjs().toISOString();
   const currentDayOfMonth = dayjs().toISOString();
 
   const disabledDateFrom = (current: any) => {
@@ -51,16 +51,23 @@ const Statistics = () => {
     return filter;
   }, [firstDayOfMonth, currentDayOfMonth]);
 
-  const { dataNewUser, onChange: onChangeNewUser, loading: loadingNewUser } = useGetReportNewUser();
+  const {
+    dataNewUser,
+    onChange: onChangeNewUser,
+    loading: loadingNewUser,
+    run: runGetReportNewUser,
+  } = useGetReportNewUser();
   const {
     dataNewAssets,
     onChange: onChangeNewAssets,
+    run: runNewAssets,
     loading: loadingNewAssets,
   } = useGetReportNewAssets();
 
   const {
     dataNotifications,
     onChange: onChangeNotifications,
+    run: runNotifications,
     loading: loadingNotifications,
   } = useGetReportNotifications();
 
@@ -68,6 +75,7 @@ const Statistics = () => {
     dataTransactions,
     onChange: onChangeTransactions,
     loading: loadingTransactions,
+    run: runTransactions,
   } = useGetReportTransactions();
 
   const {
@@ -95,6 +103,10 @@ const Statistics = () => {
     runGetTransactionsByType(filterDate);
     runGetTransactionsByCreateType(filterDate);
     runGetLoan(filterDate);
+    runNewAssets(filterDate);
+    runNotifications(filterDate);
+    runTransactions(filterDate);
+    runGetReportNewUser(filterDate);
   });
 
   const onHandleFilter = (values: any) => {
