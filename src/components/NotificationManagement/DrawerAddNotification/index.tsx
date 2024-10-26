@@ -186,13 +186,14 @@ const DrawerAddNotification = (props: any, ref: any) => {
     const body = {
       name: values?.name,
       content: values?.content,
-      frequencyId: values?.frequencyId,
+      frequencyId: values?.frequencyId || '',
       hourSendAt: formattedhourSendAt,
       daySendAt: values?.daySendAt,
       sendAt: formatteddaySendAt,
       repeat: values?.repeat,
-      image: dataUpload?.url,
+      image: dataUpload?.url || '',
     };
+
     if (dataDetail?.id) {
       requestEditNotifications.run(body, dataDetail?.id);
     } else {
