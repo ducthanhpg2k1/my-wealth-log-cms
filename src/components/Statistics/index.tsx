@@ -27,6 +27,22 @@ const Statistics = () => {
   const firstDayOfMonth = dayjs().startOf('month').toISOString();
   const currentDayOfMonth = dayjs().toISOString();
 
+  const disabledDateFrom = (current: any) => {
+    const toDate = form.getFieldValue('createdAtTo');
+    if (!toDate) {
+      return false;
+    }
+    return current && current > dayjs(toDate);
+  };
+
+  const disabledDateTo = (current: any) => {
+    const fromDate = form.getFieldValue('createdAtFrom');
+    if (!fromDate) {
+      return false;
+    }
+    return current && current < dayjs(fromDate);
+  };
+
   const filterDate = useMemo(() => {
     const filter = {
       createdAtFrom: firstDayOfMonth,
@@ -119,7 +135,7 @@ const Statistics = () => {
                   Từ:
                 </Text>
                 <Form.Item noStyle name='createdAtFrom'>
-                  <DatePicker size='large' />
+                  <DatePicker defaultValue={dayjs()} disabledDate={disabledDateFrom} size='large' />
                 </Form.Item>
               </Space>
               <Space size={8}>
@@ -127,7 +143,7 @@ const Statistics = () => {
                   Đến:
                 </Text>
                 <Form.Item noStyle name='createdAtTo'>
-                  <DatePicker size='large' />
+                  <DatePicker defaultValue={dayjs()} disabledDate={disabledDateTo} size='large' />
                 </Form.Item>
 
                 <Button

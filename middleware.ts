@@ -22,12 +22,12 @@ export function middleware(request: NextRequest) {
   const url = request.nextUrl.clone();
 
   if (token && isMatchHomePath) {
-    url.pathname = '/user';
+    url.pathname = '/statistics';
     return NextResponse.redirect(url);
   }
 
   if (token && isMatchAuthPath) {
-    url.pathname = '/user';
+    url.pathname = '/statisticser';
     return NextResponse.redirect(url);
   }
 

@@ -237,6 +237,17 @@ const NotificationManagement = () => {
   const onValuesChange = (values: any) => {
     setIsFilter(false);
   };
+
+  const onChangeFilterTable: TableProps<any>['onChange'] = (pagination) => {
+    const valuesFilter = form.getFieldsValue();
+    const filter = {
+      content: valuesFilter?.content,
+      repeat: valuesFilter?.repeat,
+    };
+
+    onChange(pagination?.current, filter);
+  };
+
   return (
     <div className={styles.container}>
       <Form form={form} layout='vertical' onValuesChange={onValuesChange} onFinish={onHandleFilter}>
@@ -335,11 +346,12 @@ const NotificationManagement = () => {
           rowKey='id'
           dataSource={dataNotifications?.data?.items}
           loading={loading}
+          onChange={onChangeFilterTable}
           pagination={{
             current: dataNotifications?.data?.page,
             total: dataNotifications?.data?.total,
             showSizeChanger: false,
-            onChange: (page: number) => onChange(page),
+            // onChange: (page: number) => onChange(page),
             pageSize: dataNotifications?.data?.pageSize,
           }}
         />

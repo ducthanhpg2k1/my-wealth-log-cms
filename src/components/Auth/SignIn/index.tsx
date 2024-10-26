@@ -22,7 +22,7 @@ const SignIn = () => {
       setAuthCookies({
         token: `${res?.data.accessToken}`,
       });
-      router.push(ROUTE_PATH.USER);
+      router.push(ROUTE_PATH.STATISTICS);
       openNotification('Đăng nhập thành công', 'success');
       requestGetProfile();
     },

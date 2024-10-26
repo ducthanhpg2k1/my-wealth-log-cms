@@ -203,6 +203,26 @@ const User = () => {
   const onValuesChange = (values: any) => {
     setIsFilter(false);
   };
+
+  const onChangeFilterTable: TableProps<any>['onChange'] = (pagination) => {
+    const valuesFilter = form.getFieldsValue();
+
+    const formattedCreatedAtFrom = valuesFilter?.createdAtFrom
+      ? dayjs(valuesFilter?.createdAtFrom)?.toISOString()
+      : null;
+    const formattedCreatedAtTo = valuesFilter?.createdAtTo
+      ? dayjs(valuesFilter?.createdAtTo)?.endOf('day')?.toISOString()
+      : null;
+    const filter = {
+      createdAtFrom: formattedCreatedAtFrom,
+      createdAtTo: formattedCreatedAtTo,
+      isActived: [STATUS_USER.ACTIVE, STATUS_USER.INACTIVE].includes(valuesFilter?.isActived)
+        ? valuesFilter?.isActived === STATUS_USER.ACTIVE
+        : null,
+    };
+
+    onChange(pagination?.current, filter);
+  };
   return (
     <div className={styles.container}>
       <Form
@@ -319,11 +339,11 @@ const User = () => {
           rowKey='id'
           loading={loading}
           dataSource={dataUsers?.data?.items}
+          onChange={onChangeFilterTable}
           pagination={{
             current: dataUsers?.data?.page,
             total: dataUsers?.data?.total,
             showSizeChanger: false,
-            onChange: (page: number) => onChange(page),
             pageSize: dataUsers?.data?.pageSize,
           }}
         />

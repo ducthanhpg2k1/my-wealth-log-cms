@@ -266,7 +266,7 @@ const DrawerAddNotification = (props: any, ref: any) => {
                     className={styles.imgUpload}
                   />
                   <Text type='font-14-400' color='text-primary'>
-                    Tải ảnh lên (1/1)
+                    {`Tải ảnh lên (${dataUpload?.fileName ? 1 : 0}/1)`}
                   </Text>
                   <Text color='neutral-800' type='font-12-400'>
                     JPG, JPEG, PNG tối đa 10MB
