@@ -24,8 +24,8 @@ import {
 
 const Statistics = () => {
   const [form] = Form.useForm();
-  const firstDayOfMonth = dayjs().toISOString();
-  const currentDayOfMonth = dayjs().toISOString();
+  const firstDayOfMonth = dayjs().startOf('day').toISOString();
+  const currentDayOfMonth = dayjs().endOf('day').toISOString();
 
   const disabledDateFrom = (current: any) => {
     const toDate = form.getFieldValue('createdAtTo');
@@ -111,8 +111,8 @@ const Statistics = () => {
 
   const onHandleFilter = (values: any) => {
     const filter = {
-      createdAtFrom: values?.createdAtFrom,
-      createdAtTo: values?.createdAtTo,
+      createdAtFrom: dayjs(values?.createdAtFrom).startOf('day').toISOString(),
+      createdAtTo: dayjs(values?.createdAtTo).endOf('day').toISOString(),
     };
     onChangeNewAssets(filter);
     onChangeNotifications(filter);
@@ -140,7 +140,15 @@ const Statistics = () => {
           <Text type='font-18-600' color='text-primary'>
             Tổng quan
           </Text>
-          <Form form={form} layout='vertical' onFinish={onHandleFilter}>
+          <Form
+            initialValues={{
+              createdAtFrom: dayjs(),
+              createdAtTo: dayjs(),
+            }}
+            form={form}
+            layout='vertical'
+            onFinish={onHandleFilter}
+          >
             <Space size={24}>
               <Space size={8}>
                 <Text type='font-14-400' color='text-primary'>
