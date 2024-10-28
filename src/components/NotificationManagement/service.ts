@@ -9,7 +9,7 @@ import { ROUTE_PATH } from '@utils/common';
 
 export interface IFilter {
   content: string | null;
-  repeat: boolean;
+  repeat: boolean | string;
 }
 interface IOptionsRequest {
   onSuccess?: (r: any) => void;
@@ -32,7 +32,7 @@ const serviceGetNotifications = async (page?: number, filter?: IFilter) => {
     page: page || 1,
     page_size: 10,
     content: filter?.content,
-    repeat: filter?.repeat ? filter?.repeat : null,
+    repeat: filter?.repeat,
   };
   return await privateRequest(request.get, API_PATH.NOTIFICATIONS, { params });
 };
@@ -102,13 +102,14 @@ const serviceGetDetailNotification = async (id: string) => {
   return await privateRequest(request.get, API_PATH.EDIT_NOTIFICATIONS(id));
 };
 
-export const useGetDetailNotification = () => {
+export const useGetDetailNotification = (options?: IOptionsRequest) => {
   const { data, loading, run, refreshAsync } = useRequest(
     async (id) => {
       return await serviceGetDetailNotification(id);
     },
     {
       manual: true,
+      ...options,
     },
   );
 

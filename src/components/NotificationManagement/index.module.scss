@@ -45,16 +45,19 @@
       width: 20px;
       height: 20px;
     }
+    .ant-checkbox .ant-checkbox-input {
+      cursor: auto;
+    }
   }
 }
 
-.textContent {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -webkit-line-clamp: 2;
-}
+// .textContent {
+//   display: -webkit-box;
+//   -webkit-box-orient: vertical;
+//   overflow: hidden;
+//   text-overflow: ellipsis;
+//   -webkit-line-clamp: 2;
+// }
 
 .iconAction {
   width: 24px;
@@ -62,7 +65,7 @@
 }
 
 .inputSearch {
-  min-width: 603px;
+  min-width: 403px;
   height: 40px;
 
   @media (min-width: 1280px) and (max-width: 1599px) {
@@ -71,4 +74,8 @@
   @media (min-width: 1440px) and (max-width: 1599px) {
     min-width: 400px !important;
   }
+}
+
+.table {
+  cursor: pointer;
 }

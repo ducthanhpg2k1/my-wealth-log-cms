@@ -4,7 +4,7 @@
 import { useRef, useState } from 'react';
 
 import { PlusOutlined } from '@ant-design/icons';
-import { Dropdown, Row, Space, Table, Button as ButtonAntd, Checkbox, Form } from 'antd';
+import { Dropdown, Row, Space, Table, Button as ButtonAntd, Checkbox, Form, Tooltip } from 'antd';
 import type { TableColumnsType, TableProps } from 'antd';
 import FileSaver from 'file-saver';
 import Image from 'next/image';
@@ -13,8 +13,9 @@ import Button from '@components/UI/Button/Button';
 import { IconDots } from '@components/UI/Icons';
 import InputText from '@components/UI/InputText';
 import NoDataTable from '@components/UI/NoDataTable';
+import SelectCustom from '@components/UI/SelectCustom';
 import Text from '@components/UI/Text';
-import { openNotification } from '@utils/common';
+import { openNotification, TYPE_REPEAT } from '@utils/common';
 
 import DrawerAddNotification from './DrawerAddNotification';
 import DrawerDetailNotification from './DrawerDetailNotification';
@@ -51,7 +52,7 @@ const NotificationManagement = () => {
     (record: any) =>
     ({ key }: any) => {
       if (key === 'edit') {
-        refDrawerDetailNotification.current.onOpen(record?.id);
+        refDrawerAddNotification.current.onOpen(record?.id);
       }
       if (key === 'delete') {
         refModalDeleteNotification?.current?.onOpen(record?.id);
@@ -62,25 +63,36 @@ const NotificationManagement = () => {
     {
       title: 'Tên thông báo',
       dataIndex: 'name',
-      width: 250,
+      width: 350,
       render: (_, record) => {
         return (
-          <Text type='font-14-400' color='text-primary'>
-            {record?.name}
-          </Text>
+          <Tooltip title={record?.name} placement='top'>
+            <a>
+              <Text type='font-14-400' color='text-primary'>
+                {record?.name?.length > 50 ? `${record?.name?.slice(0, 50)}...` : record?.name}
+              </Text>
+            </a>
+          </Tooltip>
         );
       },
     },
     {
       title: 'Nội dung thông báo',
       dataIndex: 'conent',
-      width: 850,
+      width: 350,
       render: (_, record) => {
         return (
           <Space direction='vertical' size={12}>
-            <Text className={styles.textContent} type='font-14-400' color='text-primary'>
-              {record?.content}
-            </Text>
+            <Tooltip title={record?.name} placement='top'>
+              <a>
+                <Text className={styles.textContent} type='font-14-400' color='text-primary'>
+                  {record?.content?.length > 50
+                    ? `${record?.content?.slice(0, 50)}...`
+                    : record?.content}
+                </Text>
+              </a>
+            </Tooltip>
+
             {record?.image && (
               <Image
                 src={errorImages.includes(record?.id) ? '/images/default-image.jpg' : record?.image}
@@ -208,12 +220,16 @@ const NotificationManagement = () => {
     const filter = isFilter
       ? {
           content: formFilter?.content,
-          repeat: formFilter?.repeat,
+          repeat: [TYPE_REPEAT.YES, TYPE_REPEAT.NO].includes(formFilter?.repeat)
+            ? formFilter?.repeat === TYPE_REPEAT.YES
+            : '',
           ids: selectedRowKeys,
         }
       : {
           content: valueFilter?.content,
-          repeat: valueFilter?.repeat,
+          repeat: [TYPE_REPEAT.YES, TYPE_REPEAT.NO].includes(valueFilter?.repeat)
+            ? valueFilter?.repeat === TYPE_REPEAT.YES
+            : '',
           ids: selectedRowKeys,
         };
     requestExportFileNotification?.run(filter);
@@ -225,9 +241,13 @@ const NotificationManagement = () => {
     },
   };
   const onHandleFilter = (values: any) => {
+    console.log(values, 'values');
+
     const filter = {
       content: values?.content,
-      repeat: values?.repeat,
+      repeat: [TYPE_REPEAT.YES, TYPE_REPEAT.NO].includes(values?.repeat)
+        ? values?.repeat === TYPE_REPEAT.YES
+        : '',
     };
     onChange(1, filter);
     setSelectedRowKeys([]);
@@ -242,7 +262,9 @@ const NotificationManagement = () => {
     const valuesFilter = form.getFieldsValue();
     const filter = {
       content: valuesFilter?.content,
-      repeat: valuesFilter?.repeat,
+      repeat: [TYPE_REPEAT.YES, TYPE_REPEAT.NO].includes(valuesFilter?.repeat)
+        ? valuesFilter?.repeat === TYPE_REPEAT.YES
+        : '',
     };
 
     onChange(pagination?.current, filter);
@@ -263,7 +285,7 @@ const NotificationManagement = () => {
                   <InputText
                     className={styles.inputSearch}
                     size='large'
-                    placeholder='Nhập nội dung tìm kiếm'
+                    placeholder='Nhập tên thông báo/nội dung thông báo'
                   />
                 </Form.Item>
               </Space>
@@ -271,8 +293,23 @@ const NotificationManagement = () => {
                 <Text type='font-14-400' color='text-primary'>
                   Lặp lại :
                 </Text>
-                <Form.Item valuePropName='checked' noStyle name='repeat'>
-                  <Checkbox className={styles.checkboxCustom} />
+                <Form.Item noStyle name='repeat'>
+                  <SelectCustom
+                    allowClear
+                    style={{ minWidth: '140px' }}
+                    options={[
+                      {
+                        label: 'Có',
+                        value: TYPE_REPEAT.YES,
+                      },
+                      {
+                        label: 'Không',
+                        value: TYPE_REPEAT.NO,
+                      },
+                    ]}
+                    size='large'
+                    placeholder={'Chọn lặp lại'}
+                  />
                 </Form.Item>
               </Space>
             </div>
@@ -346,7 +383,15 @@ const NotificationManagement = () => {
           rowKey='id'
           dataSource={dataNotifications?.data?.items}
           loading={loading}
+          className={styles.table}
           onChange={onChangeFilterTable}
+          onRow={(record) => {
+            return {
+              onClick: () => {
+                refDrawerDetailNotification.current.onOpen(record?.id);
+              },
+            };
+          }}
           pagination={{
             current: dataNotifications?.data?.page,
             total: dataNotifications?.data?.total,

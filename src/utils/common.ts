@@ -57,3 +57,8 @@ export enum TYPE_DATE_SEND {
   SATURDAY = 6,
   SUNDAY = 0,
 }
+
+export enum TYPE_REPEAT {
+  YES = 'YES',
+  NO = 'NO',
+}

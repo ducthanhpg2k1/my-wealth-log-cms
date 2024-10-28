@@ -34,7 +34,12 @@ import Text from '@components/UI/Text';
 import { isImage, openNotification, TYPE_DATE, TYPE_DATE_SEND } from '@utils/common';
 
 import styles from './index.module.scss';
-import { useCreateNotifications, useEditNotifications, useUploadImage } from '../service';
+import {
+  useCreateNotifications,
+  useEditNotifications,
+  useGetDetailNotification,
+  useUploadImage,
+} from '../service';
 
 export const DATA_DATE_SEND = [
   {
@@ -89,8 +94,27 @@ const DrawerAddNotification = (props: any, ref: any) => {
   const { reloadList } = props;
   const [open, setOpen] = useState(false);
   const [form] = Form.useForm();
-  const [dataDetail, setDataDetail] = useState<any>({});
+  const [idEdit, setIdEdit] = useState<any>({});
   const [dataUpload, setDataUpload] = useState<any>({});
+
+  const { run: runGetDetail, loading } = useGetDetailNotification({
+    onSuccess: (res) => {
+      form.setFieldsValue({
+        name: res?.data?.name,
+        content: res?.data?.content,
+        frequencyId: res?.data?.frequencyId?.code,
+        hourSendAt: res?.data?.hourSendAt ? dayjs(res?.data?.hourSendAt) : dayjs(),
+        sendAt: res?.data?.sendAt ? dayjs(res?.data?.sendAt) : dayjs(),
+        daySendAt: res?.data?.daySendAt,
+        repeat: res?.data?.repeat,
+      });
+      const fileName = res?.data?.image?.split('/')?.pop();
+      setDataUpload({
+        url: res?.data?.image,
+        fileName,
+      });
+    },
+  });
 
   const requestCreateNotifications = useCreateNotifications({
     onSuccess: () => {
@@ -160,25 +184,13 @@ const DrawerAddNotification = (props: any, ref: any) => {
 
   useImperativeHandle(ref, () => {
     return {
-      onOpen: (data: any) => {
+      onOpen: (id: string) => {
         setOpen(true);
-        setDataDetail(data?.data);
-
-        if (data?.data?.id) {
-          form.setFieldsValue({
-            name: data?.data?.name,
-            content: data?.data?.content,
-            frequencyId: data?.data?.frequencyId?.code,
-            hourSendAt: data?.data?.hourSendAt ? dayjs(data?.data?.hourSendAt) : dayjs(),
-            sendAt: data?.data?.sendAt ? dayjs(data?.data?.sendAt) : dayjs(),
-            daySendAt: data?.data?.daySendAt,
-            repeat: data?.data?.repeat,
-          });
-          const fileName = data?.data?.image?.split('/')?.pop();
-          setDataUpload({
-            url: data?.data?.image,
-            fileName,
-          });
+        setIdEdit(id);
+        form.resetFields();
+        setDataUpload({});
+        if (id) {
+          runGetDetail(id);
         }
       },
       onClose: () => setOpen(false),
@@ -201,8 +213,8 @@ const DrawerAddNotification = (props: any, ref: any) => {
       image: dataUpload?.url || '',
     };
 
-    if (dataDetail?.id) {
-      requestEditNotifications.run(body, dataDetail?.id);
+    if (idEdit) {
+      requestEditNotifications.run(body, idEdit);
     } else {
       requestCreateNotifications?.run(body);
     }
@@ -212,219 +224,226 @@ const DrawerAddNotification = (props: any, ref: any) => {
   };
 
   return (
-    <Drawer
-      className={styles.drawer}
-      placement={'right'}
-      closable={false}
-      width={592}
-      onClose={onVisible}
-      open={open}
-    >
-      <Row align='middle' justify='space-between' className={styles.header}>
-        <Text color='text-primary' type='font-24-600'>
-          {dataDetail?.id ? 'Sửa thông báo' : 'Thêm mới thông báo'}
-        </Text>
-        <ButtonAntd
-          shape='circle'
-          type='text'
-          size='middle'
-          onClick={() => {
-            setOpen(false);
-          }}
-          icon={<CloseOutlined />}
-        />
-      </Row>
-      <div className={styles.content}>
-        <Form
-          initialValues={{
-            repeat: false,
-            sendAt: dayjs(),
-            hourSendAt: dayjs(),
-            daySendAt: TYPE_DATE_SEND.MONDAY,
-            frequencyId: TYPE_DATE.WEEKLY,
-          }}
-          form={form}
-          layout='vertical'
-          onFinish={onSubmit}
-        >
-          <Form.Item
-            rules={[{ required: true, message: 'Vui lòng nhập tên thông báo' }]}
-            name='name'
-            label={'Tên thông báo'}
-          >
-            <InputText maxLength={255} size='large' placeholder='Tên thông báo' />
-          </Form.Item>
-          <Form.Item
-            rules={[{ required: true, message: 'Vui lòng nhập nội dung thông báo' }]}
-            name='content'
-            label={'Nội dung thông báo'}
-          >
-            <InputTextarea maxLength={500} rows={5} size='large' placeholder='Nội dung thông báo' />
-          </Form.Item>
-          <div className={styles.contentUpload}>
-            <Text type='font-14-400'>Hình ảnh đính kèm</Text>
-            <Space direction='vertical' size={12}>
-              <Spin spinning={requestUploadImage.loading}>
-                <Dragger className={styles.dragger} {...propsUpload}>
-                  <Space direction='vertical' size={4}>
-                    <Image
-                      src={'/images/img-upload.png'}
-                      alt=''
-                      width={32}
-                      height={32}
-                      className={styles.imgUpload}
-                    />
-                    <Text type='font-14-400' color='text-primary'>
-                      {`Tải ảnh lên (${dataUpload?.fileName ? 1 : 0}/1)`}
-                    </Text>
-                    <Text color='neutral-800' type='font-12-400'>
-                      JPG, JPEG, PNG tối đa 10MB
-                    </Text>
-                  </Space>
-                </Dragger>
-              </Spin>
-              {dataUpload?.url && (
-                <>
-                  <Row align={'middle'} justify={'space-between'}>
-                    <Text type='font-14-400'>{dataUpload?.fileName}</Text>
-                    <ButtonAntd
-                      shape='circle'
-                      type='text'
-                      size='small'
-                      onClick={() => handleRemoveFile()}
-                      icon={<CloseOutlined />}
-                    />
-                  </Row>
-                </>
-              )}
-            </Space>
-          </div>
-          <Form.Item valuePropName='checked' name='repeat' label={''}>
-            <Checkbox>Lặp lại</Checkbox>
-          </Form.Item>
-          <Form.Item dependencies={['repeat']} noStyle>
-            {({ getFieldValue }) => {
-              const isRepeat = getFieldValue('repeat');
-              return (
-                <>
-                  {isRepeat && (
-                    <Row align={'top'} style={{ gap: '16px' }}>
-                      <Text type='font-14-400'>Tần suất:</Text>
-                      <Form.Item name='frequencyId' label={''}>
-                        <Radio.Group defaultValue={TYPE_DATE.WEEKLY}>
-                          <Space direction='vertical'>
-                            {dataFrequencies?.map((item: any) => {
-                              return (
-                                <Radio key={item?.id} value={item?.value}>
-                                  {item?.label}
-                                </Radio>
-                              );
-                            })}
-                          </Space>
-                        </Radio.Group>
-                      </Form.Item>
-                    </Row>
-                  )}
-                </>
-              );
+    <Spin spinning={loading}>
+      <Drawer
+        className={styles.drawer}
+        placement={'right'}
+        closable={false}
+        width={592}
+        onClose={onVisible}
+        open={open}
+      >
+        <Row align='middle' justify='space-between' className={styles.header}>
+          <Text color='text-primary' type='font-24-600'>
+            {idEdit ? 'Sửa thông báo' : 'Thêm mới thông báo'}
+          </Text>
+          <ButtonAntd
+            shape='circle'
+            type='text'
+            size='middle'
+            onClick={() => {
+              setOpen(false);
             }}
-          </Form.Item>
-          <Row gutter={12}>
-            <Form.Item dependencies={['frequencyId', 'repeat']} noStyle>
-              {({ getFieldValue }) => {
-                const frequencyId = getFieldValue('frequencyId');
-                const repeat = getFieldValue('repeat');
-
-                if (repeat && frequencyId === TYPE_DATE.DAILY) {
-                  return (
-                    <Col span={8}>
-                      <Form.Item name='hourSendAt' label={'Giờ gửi thông báo'}>
-                        <TimePicker
-                          defaultValue={dayjs()}
-                          format='HH:mm'
-                          style={{
-                            width: '100%',
-                          }}
-                        />
-                      </Form.Item>
-                    </Col>
-                  );
-                }
-
-                return null;
-              }}
-            </Form.Item>
-            <Form.Item dependencies={['frequencyId', 'repeat']} noStyle>
-              {({ getFieldValue }) => {
-                const frequencyId = getFieldValue('frequencyId');
-                const repeat = getFieldValue('repeat');
-                console.log({ frequencyId, repeat });
-
-                if (!repeat || (repeat && frequencyId === TYPE_DATE.MONTHLY)) {
-                  return (
-                    <Col span={10}>
-                      <Form.Item name='sendAt' label={'Thời gian gửi'}>
-                        <DatePicker
-                          showTime={{ format: 'HH:mm' }}
-                          style={{
-                            width: '100%',
-                          }}
-                          defaultValue={dayjs()}
-                        />
-                      </Form.Item>
-                    </Col>
-                  );
-                }
-
-                return null;
-              }}
-            </Form.Item>
-            <Form.Item dependencies={['frequencyId', 'repeat']} noStyle>
-              {({ getFieldValue }) => {
-                const frequencyId = getFieldValue('frequencyId');
-                const repeat = getFieldValue('repeat');
-
-                if (repeat && frequencyId === TYPE_DATE.WEEKLY) {
-                  return (
-                    <Col span={8}>
-                      <Form.Item name='daySendAt' label={'Ngày gửi thông báo'}>
-                        <SelectCustom
-                          options={DATA_DATE_SEND}
-                          size='middle'
-                          defaultValue={TYPE_DATE_SEND.MONDAY}
-                        />
-                      </Form.Item>
-                    </Col>
-                  );
-                }
-
-                return null;
-              }}
-            </Form.Item>
-          </Row>
-
-          <div className={styles.footerAction}>
-            <ButtonAntd
-              onClick={() => setOpen(false)}
-              size='large'
-              className={styles.btn}
-              type='default'
+            icon={<CloseOutlined />}
+          />
+        </Row>
+        <div className={styles.content}>
+          <Form
+            initialValues={{
+              repeat: false,
+              sendAt: dayjs(),
+              hourSendAt: dayjs(),
+              daySendAt: TYPE_DATE_SEND.MONDAY,
+              frequencyId: TYPE_DATE.WEEKLY,
+            }}
+            form={form}
+            layout='vertical'
+            onFinish={onSubmit}
+          >
+            <Form.Item
+              rules={[{ required: true, message: 'Vui lòng nhập tên thông báo' }]}
+              name='name'
+              label={'Tên thông báo'}
             >
-              Hủy bỏ
-            </ButtonAntd>
-            <Button
-              size='large'
-              htmlType='submit'
-              loading={requestCreateNotifications?.loading || requestEditNotifications?.loading}
-              className={styles.btn}
-              type='green'
+              <InputText maxLength={255} size='large' placeholder='Tên thông báo' />
+            </Form.Item>
+            <Form.Item
+              rules={[{ required: true, message: 'Vui lòng nhập nội dung thông báo' }]}
+              name='content'
+              label={'Nội dung thông báo'}
             >
-              Lưu
-            </Button>
-          </div>
-        </Form>
-      </div>
-    </Drawer>
+              <InputTextarea
+                maxLength={500}
+                rows={5}
+                size='large'
+                placeholder='Nội dung thông báo'
+              />
+            </Form.Item>
+            <div className={styles.contentUpload}>
+              <Text type='font-14-400'>Hình ảnh đính kèm</Text>
+              <Space direction='vertical' size={12}>
+                <Spin spinning={requestUploadImage.loading}>
+                  <Dragger className={styles.dragger} {...propsUpload}>
+                    <Space direction='vertical' size={4}>
+                      <Image
+                        src={'/images/img-upload.png'}
+                        alt=''
+                        width={32}
+                        height={32}
+                        className={styles.imgUpload}
+                      />
+                      <Text type='font-14-400' color='text-primary'>
+                        {`Tải ảnh lên (${dataUpload?.fileName ? 1 : 0}/1)`}
+                      </Text>
+                      <Text color='neutral-800' type='font-12-400'>
+                        JPG, JPEG, PNG tối đa 10MB
+                      </Text>
+                    </Space>
+                  </Dragger>
+                </Spin>
+                {dataUpload?.url && (
+                  <>
+                    <Row align={'middle'} justify={'space-between'}>
+                      <Text type='font-14-400'>{dataUpload?.fileName}</Text>
+                      <ButtonAntd
+                        shape='circle'
+                        type='text'
+                        size='small'
+                        onClick={() => handleRemoveFile()}
+                        icon={<CloseOutlined />}
+                      />
+                    </Row>
+                  </>
+                )}
+              </Space>
+            </div>
+            <Form.Item valuePropName='checked' name='repeat' label={''}>
+              <Checkbox>Lặp lại</Checkbox>
+            </Form.Item>
+            <Form.Item dependencies={['repeat']} noStyle>
+              {({ getFieldValue }) => {
+                const isRepeat = getFieldValue('repeat');
+                return (
+                  <>
+                    {isRepeat && (
+                      <Row align={'top'} style={{ gap: '16px' }}>
+                        <Text type='font-14-400'>Tần suất:</Text>
+                        <Form.Item name='frequencyId' label={''}>
+                          <Radio.Group defaultValue={TYPE_DATE.WEEKLY}>
+                            <Space direction='vertical'>
+                              {dataFrequencies?.map((item: any) => {
+                                return (
+                                  <Radio key={item?.id} value={item?.value}>
+                                    {item?.label}
+                                  </Radio>
+                                );
+                              })}
+                            </Space>
+                          </Radio.Group>
+                        </Form.Item>
+                      </Row>
+                    )}
+                  </>
+                );
+              }}
+            </Form.Item>
+            <Row gutter={12}>
+              <Form.Item dependencies={['frequencyId', 'repeat']} noStyle>
+                {({ getFieldValue }) => {
+                  const frequencyId = getFieldValue('frequencyId');
+                  const repeat = getFieldValue('repeat');
+
+                  if (repeat && frequencyId === TYPE_DATE.DAILY) {
+                    return (
+                      <Col span={8}>
+                        <Form.Item name='hourSendAt' label={'Giờ gửi thông báo'}>
+                          <TimePicker
+                            defaultValue={dayjs()}
+                            format='HH:mm'
+                            style={{
+                              width: '100%',
+                            }}
+                          />
+                        </Form.Item>
+                      </Col>
+                    );
+                  }
+
+                  return null;
+                }}
+              </Form.Item>
+              <Form.Item dependencies={['frequencyId', 'repeat']} noStyle>
+                {({ getFieldValue }) => {
+                  const frequencyId = getFieldValue('frequencyId');
+                  const repeat = getFieldValue('repeat');
+                  console.log({ frequencyId, repeat });
+
+                  if (!repeat || (repeat && frequencyId === TYPE_DATE.MONTHLY)) {
+                    return (
+                      <Col span={10}>
+                        <Form.Item name='sendAt' label={'Thời gian gửi'}>
+                          <DatePicker
+                            showTime={{ format: 'HH:mm' }}
+                            style={{
+                              width: '100%',
+                            }}
+                            defaultValue={dayjs()}
+                          />
+                        </Form.Item>
+                      </Col>
+                    );
+                  }
+
+                  return null;
+                }}
+              </Form.Item>
+              <Form.Item dependencies={['frequencyId', 'repeat']} noStyle>
+                {({ getFieldValue }) => {
+                  const frequencyId = getFieldValue('frequencyId');
+                  const repeat = getFieldValue('repeat');
+
+                  if (repeat && frequencyId === TYPE_DATE.WEEKLY) {
+                    return (
+                      <Col span={8}>
+                        <Form.Item name='daySendAt' label={'Ngày gửi thông báo'}>
+                          <SelectCustom
+                            options={DATA_DATE_SEND}
+                            size='middle'
+                            defaultValue={TYPE_DATE_SEND.MONDAY}
+                          />
+                        </Form.Item>
+                      </Col>
+                    );
+                  }
+
+                  return null;
+                }}
+              </Form.Item>
+            </Row>
+
+            <div className={styles.footerAction}>
+              <ButtonAntd
+                onClick={() => setOpen(false)}
+                size='large'
+                className={styles.btn}
+                type='default'
+              >
+                Hủy bỏ
+              </ButtonAntd>
+              <Button
+                size='large'
+                htmlType='submit'
+                loading={requestCreateNotifications?.loading || requestEditNotifications?.loading}
+                className={styles.btn}
+                type='green'
+              >
+                Lưu
+              </Button>
+            </div>
+          </Form>
+        </div>
+      </Drawer>
+    </Spin>
   );
 };
 export default forwardRef(DrawerAddNotification);

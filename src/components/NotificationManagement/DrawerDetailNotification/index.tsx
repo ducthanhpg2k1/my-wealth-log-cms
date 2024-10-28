@@ -68,7 +68,7 @@ const DrawerDetailNotification = (props: any, ref: any) => {
             />
           </Row>
           <div className={styles.content}>
-            <Row align={'middle'}>
+            <Row align={'stretch'}>
               <Col span={8}>
                 <Text type='font-14-400' color='neutral-700'>
                   Tên thông báo
@@ -80,7 +80,7 @@ const DrawerDetailNotification = (props: any, ref: any) => {
                 </Text>
               </Col>
             </Row>
-            <Row align={'middle'}>
+            <Row align={'stretch'}>
               <Col span={8}>
                 <Text type='font-14-400' color='neutral-700'>
                   Nội dung thông báo
@@ -92,7 +92,7 @@ const DrawerDetailNotification = (props: any, ref: any) => {
                 </Text>
               </Col>
             </Row>
-            <Row align={'middle'}>
+            <Row align={'stretch'}>
               <Col span={8}>
                 <Text type='font-14-400' color='neutral-700'>
                   Tần suất
@@ -104,7 +104,7 @@ const DrawerDetailNotification = (props: any, ref: any) => {
                 </Text>
               </Col>
             </Row>
-            <Row align={'middle'}>
+            <Row align={'stretch'}>
               <Col span={8}>
                 <Text type='font-14-400' color='neutral-700'>
                   Hình ảnh đính kèm
@@ -143,7 +143,7 @@ const DrawerDetailNotification = (props: any, ref: any) => {
               </Col>
             </Row>
             {dataDetail?.data?.repeat && dataDetail?.data?.frequencyId.code === TYPE_DATE.DAILY && (
-              <Row align={'middle'}>
+              <Row align={'stretch'}>
                 <Col span={8}>
                   <Text type='font-14-400' color='neutral-700'>
                     Giờ gửi thông báo
@@ -167,7 +167,7 @@ const DrawerDetailNotification = (props: any, ref: any) => {
             {!dataDetail?.data?.repeat ||
               (dataDetail?.data?.repeat &&
                 dataDetail?.data?.frequencyId.code === TYPE_DATE.MONTHLY && (
-                  <Row align={'middle'}>
+                  <Row align={'stretch'}>
                     <Col span={8}>
                       <Text type='font-14-400' color='neutral-700'>
                         Thời gian gửi
@@ -204,7 +204,7 @@ const DrawerDetailNotification = (props: any, ref: any) => {
                 ))}
             {dataDetail?.data?.repeat &&
               dataDetail?.data?.frequencyId?.code === TYPE_DATE.WEEKLY && (
-                <Row align={'middle'}>
+                <Row align={'stretch'}>
                   <Col span={8}>
                     <Text type='font-14-400' color='neutral-700'>
                       Ngày gửi thông báo
@@ -249,7 +249,7 @@ const DrawerDetailNotification = (props: any, ref: any) => {
             <Button
               size='large'
               onClick={() => {
-                refDrawerAddNotification.current.onOpen(dataDetail);
+                refDrawerAddNotification.current.onOpen(dataDetail?.data?.id);
                 onVisible();
               }}
               className={styles.btn}
