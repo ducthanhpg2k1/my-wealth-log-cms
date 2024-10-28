@@ -18,6 +18,7 @@ import {
   Radio,
   Row,
   Space,
+  Spin,
   TimePicker,
   Upload,
 } from 'antd';
@@ -142,8 +143,14 @@ const DrawerAddNotification = (props: any, ref: any) => {
     multiple: false,
     showUploadList: false,
     beforeUpload(file) {
+      const maxSize = 10 * 1024 * 1024;
       if (!isImage(file)) {
         return;
+      }
+
+      if (file.size > maxSize) {
+        openNotification('File upload không được vượt quá 10MB.', 'error');
+        return false;
       }
       requestUploadImage?.run(file, 'notification');
 
@@ -243,9 +250,9 @@ const DrawerAddNotification = (props: any, ref: any) => {
           <Form.Item
             rules={[{ required: true, message: 'Vui lòng nhập tên thông báo' }]}
             name='name'
-            label={'Tên đăng nhập'}
+            label={'Tên thông báo'}
           >
-            <InputText maxLength={225} size='large' placeholder='Tên thông báo' />
+            <InputText maxLength={255} size='large' placeholder='Tên thông báo' />
           </Form.Item>
           <Form.Item
             rules={[{ required: true, message: 'Vui lòng nhập nội dung thông báo' }]}
@@ -257,23 +264,25 @@ const DrawerAddNotification = (props: any, ref: any) => {
           <div className={styles.contentUpload}>
             <Text type='font-14-400'>Hình ảnh đính kèm</Text>
             <Space direction='vertical' size={12}>
-              <Dragger className={styles.dragger} {...propsUpload}>
-                <Space direction='vertical' size={4}>
-                  <Image
-                    src={'/images/img-upload.png'}
-                    alt=''
-                    width={32}
-                    height={32}
-                    className={styles.imgUpload}
-                  />
-                  <Text type='font-14-400' color='text-primary'>
-                    {`Tải ảnh lên (${dataUpload?.fileName ? 1 : 0}/1)`}
-                  </Text>
-                  <Text color='neutral-800' type='font-12-400'>
-                    JPG, JPEG, PNG tối đa 10MB
-                  </Text>
-                </Space>
-              </Dragger>
+              <Spin spinning={requestUploadImage.loading}>
+                <Dragger className={styles.dragger} {...propsUpload}>
+                  <Space direction='vertical' size={4}>
+                    <Image
+                      src={'/images/img-upload.png'}
+                      alt=''
+                      width={32}
+                      height={32}
+                      className={styles.imgUpload}
+                    />
+                    <Text type='font-14-400' color='text-primary'>
+                      {`Tải ảnh lên (${dataUpload?.fileName ? 1 : 0}/1)`}
+                    </Text>
+                    <Text color='neutral-800' type='font-12-400'>
+                      JPG, JPEG, PNG tối đa 10MB
+                    </Text>
+                  </Space>
+                </Dragger>
+              </Spin>
               {dataUpload?.url && (
                 <>
                   <Row align={'middle'} justify={'space-between'}>
