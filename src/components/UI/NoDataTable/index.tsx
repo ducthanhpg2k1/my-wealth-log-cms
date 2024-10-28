@@ -1,9 +1,20 @@
+import { PlusOutlined } from '@ant-design/icons';
+import { Row } from 'antd';
 import Image from 'next/image';
 
 import styles from './index.module.scss';
+import Button from '../Button/Button';
 import Text from '../Text';
 
-const NoDataTable = () => {
+const NoDataTable = ({
+  title,
+  actionButton,
+  handleActionButton,
+}: {
+  handleActionButton?: VoidFunction;
+  title: string;
+  actionButton?: boolean;
+}) => {
   return (
     <div className={styles.container}>
       <Image
@@ -14,8 +25,18 @@ const NoDataTable = () => {
         className={styles.img}
       />
       <Text type='font-14-400' color='neutral-400'>
-        Không có kết quả phù hợp
+        {title}
       </Text>
+      {actionButton && (
+        <Button onClick={handleActionButton} className={styles.btnSearch} type='blue'>
+          <Row align={'middle'} style={{ gap: '8px' }}>
+            <PlusOutlined size={24} />
+            <Text color='background-default' type='font-14-400'>
+              Thêm mới
+            </Text>
+          </Row>
+        </Button>
+      )}
     </div>
   );
 };

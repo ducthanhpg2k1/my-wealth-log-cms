@@ -377,7 +377,9 @@ const NotificationManagement = () => {
           </Text>
         </Space>
         <Table
-          locale={{ emptyText: <NoDataTable /> }}
+          locale={{
+            emptyText: <NoDataTable title='Không có kết quả phù hợp' />,
+          }}
           rowSelection={{ ...rowSelection, selectedRowKeys }}
           columns={columns}
           rowKey='id'
