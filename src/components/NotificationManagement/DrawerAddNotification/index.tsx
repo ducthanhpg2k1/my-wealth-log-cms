@@ -149,7 +149,7 @@ const DrawerAddNotification = (props: any, ref: any) => {
       }
 
       if (file.size > maxSize) {
-        openNotification('File upload không được vượt quá 10MB.', 'error');
+        openNotification('Chỉ cho phép upload file <=10MB ', 'error');
         return false;
       }
       requestUploadImage?.run(file, 'notification');
