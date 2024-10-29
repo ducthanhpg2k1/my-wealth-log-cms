@@ -83,7 +83,7 @@ const NotificationManagement = () => {
       render: (_, record) => {
         return (
           <Space direction='vertical' size={12}>
-            <Tooltip title={record?.name} placement='top'>
+            <Tooltip title={record?.content} placement='top'>
               <a>
                 <Text className={styles.textContent} type='font-14-400' color='text-primary'>
                   {record?.content?.length > 50
@@ -296,7 +296,7 @@ const NotificationManagement = () => {
                 <Form.Item noStyle name='repeat'>
                   <SelectCustom
                     allowClear
-                    style={{ minWidth: '140px' }}
+                    className={styles.selectRepeat}
                     options={[
                       {
                         label: 'Có',

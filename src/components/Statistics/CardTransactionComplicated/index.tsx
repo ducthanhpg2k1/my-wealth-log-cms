@@ -1,3 +1,7 @@
+/* eslint-disable multiline-ternary */
+/* eslint-disable react/jsx-no-undef */
+import { useMemo } from 'react';
+
 import { Row, Space } from 'antd';
 import {
   Chart as ChartJS,
@@ -9,9 +13,11 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+import Image from 'next/image';
 import { Doughnut } from 'react-chartjs-2';
 
 import Text from '@components/UI/Text';
+import { isAllZero } from '@utils/common';
 
 import styles from './index.module.scss';
 
@@ -36,6 +42,10 @@ const DATA_NOTE = [
 ];
 
 const CardTransactionComplicated = ({ data }: any) => {
+  const isNoData = useMemo(() => {
+    return isAllZero(data);
+  }, [data]);
+
   const doughnutOptions = {
     responsive: true,
     plugins: {
@@ -60,9 +70,25 @@ const CardTransactionComplicated = ({ data }: any) => {
         Giao dịch theo hình thức tạo
       </Text>
       <Row align={'middle'} justify={'center'} style={{ gap: '70px', marginBottom: '24px' }}>
-        <div style={{ width: '140px', height: '140px' }}>
-          <Doughnut width={140} height={140} data={transactionTypeData} options={doughnutOptions} />
-        </div>
+        {isNoData ? (
+          <Image
+            src={'/images/img-chart-nodata.png'}
+            width={140}
+            height={140}
+            alt=''
+            style={{ width: '140px', height: '140px' }}
+          />
+        ) : (
+          <div style={{ width: '140px', height: '140px' }}>
+            <Doughnut
+              width={140}
+              height={140}
+              data={transactionTypeData}
+              options={doughnutOptions}
+            />
+          </div>
+        )}
+
         <Space size={20} direction='vertical'>
           {DATA_NOTE?.map((item) => {
             return (

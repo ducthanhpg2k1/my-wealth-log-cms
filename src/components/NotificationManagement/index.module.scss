@@ -69,10 +69,17 @@
   height: 40px;
 
   @media (min-width: 1280px) and (max-width: 1599px) {
-    min-width: 300px !important;
+    min-width: 200px !important;
   }
   @media (min-width: 1440px) and (max-width: 1599px) {
-    min-width: 400px !important;
+    min-width: 300px !important;
+  }
+}
+
+.selectRepeat {
+  min-width: 140px;
+  @media (min-width: 1280px) and (max-width: 1599px) {
+    min-width: 120px !important;
   }
 }
 

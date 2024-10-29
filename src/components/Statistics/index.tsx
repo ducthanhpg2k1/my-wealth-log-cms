@@ -111,9 +111,12 @@ const Statistics = () => {
 
   const onHandleFilter = (values: any) => {
     const filter = {
-      createdAtFrom: dayjs(values?.createdAtFrom).startOf('day').toISOString(),
-      createdAtTo: dayjs(values?.createdAtTo).endOf('day').toISOString(),
+      createdAtFrom: values?.createdAtFrom
+        ? dayjs(values?.createdAtFrom).startOf('day').toISOString()
+        : '',
+      createdAtTo: values?.createdAtTo ? dayjs(values?.createdAtTo).endOf('day').toISOString() : '',
     };
+
     onChangeNewAssets(filter);
     onChangeNotifications(filter);
     onChangeTransactions(filter);

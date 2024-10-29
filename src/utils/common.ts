@@ -62,3 +62,7 @@ export enum TYPE_REPEAT {
   YES = 'YES',
   NO = 'NO',
 }
+
+export const isAllZero = (obj: any) => {
+  return obj && Object?.values(obj).every((value) => value === 0);
+};

@@ -245,7 +245,12 @@ const User = () => {
                   Đăng kí mới từ:
                 </Text>
                 <Form.Item noStyle name='createdAtFrom'>
-                  <DatePicker disabledDate={disabledDateFrom} size='large' format='DD-MM-YYYY' />
+                  <DatePicker
+                    className={styles.date}
+                    disabledDate={disabledDateFrom}
+                    size='large'
+                    format='DD-MM-YYYY'
+                  />
                 </Form.Item>
               </Space>
               <Space size={12}>
@@ -253,7 +258,12 @@ const User = () => {
                   Đến:
                 </Text>
                 <Form.Item noStyle name='createdAtTo'>
-                  <DatePicker disabledDate={disabledDateTo} size='large' format='DD-MM-YYYY' />
+                  <DatePicker
+                    className={styles.date}
+                    disabledDate={disabledDateTo}
+                    size='large'
+                    format='DD-MM-YYYY'
+                  />
                 </Form.Item>
               </Space>
               <Space size={12}>
@@ -263,7 +273,7 @@ const User = () => {
                 <Form.Item noStyle name='isActived'>
                   <SelectCustom
                     allowClear
-                    style={{ minWidth: '160px' }}
+                    className={styles.selectStatus}
                     defaultValue={STATUS_USER.ACTIVE}
                     options={[
                       {

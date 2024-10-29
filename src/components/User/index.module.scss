@@ -32,10 +32,26 @@
 .btnSearch {
   min-width: 126px;
   height: 40px;
+  @media (min-width: 1280px) and (max-width: 1599px) {
+    width: max-content !important;
+  }
 }
 
 .content {
   display: flex;
   flex-direction: column;
   gap: 24px;
+}
+
+.date {
+  @media (min-width: 1280px) and (max-width: 1599px) {
+    width: 130px !important;
+  }
+}
+
+.selectStatus {
+  min-width: 160px;
+  @media (min-width: 1280px) and (max-width: 1599px) {
+    min-width: 100px !important;
+  }
 }

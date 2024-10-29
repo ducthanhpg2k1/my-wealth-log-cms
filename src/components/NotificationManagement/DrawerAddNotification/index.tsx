@@ -12,6 +12,7 @@ import {
   Button as ButtonAntd,
   Checkbox,
   Col,
+  ConfigProvider,
   DatePicker,
   Drawer,
   Form,
@@ -22,10 +23,12 @@ import {
   TimePicker,
   Upload,
 } from 'antd';
+import viVN from 'antd/es/locale/vi_VN';
 import { UploadProps } from 'antd/lib';
 import dayjs from 'dayjs';
 import Image from 'next/image';
 
+import 'dayjs/locale/vi';
 import Button from '@components/UI/Button/Button';
 import InputText from '@components/UI/InputText';
 import InputTextarea from '@components/UI/InputTextarea';
@@ -41,6 +44,7 @@ import {
   useUploadImage,
 } from '../service';
 
+dayjs.locale('vi');
 export const DATA_DATE_SEND = [
   {
     label: 'Thứ 2',
@@ -205,7 +209,7 @@ const DrawerAddNotification = (props: any, ref: any) => {
     const body = {
       name: values?.name,
       content: values?.content,
-      frequencyId: values?.frequencyId || '',
+      frequencyId: values?.frequencyId || null,
       hourSendAt: formattedhourSendAt,
       daySendAt: values?.daySendAt,
       sendAt: formatteddaySendAt,
@@ -381,15 +385,34 @@ const DrawerAddNotification = (props: any, ref: any) => {
                   if (!repeat || (repeat && frequencyId === TYPE_DATE.MONTHLY)) {
                     return (
                       <Col span={10}>
-                        <Form.Item name='sendAt' label={'Thời gian gửi'}>
-                          <DatePicker
-                            showTime={{ format: 'HH:mm' }}
-                            style={{
-                              width: '100%',
-                            }}
-                            defaultValue={dayjs()}
-                          />
-                        </Form.Item>
+                        <ConfigProvider locale={viVN}>
+                          <Form.Item name='sendAt' label={'Thời gian gửi'}>
+                            <DatePicker
+                              showTime={{ format: 'HH:mm' }}
+                              style={{
+                                width: '100%',
+                              }}
+                              picker={
+                                repeat && frequencyId === TYPE_DATE.MONTHLY ? 'month' : 'date'
+                              }
+                              disabledDate={(current) => {
+                                return current && current < dayjs().startOf('day');
+                              }}
+                              disabledTime={(current) => {
+                                if (current && current.isSame(dayjs(), 'day')) {
+                                  return {
+                                    disabledHours: () =>
+                                      Array.from({ length: dayjs().hour() }, (_, i) => i),
+                                    disabledMinutes: () =>
+                                      Array.from({ length: dayjs().minute() }, (_, i) => i),
+                                  };
+                                }
+                                return {};
+                              }}
+                              defaultValue={dayjs()}
+                            />
+                          </Form.Item>
+                        </ConfigProvider>
                       </Col>
                     );
                   }
