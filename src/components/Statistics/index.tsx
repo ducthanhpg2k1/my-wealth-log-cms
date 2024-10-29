@@ -158,7 +158,12 @@ const Statistics = () => {
                   Từ:
                 </Text>
                 <Form.Item noStyle name='createdAtFrom'>
-                  <DatePicker defaultValue={dayjs()} disabledDate={disabledDateFrom} size='large' />
+                  <DatePicker
+                    placeholder='02-02-2000'
+                    defaultValue={dayjs()}
+                    disabledDate={disabledDateFrom}
+                    size='large'
+                  />
                 </Form.Item>
               </Space>
               <Space size={8}>
@@ -166,7 +171,12 @@ const Statistics = () => {
                   Đến:
                 </Text>
                 <Form.Item noStyle name='createdAtTo'>
-                  <DatePicker defaultValue={dayjs()} disabledDate={disabledDateTo} size='large' />
+                  <DatePicker
+                    placeholder='02-02-2000'
+                    defaultValue={dayjs()}
+                    disabledDate={disabledDateTo}
+                    size='large'
+                  />
                 </Form.Item>
 
                 <Button

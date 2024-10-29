@@ -250,6 +250,7 @@ const User = () => {
                     disabledDate={disabledDateFrom}
                     size='large'
                     format='DD-MM-YYYY'
+                    placeholder='02-02-2000'
                   />
                 </Form.Item>
               </Space>
@@ -263,6 +264,7 @@ const User = () => {
                     disabledDate={disabledDateTo}
                     size='large'
                     format='DD-MM-YYYY'
+                    placeholder='02-02-2000'
                   />
                 </Form.Item>
               </Space>
