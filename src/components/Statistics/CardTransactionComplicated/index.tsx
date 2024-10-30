@@ -36,7 +36,7 @@ const DATA_NOTE = [
   },
   {
     id: 3,
-    text: 'Quét QR',
+    text: 'Quét OCR',
     bgColor: '#FDD76D',
   },
 ];
@@ -55,7 +55,7 @@ const CardTransactionComplicated = ({ data }: any) => {
     },
   };
   const transactionTypeData = {
-    labels: ['Hệ thống tự sinh', 'Tạo thủ công', 'Quét QR'],
+    labels: ['Hệ thống tự sinh', 'Tạo thủ công', 'Quét OCR'],
     datasets: [
       {
         data: [data?.automatic_generation, data?.hand_crafted, data?.qr_scan],
