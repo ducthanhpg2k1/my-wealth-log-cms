@@ -39,7 +39,7 @@ const NotificationManagement = () => {
 
   const requestExportFileNotification = useExportFileNotification({
     onSuccess: (res) => {
-      openNotification('Export file success', 'success');
+      openNotification('Export file thành công', 'success');
 
       FileSaver.saveAs(res, 'Notification.xlsx');
     },
@@ -83,13 +83,29 @@ const NotificationManagement = () => {
       render: (_, record) => {
         return (
           <Space direction='vertical' size={12}>
-            <Tooltip title={record?.content} placement='top'>
+            <Tooltip
+              title={
+                <>
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: record?.content?.replaceAll('\n', '<br>'),
+                    }}
+                  />
+                </>
+              }
+              placement='top'
+            >
               <a>
-                <Text className={styles.textContent} type='font-14-400' color='text-primary'>
-                  {record?.content?.length > 50
-                    ? `${record?.content?.slice(0, 50)}...`
-                    : record?.content}
-                </Text>
+                <div
+                  className={styles.textContent}
+                  dangerouslySetInnerHTML={{
+                    __html: record?.content
+                      ? `${record.content.slice(0, 50)}${
+                          record.content.length > 50 ? '...' : ''
+                        }`.replaceAll('\n', '<br>')
+                      : '',
+                  }}
+                />
               </a>
             </Tooltip>
 

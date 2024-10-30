@@ -161,6 +161,7 @@ const Statistics = () => {
                   <DatePicker
                     placeholder='02-02-2000'
                     defaultValue={dayjs()}
+                    format='DD-MM-YYYY'
                     disabledDate={disabledDateFrom}
                     size='large'
                   />
@@ -174,6 +175,7 @@ const Statistics = () => {
                   <DatePicker
                     placeholder='02-02-2000'
                     defaultValue={dayjs()}
+                    format='DD-MM-YYYY'
                     disabledDate={disabledDateTo}
                     size='large'
                   />
@@ -231,7 +233,12 @@ const Statistics = () => {
           </Col>
 
           <Col span={6}>
-            <CardHeader title='lượt tạo giao dịch' count={dataTransactions?.data?.count || 0} />
+            <CardHeader
+              title='lượt tạo giao dịch bình quân'
+              count={
+                Number((dataTransactions?.data?.count / dataNewUser?.data?.count).toFixed(2)) || 0
+              }
+            />
           </Col>
         </Row>
         <Row gutter={16}>
@@ -249,7 +256,7 @@ const Statistics = () => {
 };
 export default Statistics;
 
-const CardHeader = ({ title, count }: { title: string; count: string }) => {
+const CardHeader = ({ title, count }: { title: string; count: string | number }) => {
   return (
     <div className={styles.card}>
       <Text type='font-12-400' color='text-primary' className={styles.titleCard}>

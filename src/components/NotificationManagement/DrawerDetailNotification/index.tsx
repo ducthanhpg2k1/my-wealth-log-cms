@@ -87,9 +87,12 @@ const DrawerDetailNotification = (props: any, ref: any) => {
                 </Text>
               </Col>
               <Col span={16}>
-                <Text type='font-14-400' color='text-primary'>
-                  {dataDetail?.data?.content}
-                </Text>
+                <div
+                  className={styles.textContent}
+                  dangerouslySetInnerHTML={{
+                    __html: dataDetail?.data?.content?.replaceAll('\n', '<br>'),
+                  }}
+                />
               </Col>
             </Row>
             <Row align={'stretch'}>

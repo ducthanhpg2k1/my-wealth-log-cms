@@ -35,7 +35,7 @@ const User = () => {
 
   const requestExportFileJobSetup = useExportFileUser({
     onSuccess: (res) => {
-      openNotification('Export file success', 'success');
+      openNotification('Export file thành công', 'success');
 
       FileSaver.saveAs(res, 'User.xlsx');
     },

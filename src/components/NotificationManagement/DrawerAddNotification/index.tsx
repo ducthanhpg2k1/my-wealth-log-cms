@@ -392,6 +392,7 @@ const DrawerAddNotification = (props: any, ref: any) => {
                               style={{
                                 width: '100%',
                               }}
+                              format='DD-MM-YYYY'
                               picker={
                                 repeat && frequencyId === TYPE_DATE.MONTHLY ? 'month' : 'date'
                               }
