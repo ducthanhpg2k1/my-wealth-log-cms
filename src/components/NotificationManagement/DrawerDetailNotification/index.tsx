@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-operators */
 /* eslint-disable indent */
 /* eslint-disable unicorn/consistent-function-scoping */
 /* eslint-disable require-await */
@@ -166,45 +167,45 @@ const DrawerDetailNotification = (props: any, ref: any) => {
                 )}
               </Row>
             )}
-
-            {!dataDetail?.data?.repeat ||
+            {(!dataDetail?.data?.repeat ||
               (dataDetail?.data?.repeat &&
-                dataDetail?.data?.frequencyId.code === TYPE_DATE.MONTHLY && (
-                  <Row align={'stretch'}>
-                    <Col span={8}>
-                      <Text type='font-14-400' color='neutral-700'>
-                        Thời gian gửi
+                dataDetail?.data?.frequencyId.code === TYPE_DATE.MONTHLY)) && (
+              <Row align={'stretch'}>
+                <Col span={8}>
+                  <Text type='font-14-400' color='neutral-700'>
+                    Thời gian gửi
+                  </Text>
+                </Col>
+                {dataDetail?.data?.sendAt && (
+                  <Col span={16}>
+                    <Space size={12}>
+                      <Row align={'middle'} style={{ gap: '4px' }}>
+                        <Image
+                          src='/svgIcon/ic-date.svg'
+                          width={20}
+                          height={20}
+                          style={{
+                            width: '20px',
+                            height: '20px',
+                          }}
+                          alt=''
+                        />
+                        <Text type='font-14-400' color='text-primary'>
+                          {dayjs(dataDetail?.data?.sendAt).format('hh:mm A')}
+                        </Text>
+                      </Row>
+                      <Text type='font-14-400' color='text-primary'>
+                        -
                       </Text>
-                    </Col>
-                    {dataDetail?.data?.sendAt && (
-                      <Col span={16}>
-                        <Space size={12}>
-                          <Row align={'middle'} style={{ gap: '4px' }}>
-                            <Image
-                              src='/svgIcon/ic-date.svg'
-                              width={20}
-                              height={20}
-                              style={{
-                                width: '20px',
-                                height: '20px',
-                              }}
-                              alt=''
-                            />
-                            <Text type='font-14-400' color='text-primary'>
-                              {dayjs(dataDetail?.data?.sendAt).format('hh:mm A')}
-                            </Text>
-                          </Row>
-                          <Text type='font-14-400' color='text-primary'>
-                            -
-                          </Text>
-                          <Text type='font-14-400' color='text-primary'>
-                            {dayjs(dataDetail?.data?.sendAt).format('DD/MM/YYYY')}
-                          </Text>
-                        </Space>
-                      </Col>
-                    )}
-                  </Row>
-                ))}
+                      <Text type='font-14-400' color='text-primary'>
+                        {dayjs(dataDetail?.data?.sendAt).format('DD/MM/YYYY')}
+                      </Text>
+                    </Space>
+                  </Col>
+                )}
+              </Row>
+            )}
+
             {dataDetail?.data?.repeat &&
               dataDetail?.data?.frequencyId?.code === TYPE_DATE.WEEKLY && (
                 <Row align={'stretch'}>

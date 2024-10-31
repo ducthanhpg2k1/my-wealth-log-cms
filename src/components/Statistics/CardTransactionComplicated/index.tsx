@@ -39,6 +39,11 @@ const DATA_NOTE = [
     text: 'Quét OCR',
     bgColor: '#FDD76D',
   },
+  {
+    id: 4,
+    text: 'Gemini',
+    bgColor: '#EA6A34',
+  },
 ];
 
 const CardTransactionComplicated = ({ data }: any) => {
@@ -55,11 +60,11 @@ const CardTransactionComplicated = ({ data }: any) => {
     },
   };
   const transactionTypeData = {
-    labels: ['Hệ thống tự sinh', 'Tạo thủ công', 'Quét OCR'],
+    labels: ['Hệ thống tự sinh', 'Tạo thủ công', 'Quét OCR', 'Gemini '],
     datasets: [
       {
-        data: [data?.automatic_generation, data?.hand_crafted, data?.qr_scan],
-        backgroundColor: ['#17B899', '#23B9E4', '#FDD76D'],
+        data: [data?.automatic_generation, data?.hand_crafted, data?.ocr_scan, data?.gemini],
+        backgroundColor: ['#17B899', '#23B9E4', '#FDD76D', '#EA6A34'],
       },
     ],
   };

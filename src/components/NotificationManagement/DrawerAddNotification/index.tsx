@@ -109,7 +109,7 @@ const DrawerAddNotification = (props: any, ref: any) => {
         frequencyId: res?.data?.frequencyId?.code,
         hourSendAt: res?.data?.hourSendAt ? dayjs(res?.data?.hourSendAt) : dayjs(),
         sendAt: res?.data?.sendAt ? dayjs(res?.data?.sendAt) : dayjs(),
-        daySendAt: res?.data?.daySendAt,
+        daySendAt: res?.data?.daySendAt || TYPE_DATE_SEND.MONDAY,
         repeat: res?.data?.repeat,
       });
       const fileName = res?.data?.image?.split('/')?.pop();
@@ -191,7 +191,6 @@ const DrawerAddNotification = (props: any, ref: any) => {
       onOpen: (id: string) => {
         setOpen(true);
         setIdEdit(id);
-        form.resetFields();
         setDataUpload({});
         if (id) {
           runGetDetail(id);
@@ -247,6 +246,7 @@ const DrawerAddNotification = (props: any, ref: any) => {
             size='middle'
             onClick={() => {
               setOpen(false);
+              onVisible();
             }}
             icon={<CloseOutlined />}
           />
