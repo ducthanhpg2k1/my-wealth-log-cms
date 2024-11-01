@@ -110,19 +110,23 @@ const NotificationManagement = () => {
             </Tooltip>
 
             {record?.image && (
-              <Image
-                src={errorImages.includes(record?.id) ? '/images/default-image.jpg' : record?.image}
-                alt=''
-                width={56}
-                onError={() => {
-                  setErrorImages((prev) => [...prev, record?.id]);
-                }}
-                height={56}
-                style={{
-                  width: 'auto',
-                  height: 'auto',
-                }}
-              />
+              <div className={styles.containerImage}>
+                <Image
+                  src={
+                    errorImages.includes(record?.id) ? '/images/default-image.jpg' : record?.image
+                  }
+                  alt=''
+                  width={56}
+                  onError={() => {
+                    setErrorImages((prev) => [...prev, record?.id]);
+                  }}
+                  height={56}
+                  // style={{
+                  //   width: 'auto',
+                  //   height: 'auto',
+                  // }}
+                />
+              </div>
             )}
           </Space>
         );

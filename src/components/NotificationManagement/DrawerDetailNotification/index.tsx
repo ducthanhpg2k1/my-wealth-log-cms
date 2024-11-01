@@ -118,21 +118,19 @@ const DrawerDetailNotification = (props: any, ref: any) => {
                 {dataDetail?.data?.image && (
                   <div className={styles.contentImage}>
                     <Row align={'middle'} style={{ gap: '12px' }}>
-                      <Image
-                        src={
-                          errorImage ? '/images/default-image.jpg' : dataDetail?.data?.image || ''
-                        }
-                        alt=''
-                        width={56}
-                        height={56}
-                        style={{
-                          width: '56px',
-                          height: '56px',
-                        }}
-                        onError={() => {
-                          setErrorImage(true);
-                        }}
-                      />
+                      <div className={styles.containerImage}>
+                        <Image
+                          src={
+                            errorImage ? '/images/default-image.jpg' : dataDetail?.data?.image || ''
+                          }
+                          alt=''
+                          width={56}
+                          height={56}
+                          onError={() => {
+                            setErrorImage(true);
+                          }}
+                        />
+                      </div>
 
                       <Tooltip title={dataDetail?.data?.image?.split('/')?.pop() || ''}>
                         <a>
