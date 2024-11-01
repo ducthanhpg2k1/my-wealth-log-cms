@@ -197,7 +197,7 @@ const DrawerDetailNotification = (props: any, ref: any) => {
                           -
                         </Text>
                         <Text type='font-14-400' color='text-primary'>
-                          {`Ngày mùng ${dayjs(dataDetail?.data?.sendAt).date()}`}
+                          {`Ngày mùng ${dayjs(dataDetail?.data?.sendAt).date()} hàng tháng`}
                         </Text>
                       </Space>
                     </Col>

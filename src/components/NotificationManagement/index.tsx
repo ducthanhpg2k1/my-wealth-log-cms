@@ -119,8 +119,8 @@ const NotificationManagement = () => {
                 }}
                 height={56}
                 style={{
-                  width: '56px',
-                  height: '56px',
+                  width: 'auto',
+                  height: 'auto',
                 }}
               />
             )}
