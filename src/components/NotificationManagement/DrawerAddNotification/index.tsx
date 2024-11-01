@@ -1,3 +1,5 @@
+/* eslint-disable unicorn/prefer-ternary */
+/* eslint-disable padded-blocks */
 /* eslint-disable no-void */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -12,7 +14,6 @@ import {
   Button as ButtonAntd,
   Checkbox,
   Col,
-  ConfigProvider,
   DatePicker,
   Drawer,
   Form,
@@ -23,7 +24,6 @@ import {
   TimePicker,
   Upload,
 } from 'antd';
-import viVN from 'antd/es/locale/vi_VN';
 import { UploadProps } from 'antd/lib';
 import dayjs from 'dayjs';
 import Image from 'next/image';
@@ -34,7 +34,14 @@ import InputText from '@components/UI/InputText';
 import InputTextarea from '@components/UI/InputTextarea';
 import SelectCustom from '@components/UI/SelectCustom';
 import Text from '@components/UI/Text';
-import { isImage, openNotification, TYPE_DATE, TYPE_DATE_SEND } from '@utils/common';
+import {
+  DATE_SEND,
+  isImage,
+  openNotification,
+  TIME_SEND,
+  TYPE_DATE,
+  TYPE_DATE_SEND,
+} from '@utils/common';
 
 import styles from './index.module.scss';
 import {
@@ -111,6 +118,10 @@ const DrawerAddNotification = (props: any, ref: any) => {
         sendAt: res?.data?.sendAt ? dayjs(res?.data?.sendAt) : dayjs(),
         daySendAt: res?.data?.daySendAt || TYPE_DATE_SEND.MONDAY,
         repeat: res?.data?.repeat,
+        sendDate:
+          res?.data?.frequencyId?.code === TYPE_DATE.MONTHLY && dayjs(res?.data?.sendAt).date(),
+        sendTime:
+          res?.data?.frequencyId?.code === TYPE_DATE.MONTHLY && dayjs(res?.data?.sendAt).hour(),
       });
       const fileName = res?.data?.image?.split('/')?.pop();
       setDataUpload({
@@ -205,13 +216,23 @@ const DrawerAddNotification = (props: any, ref: any) => {
       : null;
     const formatteddaySendAt = values?.sendAt ? dayjs(values?.sendAt)?.toISOString() : null;
 
+    const sendAtTypeMonth = dayjs()
+      .set('date', values.sendDate)
+      .set('hour', values.sendTime)
+      .set('minute', 0)
+      .set('second', 0)
+      .set('millisecond', 0);
+
     const body = {
       name: values?.name,
       content: values?.content,
       frequencyId: values?.frequencyId || null,
       hourSendAt: formattedhourSendAt,
       daySendAt: values?.daySendAt,
-      sendAt: formatteddaySendAt,
+      sendAt:
+        values?.frequencyId === TYPE_DATE.MONTHLY
+          ? sendAtTypeMonth?.toISOString()
+          : formatteddaySendAt,
       repeat: values?.repeat,
       image: dataUpload?.url || '',
     };
@@ -376,48 +397,74 @@ const DrawerAddNotification = (props: any, ref: any) => {
                   return null;
                 }}
               </Form.Item>
+              <Form.Item dependencies={['repeat']} noStyle>
+                {({ getFieldValue }) => {
+                  const repeat = getFieldValue('repeat');
+
+                  if (!repeat) {
+                    return (
+                      <Col span={8}>
+                        <Form.Item name='sendAt' label={'Thời gian gửi'}>
+                          <DatePicker
+                            showTime={{ format: 'HH:mm' }}
+                            style={{
+                              width: '100%',
+                            }}
+                            format='DD-MM-YYYY HH:mm'
+                            disabledDate={(current) => {
+                              return current && current < dayjs().startOf('day');
+                            }}
+                            disabledTime={(current) => {
+                              if (current && current.isSame(dayjs(), 'day')) {
+                                return {
+                                  disabledHours: () =>
+                                    Array.from({ length: dayjs().hour() }, (_, i) => i),
+                                  disabledMinutes: () =>
+                                    Array.from({ length: dayjs().minute() }, (_, i) => i),
+                                };
+                              }
+                              return {};
+                            }}
+                            defaultValue={dayjs()}
+                          />
+                        </Form.Item>
+                      </Col>
+                    );
+                  }
+                  return null;
+                }}
+              </Form.Item>
+
               <Form.Item dependencies={['frequencyId', 'repeat']} noStyle>
                 {({ getFieldValue }) => {
                   const frequencyId = getFieldValue('frequencyId');
                   const repeat = getFieldValue('repeat');
-                  console.log({ frequencyId, repeat });
 
-                  if (!repeat || (repeat && frequencyId === TYPE_DATE.MONTHLY)) {
+                  if (repeat && frequencyId === TYPE_DATE.MONTHLY) {
                     return (
-                      <Col span={10}>
-                        <ConfigProvider locale={viVN}>
-                          <Form.Item name='sendAt' label={'Thời gian gửi'}>
-                            <DatePicker
-                              showTime={{ format: 'HH:mm' }}
-                              style={{
-                                width: '100%',
-                              }}
-                              format='DD-MM-YYYY'
-                              picker={
-                                repeat && frequencyId === TYPE_DATE.MONTHLY ? 'month' : 'date'
-                              }
-                              disabledDate={(current) => {
-                                return current && current < dayjs().startOf('day');
-                              }}
-                              disabledTime={(current) => {
-                                if (current && current.isSame(dayjs(), 'day')) {
-                                  return {
-                                    disabledHours: () =>
-                                      Array.from({ length: dayjs().hour() }, (_, i) => i),
-                                    disabledMinutes: () =>
-                                      Array.from({ length: dayjs().minute() }, (_, i) => i),
-                                  };
-                                }
-                                return {};
-                              }}
-                              defaultValue={dayjs()}
+                      <>
+                        <Col span={8}>
+                          <Form.Item name='sendTime' label={'Thời gian gửi'}>
+                            <SelectCustom
+                              suffixIcon={<IconTimeDate />}
+                              options={TIME_SEND}
+                              size='middle'
+                              placeholder='Thời gian gửi'
                             />
                           </Form.Item>
-                        </ConfigProvider>
-                      </Col>
+                        </Col>
+                        <Col span={8}>
+                          <Form.Item name='sendDate' label={'Ngày gửi'}>
+                            <SelectCustom
+                              options={DATE_SEND}
+                              size='middle'
+                              placeholder='Ngày gửi'
+                            />
+                          </Form.Item>
+                        </Col>
+                      </>
                     );
                   }
-
                   return null;
                 }}
               </Form.Item>
@@ -471,3 +518,20 @@ const DrawerAddNotification = (props: any, ref: any) => {
   );
 };
 export default forwardRef(DrawerAddNotification);
+
+const IconTimeDate = () => {
+  return (
+    <svg
+      viewBox='64 64 896 896'
+      focusable='false'
+      data-icon='clock-circle'
+      width='1em'
+      height='1em'
+      fill='currentColor'
+      aria-hidden='true'
+    >
+      <path d='M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z'></path>
+      <path d='M686.7 638.6L544.1 535.5V288c0-4.4-3.6-8-8-8H488c-4.4 0-8 3.6-8 8v275.4c0 2.6 1.2 5 3.3 6.5l165.4 120.6c3.6 2.6 8.6 1.8 11.2-1.7l28.6-39c2.6-3.7 1.8-8.7-1.8-11.2z'></path>
+    </svg>
+  );
+};

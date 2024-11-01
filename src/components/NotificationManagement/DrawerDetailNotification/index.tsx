@@ -167,9 +167,44 @@ const DrawerDetailNotification = (props: any, ref: any) => {
                 )}
               </Row>
             )}
-            {(!dataDetail?.data?.repeat ||
-              (dataDetail?.data?.repeat &&
-                dataDetail?.data?.frequencyId.code === TYPE_DATE.MONTHLY)) && (
+            {dataDetail?.data?.repeat &&
+              dataDetail?.data?.frequencyId.code === TYPE_DATE.MONTHLY && (
+                <Row align={'stretch'}>
+                  <Col span={8}>
+                    <Text type='font-14-400' color='neutral-700'>
+                      Thời gian gửi
+                    </Text>
+                  </Col>
+                  {dataDetail?.data?.sendAt && (
+                    <Col span={16}>
+                      <Space size={12}>
+                        <Row align={'middle'} style={{ gap: '4px' }}>
+                          <Image
+                            src='/svgIcon/ic-date.svg'
+                            width={20}
+                            height={20}
+                            style={{
+                              width: '20px',
+                              height: '20px',
+                            }}
+                            alt=''
+                          />
+                          <Text type='font-14-400' color='text-primary'>
+                            {dayjs(dataDetail?.data?.sendAt).format('hh:mm A')}
+                          </Text>
+                        </Row>
+                        <Text type='font-14-400' color='text-primary'>
+                          -
+                        </Text>
+                        <Text type='font-14-400' color='text-primary'>
+                          {`Ngày mùng ${dayjs(dataDetail?.data?.sendAt).date()}`}
+                        </Text>
+                      </Space>
+                    </Col>
+                  )}
+                </Row>
+              )}
+            {!dataDetail?.data?.repeat && !dataDetail?.data?.frequencyId && (
               <Row align={'stretch'}>
                 <Col span={8}>
                   <Text type='font-14-400' color='neutral-700'>
@@ -269,7 +304,7 @@ const DrawerDetailNotification = (props: any, ref: any) => {
 };
 export default forwardRef(DrawerDetailNotification);
 
-const IconTime = () => {
+export const IconTime = () => {
   return (
     <svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 18 18' fill='none'>
       <path
