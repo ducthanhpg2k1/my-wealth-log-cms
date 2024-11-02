@@ -34,14 +34,7 @@ import InputText from '@components/UI/InputText';
 import InputTextarea from '@components/UI/InputTextarea';
 import SelectCustom from '@components/UI/SelectCustom';
 import Text from '@components/UI/Text';
-import {
-  DATE_SEND,
-  isImage,
-  openNotification,
-  TIME_SEND,
-  TYPE_DATE,
-  TYPE_DATE_SEND,
-} from '@utils/common';
+import { DATE_SEND, isImage, openNotification, TYPE_DATE, TYPE_DATE_SEND } from '@utils/common';
 
 import styles from './index.module.scss';
 import {
@@ -120,8 +113,7 @@ const DrawerAddNotification = (props: any, ref: any) => {
         repeat: res?.data?.repeat,
         sendDate:
           res?.data?.frequencyId?.code === TYPE_DATE.MONTHLY && dayjs(res?.data?.sendAt).date(),
-        sendTime:
-          res?.data?.frequencyId?.code === TYPE_DATE.MONTHLY && dayjs(res?.data?.sendAt).hour(),
+        sendTime: res?.data?.frequencyId?.code === TYPE_DATE.MONTHLY && dayjs(res?.data?.sendAt),
       });
       const fileName = res?.data?.image?.split('/')?.pop();
       setDataUpload({
@@ -218,8 +210,8 @@ const DrawerAddNotification = (props: any, ref: any) => {
 
     const sendAtTypeMonth = dayjs()
       .set('date', values.sendDate)
-      .set('hour', values.sendTime)
-      .set('minute', 0)
+      .set('hour', dayjs(values.sendTime).hour())
+      .set('minute', dayjs(values.sendTime).minute())
       .set('second', 0)
       .set('millisecond', 0);
 
@@ -445,11 +437,12 @@ const DrawerAddNotification = (props: any, ref: any) => {
                       <>
                         <Col span={8}>
                           <Form.Item name='sendTime' label={'Thời gian gửi'}>
-                            <SelectCustom
-                              suffixIcon={<IconTimeDate />}
-                              options={TIME_SEND}
-                              size='middle'
+                            <TimePicker
                               placeholder='Thời gian gửi'
+                              format='HH:mm'
+                              style={{
+                                width: '100%',
+                              }}
                             />
                           </Form.Item>
                         </Col>

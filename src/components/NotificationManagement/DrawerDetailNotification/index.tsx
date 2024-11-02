@@ -188,7 +188,7 @@ const DrawerDetailNotification = (props: any, ref: any) => {
                             alt=''
                           />
                           <Text type='font-14-400' color='text-primary'>
-                            {dayjs(dataDetail?.data?.sendAt).format('hh:mm A')}
+                            {dayjs(dataDetail?.data?.sendAt).format('HH:mm')}
                           </Text>
                         </Row>
                         <Text type='font-14-400' color='text-primary'>
