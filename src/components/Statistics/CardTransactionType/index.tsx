@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/consistent-function-scoping */
 /* eslint-disable multiline-ternary */
 import { useMemo } from 'react';
 
@@ -12,6 +13,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 import Image from 'next/image';
 import { Doughnut } from 'react-chartjs-2';
 
@@ -20,7 +22,16 @@ import { isAllZero } from '@utils/common';
 
 import styles from './index.module.scss';
 
-ChartJS.register(ArcElement, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+ChartJS.register(
+  ChartDataLabels,
+  ArcElement,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+);
 
 const DATA_NOTE = [
   {
@@ -50,11 +61,49 @@ const CardTransactionType = ({ data }: { data: any }) => {
     return isAllZero(data);
   }, [data]);
 
-  const doughnutOptions = {
+  const calculatePercentage = (value: number, total: number) => {
+    return total > 0 ? (value / total) * 100 : 0;
+  };
+
+  const doughnutOptions: any = {
     responsive: true,
     plugins: {
       legend: {
         display: false,
+      },
+      tooltip: {
+        callbacks: {
+          label: function (context: any) {
+            const dataset = context.dataset;
+            const total = dataset.data.reduce((acc: number, data: number) => acc + data, 0);
+            const value = dataset.data[context.dataIndex];
+            const percentage = calculatePercentage(value, total);
+            return `${context.label}: ${value} (${percentage.toFixed(1)}%)`;
+          },
+        },
+      },
+      datalabels: {
+        formatter: (value: number, ctx: any) => {
+          const dataset = ctx.dataset;
+          const total = dataset.data.reduce((acc: any, data: any) => acc + data, 0);
+          const percentage = calculatePercentage(value, total);
+          return `${percentage.toFixed(1)}%`;
+        },
+        color: '#333333',
+        font: {
+          size: 10,
+          weight: 'bold',
+        },
+        anchor: 'center',
+        align: 'center',
+        display: (ctx: any) => {
+          const dataset = ctx.dataset;
+          const total = dataset.data.reduce((acc: number, data: number) => acc + data, 0);
+          const value = dataset.data[ctx.dataIndex];
+          const percentage = calculatePercentage(value, total);
+
+          return percentage > 20;
+        },
       },
     },
   };
@@ -85,13 +134,13 @@ const CardTransactionType = ({ data }: { data: any }) => {
             width={140}
             height={140}
             alt=''
-            style={{ width: '140px', height: '140px' }}
+            style={{ width: '200px', height: '200px' }}
           />
         ) : (
-          <div style={{ width: '140px', height: '140px' }}>
+          <div style={{ width: '200px', height: '200px' }}>
             <Doughnut
-              width={140}
-              height={140}
+              width={200}
+              height={200}
               data={transactionTypeData}
               options={doughnutOptions}
             />

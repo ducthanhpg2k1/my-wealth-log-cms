@@ -19,6 +19,11 @@ import styles from './index.module.scss';
 
 const MENUS = [
   {
+    id: 3,
+    label: 'Thống kê',
+    href: ROUTE_PATH.STATISTICS,
+  },
+  {
     id: 1,
     label: 'Quản lý người dùng',
     href: ROUTE_PATH.USER,
@@ -27,11 +32,6 @@ const MENUS = [
     id: 2,
     label: 'Quản lý thông báo',
     href: ROUTE_PATH.NOTI_MANAGEMENT,
-  },
-  {
-    id: 3,
-    label: 'Thống kê',
-    href: ROUTE_PATH.STATISTICS,
   },
 ];
 

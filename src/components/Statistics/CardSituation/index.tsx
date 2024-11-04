@@ -36,6 +36,9 @@ const CardSituation = ({ data }: any) => {
       legend: {
         display: false,
       },
+      datalabels: {
+        display: false,
+      },
     },
     scales: {
       x: {
