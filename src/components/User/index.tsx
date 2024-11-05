@@ -18,6 +18,7 @@ import SelectCustom from '@components/UI/SelectCustom';
 import Text from '@components/UI/Text';
 import { openNotification, STATUS_USER } from '@utils/common';
 
+import DrawerDetailUser from './DrawerDetailUser';
 import styles from './index.module.scss';
 import ModalDeleteUsers from './ModalDeleteUsers';
 import { useExportFileUser, useGetUser } from './service';
@@ -32,6 +33,7 @@ const User = () => {
   const [valueFilter, setValueFilter] = useState<any>({});
 
   const refModalDeleteUsers: any = useRef();
+  const refDrawerDetailUser: any = useRef();
 
   const requestExportFileJobSetup = useExportFileUser({
     onSuccess: (res) => {
@@ -350,6 +352,14 @@ const User = () => {
           columns={columns}
           rowKey='id'
           loading={loading}
+          onRow={(record) => {
+            return {
+              onClick: () => {
+                refDrawerDetailUser.current.onOpen(record);
+              },
+            };
+          }}
+          className={styles.table}
           dataSource={dataUsers?.data?.items}
           onChange={onChangeFilterTable}
           pagination={{
@@ -361,6 +371,7 @@ const User = () => {
         />
       </div>
       <ModalDeleteUsers reloadList={run} ref={refModalDeleteUsers} />
+      <DrawerDetailUser ref={refDrawerDetailUser} />
     </div>
   );
 };

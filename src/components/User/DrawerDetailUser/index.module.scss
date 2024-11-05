@@ -1,0 +1,72 @@
+.header {
+  border-bottom: 1px solid #e0e0e0;
+  padding: 32px;
+}
+
+.drawer {
+  :global {
+    .ant-drawer-body {
+      padding: 0 !important;
+    }
+  }
+}
+
+.content {
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1 1 auto;
+}
+
+.contentImage {
+  background: white;
+  border: 1px solid #d5d5d5;
+  border-radius: 4px;
+  padding: 8px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.textContent {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: #131313;
+}
+.footerAction {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 32px;
+  // flex: 1 1 auto;
+  gap: 12px;
+}
+.btn {
+  width: 100%;
+}
+
+.fileName {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 250px;
+}
+
+.containerImage {
+  width: 56px;
+  height: 56px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f7f5f5;
+  overflow: hidden;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+}
