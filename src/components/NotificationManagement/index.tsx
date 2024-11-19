@@ -1,3 +1,4 @@
+/* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable indent */
 /* eslint-disable no-console */
@@ -6,6 +7,7 @@ import { useRef, useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import { Dropdown, Row, Space, Table, Button as ButtonAntd, Checkbox, Form, Tooltip } from 'antd';
 import type { TableColumnsType, TableProps } from 'antd';
+import dayjs from 'dayjs';
 import FileSaver from 'file-saver';
 import Image from 'next/image';
 
@@ -182,53 +184,61 @@ const NotificationManagement = () => {
       align: 'end',
       dataIndex: 'action',
       render: (_, record) => {
+        const isPastDate = dayjs(record?.sendAt).isBefore(dayjs());
+
         return (
-          <a onClick={(e) => e.stopPropagation()}>
-            <Dropdown
-              placement='bottomRight'
-              trigger={['click']}
-              menu={{
-                items: [
-                  {
-                    key: 'edit',
-                    label: 'Chỉnh sửa',
-                    icon: (
-                      <Image
-                        src={'/svgIcon/ic-edit.svg'}
-                        alt=''
-                        width={24}
-                        height={24}
-                        className={styles.iconAction}
-                      />
-                    ),
-                  },
-                  {
-                    type: 'divider',
-                  },
-                  {
-                    key: 'delete',
-                    label: 'Xóa',
-                    icon: (
-                      <Image
-                        src={'/svgIcon/ic-delete.svg'}
-                        alt=''
-                        width={16}
-                        height={16}
-                        style={{
-                          width: '18px',
-                          height: '18px',
-                          marginRight: '14px',
-                        }}
-                      />
-                    ),
-                  },
-                ],
-                onClick: onClickAction(record),
-              }}
-            >
-              <ButtonAntd type='text' shape='circle' icon={<IconDots />} />
-            </Dropdown>
-          </a>
+          <>
+            {!record?.repeat && isPastDate ? (
+              <></>
+            ) : (
+              <a onClick={(e) => e.stopPropagation()}>
+                <Dropdown
+                  placement='bottomRight'
+                  trigger={['click']}
+                  menu={{
+                    items: [
+                      {
+                        key: 'edit',
+                        label: 'Chỉnh sửa',
+                        icon: (
+                          <Image
+                            src={'/svgIcon/ic-edit.svg'}
+                            alt=''
+                            width={24}
+                            height={24}
+                            className={styles.iconAction}
+                          />
+                        ),
+                      },
+                      {
+                        type: 'divider',
+                      },
+                      {
+                        key: 'delete',
+                        label: 'Xóa',
+                        icon: (
+                          <Image
+                            src={'/svgIcon/ic-delete.svg'}
+                            alt=''
+                            width={16}
+                            height={16}
+                            style={{
+                              width: '18px',
+                              height: '18px',
+                              marginRight: '14px',
+                            }}
+                          />
+                        ),
+                      },
+                    ],
+                    onClick: onClickAction(record),
+                  }}
+                >
+                  <ButtonAntd type='text' shape='circle' icon={<IconDots />} />
+                </Dropdown>
+              </a>
+            )}
+          </>
         );
       },
     },
