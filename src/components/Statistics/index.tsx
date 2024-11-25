@@ -236,7 +236,9 @@ const Statistics = () => {
             <CardHeader
               title='lượt tạo giao dịch bình quân'
               count={
-                Number((dataTransactions?.data?.count / dataNewUser?.data?.count).toFixed(2)) || 0
+                dataTransactions?.data?.count > 0 && dataNewUser?.data?.count > 0
+                  ? Number((dataTransactions?.data?.count / dataNewUser?.data?.count).toFixed(2))
+                  : 0
               }
             />
           </Col>
