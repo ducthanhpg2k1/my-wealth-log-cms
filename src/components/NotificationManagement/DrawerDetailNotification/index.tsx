@@ -1,9 +1,11 @@
+/* eslint-disable unicorn/no-null */
+/* eslint-disable multiline-ternary */
 /* eslint-disable no-mixed-operators */
 /* eslint-disable indent */
 /* eslint-disable unicorn/consistent-function-scoping */
 /* eslint-disable require-await */
 /* eslint-disable no-console */
-import { forwardRef, useImperativeHandle, useState } from 'react';
+import { forwardRef, useImperativeHandle, useMemo, useState } from 'react';
 
 import { CloseOutlined } from '@ant-design/icons';
 import { Button as ButtonAntd, Col, Drawer, Row, Space, Spin, Tooltip } from 'antd';
@@ -25,6 +27,10 @@ const DrawerDetailNotification = (props: any, ref: any) => {
   const [errorImage, setErrorImage] = useState(false);
 
   const { dataDetail, run: runGetDetail, loading } = useGetDetailNotification();
+
+  const isPastDate = useMemo(() => {
+    return dayjs(dataDetail?.data?.sendAt).isBefore(dayjs());
+  }, [dataDetail]);
 
   const onVisible = () => {
     setOpen(false);
@@ -275,14 +281,17 @@ const DrawerDetailNotification = (props: any, ref: any) => {
               )}
           </div>
           <div className={styles.footerAction}>
-            <ButtonAntd
-              onClick={() => refModalDeleteNotification.current.onOpen(idDetail)}
-              size='large'
-              className={styles.btn}
-              type='default'
-            >
-              Xóa
-            </ButtonAntd>
+            {!dataDetail?.data?.repeat && isPastDate ? null : (
+              <ButtonAntd
+                onClick={() => refModalDeleteNotification.current.onOpen(idDetail)}
+                size='large'
+                className={styles.btn}
+                type='default'
+              >
+                Xóa
+              </ButtonAntd>
+            )}
+
             <Button
               size='large'
               onClick={() => {

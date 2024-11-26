@@ -271,8 +271,6 @@ const NotificationManagement = () => {
     },
   };
   const onHandleFilter = (values: any) => {
-    console.log(values, 'values');
-
     const filter = {
       content: values?.content,
       repeat: [TYPE_REPEAT.YES, TYPE_REPEAT.NO].includes(values?.repeat)
