@@ -62,6 +62,10 @@
   --warning-dark: #cb8903;
 }
 
+.text-green {
+  color: #2aa98b;
+}
+
 .primary-8 {
   color: rgba(62, 95, 44, 0.08);
 }

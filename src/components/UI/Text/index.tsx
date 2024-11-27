@@ -13,6 +13,7 @@ interface TextProps {
     | 'font-24-700'
     | 'font-14-400'
     | 'font-18-600'
+    | 'font-14-700'
     | undefined;
   color?: TColor;
   disabled?: boolean;

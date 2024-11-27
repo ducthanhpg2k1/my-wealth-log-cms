@@ -6,11 +6,13 @@
 import { forwardRef, useImperativeHandle, useState } from 'react';
 
 import { CloseOutlined } from '@ant-design/icons';
-import { Button as ButtonAntd, Col, Drawer, Row, Tag } from 'antd';
+import { Button as ButtonAntd, Drawer, Row } from 'antd';
 
 import Text from '@components/UI/Text';
 
 import styles from './index.module.scss';
+import OltherInformation from './OltherInformation';
+import PersonalInformation from './PersonalInformation';
 
 const DrawerDetailUser = (props: any, ref: any) => {
   const [open, setOpen] = useState(false);
@@ -24,7 +26,6 @@ const DrawerDetailUser = (props: any, ref: any) => {
     return {
       onOpen: (data: any) => {
         setDataDetail(data);
-
         setOpen(true);
       },
       onClose: () => setOpen(false),
@@ -56,42 +57,8 @@ const DrawerDetailUser = (props: any, ref: any) => {
           />
         </Row>
         <div className={styles.content}>
-          <Row align={'stretch'}>
-            <Col span={8}>
-              <Text type='font-14-400' color='neutral-700'>
-                Tên người dùng
-              </Text>
-            </Col>
-            <Col span={16}>
-              <Text type='font-14-400' color='text-primary'>
-                {dataDetail?.displayName}
-              </Text>
-            </Col>
-          </Row>
-          <Row align={'stretch'}>
-            <Col span={8}>
-              <Text type='font-14-400' color='neutral-700'>
-                Trạng thái hoạt động
-              </Text>
-            </Col>
-            <Col span={16}>
-              <Tag color={dataDetail?.isActived ? 'green' : 'red'}>
-                {dataDetail?.isActived ? 'Active' : 'Inactive'}
-              </Tag>
-            </Col>
-          </Row>
-          <Row align={'stretch'}>
-            <Col span={8}>
-              <Text type='font-14-400' color='neutral-700'>
-                Số điện thoại/Email
-              </Text>
-            </Col>
-            <Col span={16}>
-              <Text type='font-14-400' color='text-primary'>
-                {dataDetail?.email || dataDetail?.phoneNumber}
-              </Text>
-            </Col>
-          </Row>
+          <PersonalInformation dataDetail={dataDetail} />
+          <OltherInformation dataDetail={dataDetail} />
         </div>
       </div>
     </Drawer>
