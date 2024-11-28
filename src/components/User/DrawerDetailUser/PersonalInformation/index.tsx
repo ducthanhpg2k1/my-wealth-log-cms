@@ -1,9 +1,33 @@
+/* eslint-disable indent */
+/* eslint-disable unicorn/consistent-function-scoping */
 import { Col, Row } from 'antd';
 import dayjs from 'dayjs';
 
 import Text from '@components/UI/Text';
+import { GENDER } from '@utils/common';
 
 const PersonalInformation = ({ dataDetail }: any) => {
+  const renderTextGender = (value: string) => {
+    let text: string = '';
+
+    switch (value) {
+      case GENDER.MALE: {
+        text = 'Nam';
+        break;
+      }
+      case GENDER.FEMALE: {
+        text = 'Nữ';
+
+        break;
+      }
+      case GENDER.OTHER: {
+        text = 'Khác';
+
+        break;
+      }
+    }
+    return text;
+  };
   return (
     <>
       <Text type='font-14-700' color='text-green'>
@@ -65,7 +89,7 @@ const PersonalInformation = ({ dataDetail }: any) => {
         </Col>
         <Col span={16}>
           <Text type='font-14-400' color='text-primary'>
-            {dataDetail?.gender || '-'}
+            {dataDetail?.gender ? renderTextGender(dataDetail?.gender) : '-'}
           </Text>
         </Col>
       </Row>

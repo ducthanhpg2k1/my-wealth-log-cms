@@ -292,3 +292,9 @@ export const TIME_SEND = [
     value: 23,
   },
 ];
+
+export enum GENDER {
+  MALE = 'male',
+  FEMALE = 'female',
+  OTHER = 'other',
+}
