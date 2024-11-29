@@ -281,28 +281,27 @@ const DrawerDetailNotification = (props: any, ref: any) => {
               )}
           </div>
           <div className={styles.footerAction}>
-            {!dataDetail?.data?.repeat && isPastDate ? null : (
-              <ButtonAntd
-                onClick={() => refModalDeleteNotification.current.onOpen(idDetail)}
-                size='large'
-                className={styles.btn}
-                type='default'
-              >
-                Xóa
-              </ButtonAntd>
-            )}
-
-            <Button
+            <ButtonAntd
+              onClick={() => refModalDeleteNotification.current.onOpen(idDetail)}
               size='large'
-              onClick={() => {
-                refDrawerAddNotification.current.onOpen(dataDetail?.data?.id);
-                onVisible();
-              }}
               className={styles.btn}
-              type='green'
+              type='default'
             >
-              Sửa
-            </Button>
+              Xóa
+            </ButtonAntd>
+            {!dataDetail?.data?.repeat && isPastDate ? null : (
+              <Button
+                size='large'
+                onClick={() => {
+                  refDrawerAddNotification.current.onOpen(dataDetail?.data?.id);
+                  onVisible();
+                }}
+                className={styles.btn}
+                type='green'
+              >
+                Sửa
+              </Button>
+            )}
           </div>
         </div>
       </Spin>
