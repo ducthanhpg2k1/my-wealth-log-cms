@@ -280,16 +280,16 @@ const DrawerDetailNotification = (props: any, ref: any) => {
                 </Row>
               )}
           </div>
-          <div className={styles.footerAction}>
-            <ButtonAntd
-              onClick={() => refModalDeleteNotification.current.onOpen(idDetail)}
-              size='large'
-              className={styles.btn}
-              type='default'
-            >
-              Xóa
-            </ButtonAntd>
-            {!dataDetail?.data?.repeat && isPastDate ? null : (
+          {!dataDetail?.data?.repeat && isPastDate ? null : (
+            <div className={styles.footerAction}>
+              <ButtonAntd
+                onClick={() => refModalDeleteNotification.current.onOpen(idDetail)}
+                size='large'
+                className={styles.btn}
+                type='default'
+              >
+                Xóa
+              </ButtonAntd>
               <Button
                 size='large'
                 onClick={() => {
@@ -301,8 +301,8 @@ const DrawerDetailNotification = (props: any, ref: any) => {
               >
                 Sửa
               </Button>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </Spin>
     </Drawer>
