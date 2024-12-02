@@ -1,8 +1,28 @@
+/* eslint-disable indent */
+/* eslint-disable unicorn/consistent-function-scoping */
+/* eslint-disable unicorn/switch-case-braces */
 import { Col, Row } from 'antd';
 
 import Text from '@components/UI/Text';
+import { MARITAL_STATUS } from '@utils/common';
 
 const OltherInformation = ({ dataDetail }: any) => {
+  const renderTextMarital = (marital: string) => {
+    let text: string = '';
+    switch (marital) {
+      case MARITAL_STATUS.SINGLE:
+        text = 'Độc thân';
+        break;
+      case MARITAL_STATUS.DIVORCE:
+        text = 'Đã kết hôn';
+        break;
+      case MARITAL_STATUS.MARRIAGE:
+        text = 'Ly hôn';
+        break;
+    }
+
+    return text;
+  };
   return (
     <>
       <Text type='font-14-700' color='text-green'>
@@ -16,7 +36,7 @@ const OltherInformation = ({ dataDetail }: any) => {
         </Col>
         <Col span={16}>
           <Text type='font-14-400' color='text-primary'>
-            {dataDetail?.maritalStatus || '-'}
+            {dataDetail?.maritalStatus ? renderTextMarital(dataDetail?.maritalStatus) : '-'}
           </Text>
         </Col>
       </Row>

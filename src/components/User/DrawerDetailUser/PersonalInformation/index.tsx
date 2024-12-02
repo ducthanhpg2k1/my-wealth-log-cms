@@ -125,7 +125,7 @@ const PersonalInformation = ({ dataDetail }: any) => {
         </Col>
         <Col span={16}>
           <Text type='font-14-400' color='text-primary'>
-            {dataDetail?.jobId?.name || '-'}
+            {dataDetail?.jobId || '-'}
           </Text>
         </Col>
       </Row>

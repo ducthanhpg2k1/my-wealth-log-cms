@@ -298,3 +298,9 @@ export enum GENDER {
   FEMALE = 'female',
   OTHER = 'other',
 }
+
+export enum MARITAL_STATUS {
+  SINGLE = 'single',
+  MARRIAGE = 'marriage',
+  DIVORCE = 'divorce',
+}
