@@ -50,11 +50,14 @@ const User = () => {
     {
       title: 'Tên người dùng',
       dataIndex: 'name',
+      width: 600,
       render: (_, record) => {
         return (
-          <Text type='font-14-400' color='text-primary'>
-            {record?.displayName}
-          </Text>
+          <div className={styles.userName}>
+            <Text type='font-14-400' color='text-primary'>
+              {record?.displayName}
+            </Text>
+          </div>
         );
       },
     },

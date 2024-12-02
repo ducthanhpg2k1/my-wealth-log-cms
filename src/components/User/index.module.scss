@@ -59,3 +59,12 @@
 .table {
   cursor: pointer;
 }
+
+.userName {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2; /* Giới hạn tối đa 2 dòng */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 550px;
+}

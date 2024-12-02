@@ -6,7 +6,7 @@ const OltherInformation = ({ dataDetail }: any) => {
   return (
     <>
       <Text type='font-14-700' color='text-green'>
-        SỞ THÍCH
+        THÔNG TIN KHÁC
       </Text>
       <Row align={'stretch'}>
         <Col span={8}>
@@ -76,7 +76,7 @@ const OltherInformation = ({ dataDetail }: any) => {
         </Col>
         <Col span={16}>
           <Text type='font-14-400' color='text-primary'>
-            {dataDetail?.height ? `${dataDetail?.height}cm` : '-'}
+            {dataDetail?.height ? `${dataDetail?.height} cm` : '-'}
           </Text>
         </Col>
       </Row>
@@ -88,7 +88,7 @@ const OltherInformation = ({ dataDetail }: any) => {
         </Col>
         <Col span={16}>
           <Text type='font-14-400' color='text-primary'>
-            {dataDetail?.weight ? `${dataDetail?.weight}kg` : '-'}
+            {dataDetail?.weight ? `${dataDetail?.weight} kg` : '-'}
           </Text>
         </Col>
       </Row>

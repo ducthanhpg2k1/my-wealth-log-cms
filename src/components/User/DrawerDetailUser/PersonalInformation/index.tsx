@@ -131,7 +131,7 @@ const PersonalInformation = ({ dataDetail }: any) => {
       </Row>
 
       <Text type='font-14-700' color='text-green'>
-        THÔNG TIN CÁ NHÂN
+        SỞ THÍCH
       </Text>
 
       <Row align={'stretch'}>
