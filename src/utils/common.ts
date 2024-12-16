@@ -8,6 +8,8 @@ export const ROUTE_PATH = {
   STATISTICS: '/statistics',
 
   UPLOAD_FILE: '/api/v1/configs/files/upload',
+
+  PAGE_MANAGEMENT: '/page-management'
 };
 
 export const REG_EMAIL = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;

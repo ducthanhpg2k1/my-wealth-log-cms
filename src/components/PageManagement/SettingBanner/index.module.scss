@@ -1,0 +1,43 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.formList {
+  margin-bottom: 0 !important;
+}
+
+.button {
+  width: 120px !important;
+
+  span {
+    color: #2AA98B;
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.textRequired {
+  margin-left: 14px;
+}
+
+.iconDrag {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+
+  img {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.btn {
+  margin-top: -4px;
+}

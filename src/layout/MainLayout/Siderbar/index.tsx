@@ -33,6 +33,11 @@ const MENUS = [
     label: 'Quản lý thông báo',
     href: ROUTE_PATH.NOTI_MANAGEMENT,
   },
+  {
+    id: 2,
+    label: 'Quản lý trang',
+    href: ROUTE_PATH.PAGE_MANAGEMENT,
+  },
 ];
 
 const Siderbar = () => {
@@ -40,6 +45,29 @@ const Siderbar = () => {
   const [isExpanded] = useAtom(expandedAtom);
 
   const renderIcon = (url: string, active: boolean) => {
+    if (url === ROUTE_PATH.PAGE_MANAGEMENT) {
+      return (
+        <>
+          {active ? (
+            <Image
+              className={styles.icon}
+              src={'/svgIcon/ic-page-active.svg'}
+              width={24}
+              height={24}
+              alt=''
+            />
+          ) : (
+            <Image
+              className={styles.icon}
+              src={'/svgIcon/ic-page.svg'}
+              width={24}
+              height={24}
+              alt=''
+            />
+          )}
+        </>
+      );
+    }
     if (url === ROUTE_PATH.USER) {
       return (
         <>

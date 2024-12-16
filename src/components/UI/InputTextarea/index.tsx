@@ -15,16 +15,18 @@ interface IInputTextarea {
   maxLength?: number;
   rows?: number;
   onChange?: (event: React.ChangeEvent) => void;
+  autoSize?: any
 }
 
 const InputTextarea = (props: IInputTextarea) => {
-  const { className = '', placeholder = '', ...rest } = props;
+  const { className = '', placeholder = '', autoSize, ...rest } = props;
 
   return (
     <Input.TextArea
       className={classNames(styles.inputTextarea, {
         [className]: !!className,
       })}
+      autoSize={autoSize}
       placeholder={placeholder}
       {...rest}
     />
