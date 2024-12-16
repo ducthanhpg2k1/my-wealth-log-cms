@@ -1,6 +1,6 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-import { Spin } from 'antd';
+import { Form, Spin } from 'antd';
 import classNames from 'classnames';
 import Image from 'next/image';
 
@@ -12,18 +12,22 @@ import { useUploadImage } from './service';
 
 
 
-const InputUploadImage = ({ onChange }: any) => {
+const InputUploadImage = ({ onChange, value }: any) => {
   const fileInputRef: any = useRef(null);
-
   const [urlImage, setUrlImage] = useState('')
+
+  useEffect(() => {
+    if (value) {
+      setUrlImage(value)
+    }
+  }, [value])
+
+  const { errors } = Form.Item.useStatus();
+
+
 
   const requestUploadImage = useUploadImage({
     onSuccess: (res) => {
-      // const fileName = res?.fileUrl.split('/').pop();
-      // const newData = {
-      //   url: res?.fileUrl,
-      //   fileName,
-      // };
       setUrlImage(res?.fileUrl)
       onChange(res?.fileUrl)
     },
@@ -37,10 +41,14 @@ const InputUploadImage = ({ onChange }: any) => {
     requestUploadImage?.run(uploadedFile, 'notification');
   };
 
+
+
   return (
     <Spin spinning={requestUploadImage.loading}>
       <div className={classNames(styles.containerInput, {
         [styles.containerImge]: urlImage,
+        [styles.errorInput]: errors?.length > 0,
+
       })}
 
       onClick={() => fileInputRef.current.click()}>

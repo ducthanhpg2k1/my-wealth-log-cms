@@ -1,5 +1,5 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Col, Form, FormInstance, Row, Switch } from 'antd';
+import { Button, Col, Form, Row, Switch } from 'antd';
 import Image from 'next/image';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 
@@ -9,47 +9,41 @@ import Text from '@components/UI/Text';
 
 import styles from './index.module.scss';
 
-const SettingBanner = ({ form }: { form: FormInstance }) => {
+const FunctionPage = ({ form }: any) => {
   const onDragEnd = ({ destination, source }: any) => {
     if (!destination) { return; }
 
     const { setFieldsValue, getFieldValue } = form;
-    const banners = getFieldValue('banners') || [];
+    const functions = getFieldValue('functions') || [];
 
-    const [removed] = banners?.splice(source.index, 1);
-    banners.splice(destination.index, 0, removed);
+    const [removed] = functions?.splice(source.index, 1);
+    functions.splice(destination.index, 0, removed);
 
-    setFieldsValue({ banners });
+    setFieldsValue({ functions });
   };
 
   return (
     <div className={styles.container}>
-      <Text type='font-18-600'>Quản lý banner</Text>
+      <Text type='font-18-600'>Quản lý chức năng</Text>
       <div className={styles.content}>
         <Row gutter={16} style={{ marginBottom: '-8px' }}>
           <div style={{ width: '44px' }}>
           </div>
-          <Col span={4}>
+          <Col span={5}>
             <Text type='font-14-400'>Tiêu đề</Text>
           </Col>
-          <Col span={4}>
+          <Col span={5}>
             <Text type='font-14-400'>Mô tả</Text>
           </Col>
-          <Col span={4}>
+          <Col span={5}>
             <Text type='font-14-400'>Hình ảnh</Text>
-          </Col>
-          <Col span={4}>
-            <Text type='font-14-400'>App store url</Text>
-          </Col>
-          <Col span={4}>
-            <Text type='font-14-400'>Google play url</Text>
           </Col>
           <Col span={2}>
             <Text className={styles.textRequired} type='font-14-400'>Hiện</Text>
           </Col>
         </Row>
 
-        <Form.List name="banners">
+        <Form.List name="functions">
           {(fields, { add, remove }) => (
             <DragDropContext onDragEnd={onDragEnd}>
               <Droppable droppableId="droppable">
@@ -82,7 +76,7 @@ const SettingBanner = ({ form }: { form: FormInstance }) => {
                               >
                                 <Image alt='' width={10} height={16} src={'/svgIcon/ic-drag.svg'} />
                               </div>
-                              <Col span={4}>
+                              <Col span={5}>
                                 <Form.Item
                                   {...restField}
                                   name={[name, 'title']}
@@ -96,7 +90,7 @@ const SettingBanner = ({ form }: { form: FormInstance }) => {
                                   />
                                 </Form.Item>
                               </Col>
-                              <Col span={4}>
+                              <Col span={5}>
                                 <Form.Item
                                   {...restField}
                                   className={styles.formList}
@@ -110,45 +104,17 @@ const SettingBanner = ({ form }: { form: FormInstance }) => {
                                   />
                                 </Form.Item>
                               </Col>
-                              <Col span={4}>
+                              <Col span={5}>
                                 <Form.Item
                                   {...restField}
                                   className={styles.formList}
-                                  rules={[{ required: true, message: 'Hình không được bỏ trống' }]}
                                   name={[name, 'image']}
+                                  rules={[{ required: true, message: 'Hình không được bỏ trống' }]}
+
                                 >
                                   <InputUploadImage />
                                 </Form.Item>
                               </Col>
-                              <Col span={4}>
-                                <Form.Item
-                                  {...restField}
-                                  className={styles.formList}
-                                  rules={[{ required: true, message: 'Hình không được bỏ trống' }]}
-                                  name={[name, 'url_appstore']}
-                                >
-                                  <InputTextarea
-                                    autoSize={{ minRows: 1, maxRows: 2 }}
-                                    size='large'
-                                    placeholder='Nhập url app store'
-                                  />
-                                </Form.Item>
-                              </Col>
-                              <Col span={4}>
-                                <Form.Item
-                                  {...restField}
-                                  className={styles.formList}
-                                  rules={[{ required: true, message: 'Hình không được bỏ trống' }]}
-                                  name={[name, 'url_google']}
-                                >
-                                  <InputTextarea
-                                    autoSize={{ minRows: 1, maxRows: 2 }}
-                                    size='large'
-                                    placeholder='Nhập url google play'
-                                  />
-                                </Form.Item>
-                              </Col>
-
                               <Col span={2}>
                                 <Form.Item
                                   {...restField}
@@ -200,4 +166,4 @@ const SettingBanner = ({ form }: { form: FormInstance }) => {
   );
 };
 
-export default SettingBanner;
+export default FunctionPage;

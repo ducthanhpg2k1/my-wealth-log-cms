@@ -1,55 +1,51 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Col, Form, FormInstance, Row, Switch } from 'antd';
+import { Button, Col, Form, Row } from 'antd';
 import Image from 'next/image';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 
 import InputUploadImage from '@components/InputUploadImage';
+import InputRate from '@components/UI/InputRate';
 import InputTextarea from '@components/UI/InputTextarea';
 import Text from '@components/UI/Text';
 
 import styles from './index.module.scss';
 
-const SettingBanner = ({ form }: { form: FormInstance }) => {
+
+const UserManager = ({ form }: any) => {
   const onDragEnd = ({ destination, source }: any) => {
     if (!destination) { return; }
 
     const { setFieldsValue, getFieldValue } = form;
-    const banners = getFieldValue('banners') || [];
+    const users = getFieldValue('users') || [];
 
-    const [removed] = banners?.splice(source.index, 1);
-    banners.splice(destination.index, 0, removed);
+    const [removed] = users?.splice(source.index, 1);
+    users.splice(destination.index, 0, removed);
 
-    setFieldsValue({ banners });
+    setFieldsValue({ users });
   };
 
   return (
     <div className={styles.container}>
-      <Text type='font-18-600'>Quản lý banner</Text>
+      <Text type='font-18-600'>Đánh giá từ người dùng</Text>
       <div className={styles.content}>
         <Row gutter={16} style={{ marginBottom: '-8px' }}>
           <div style={{ width: '44px' }}>
           </div>
-          <Col span={4}>
-            <Text type='font-14-400'>Tiêu đề</Text>
+          <Col span={5}>
+            <Text type='font-14-400'>Họ và tên</Text>
           </Col>
-          <Col span={4}>
+          <Col span={5}>
+            <Text type='font-14-400'>Avatar</Text>
+          </Col>
+          <Col span={5}>
+            <Text type='font-14-400'>Star</Text>
+          </Col>
+          <Col span={5}>
             <Text type='font-14-400'>Mô tả</Text>
-          </Col>
-          <Col span={4}>
-            <Text type='font-14-400'>Hình ảnh</Text>
-          </Col>
-          <Col span={4}>
-            <Text type='font-14-400'>App store url</Text>
-          </Col>
-          <Col span={4}>
-            <Text type='font-14-400'>Google play url</Text>
-          </Col>
-          <Col span={2}>
-            <Text className={styles.textRequired} type='font-14-400'>Hiện</Text>
           </Col>
         </Row>
 
-        <Form.List name="banners">
+        <Form.List name="users">
           {(fields, { add, remove }) => (
             <DragDropContext onDragEnd={onDragEnd}>
               <Droppable droppableId="droppable">
@@ -82,81 +78,53 @@ const SettingBanner = ({ form }: { form: FormInstance }) => {
                               >
                                 <Image alt='' width={10} height={16} src={'/svgIcon/ic-drag.svg'} />
                               </div>
-                              <Col span={4}>
+                              <Col span={5}>
                                 <Form.Item
                                   {...restField}
-                                  name={[name, 'title']}
+                                  name={[name, 'name']}
                                   className={styles.formList}
-                                  rules={[{ required: true, message: 'Tiêu đề không được bỏ trống' }]}
+                                  rules={[{ required: true, message: 'Họ và tên không được bỏ trống' }]}
                                 >
                                   <InputTextarea
                                     autoSize={{ minRows: 1, maxRows: 2 }}
                                     size='large'
-                                    placeholder='Thêm tiêu đề'
+                                    placeholder='Họ và tên'
                                   />
                                 </Form.Item>
                               </Col>
-                              <Col span={4}>
+                              <Col span={5}>
                                 <Form.Item
                                   {...restField}
                                   className={styles.formList}
-                                  name={[name, 'description']}
-                                  rules={[{ required: true, message: 'Mô tả không được bỏ trống' }]}
-                                >
-                                  <InputTextarea
-                                    autoSize={{ minRows: 1, maxRows: 2 }}
-                                    size='large'
-                                    placeholder='Thêm mô tả'
-                                  />
-                                </Form.Item>
-                              </Col>
-                              <Col span={4}>
-                                <Form.Item
-                                  {...restField}
-                                  className={styles.formList}
-                                  rules={[{ required: true, message: 'Hình không được bỏ trống' }]}
-                                  name={[name, 'image']}
+                                  name={[name, 'avatar']}
+                                  rules={[{ required: true, message: 'Avatar không được bỏ trống' }]}
                                 >
                                   <InputUploadImage />
-                                </Form.Item>
-                              </Col>
-                              <Col span={4}>
-                                <Form.Item
-                                  {...restField}
-                                  className={styles.formList}
-                                  rules={[{ required: true, message: 'Hình không được bỏ trống' }]}
-                                  name={[name, 'url_appstore']}
-                                >
-                                  <InputTextarea
-                                    autoSize={{ minRows: 1, maxRows: 2 }}
-                                    size='large'
-                                    placeholder='Nhập url app store'
-                                  />
-                                </Form.Item>
-                              </Col>
-                              <Col span={4}>
-                                <Form.Item
-                                  {...restField}
-                                  className={styles.formList}
-                                  rules={[{ required: true, message: 'Hình không được bỏ trống' }]}
-                                  name={[name, 'url_google']}
-                                >
-                                  <InputTextarea
-                                    autoSize={{ minRows: 1, maxRows: 2 }}
-                                    size='large'
-                                    placeholder='Nhập url google play'
-                                  />
-                                </Form.Item>
-                              </Col>
 
-                              <Col span={2}>
+                                </Form.Item>
+                              </Col>
+                              <Col span={5}>
                                 <Form.Item
                                   {...restField}
                                   className={styles.formList}
-                                  valuePropName="checked"
-                                  name={[name, 'required']}
+                                  name={[name, 'rate']}
                                 >
-                                  <Switch style={{ marginLeft: '50px' }} />
+                                  <InputRate />
+                                </Form.Item>
+                              </Col>
+                              <Col span={5}>
+                                <Form.Item
+                                  {...restField}
+                                  className={styles.formList}
+                                  name={[name, 'content']}
+                                  rules={[{ required: true, message: 'Mô tả không được bỏ trống' }]}
+
+                                >
+                                  <InputTextarea
+                                    autoSize={{ minRows: 1, maxRows: 2 }}
+                                    size='large'
+                                    placeholder='Mô tả'
+                                  />
                                 </Form.Item>
                               </Col>
                               <Col span={1}>
@@ -200,4 +168,4 @@ const SettingBanner = ({ form }: { form: FormInstance }) => {
   );
 };
 
-export default SettingBanner;
+export default UserManager;

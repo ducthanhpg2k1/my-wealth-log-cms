@@ -27,4 +27,8 @@ export const API_PATH = {
   REPORT_LOAN: '/api/v1/loans/report-all',
 
   GET_USER: '/api/v1/users/me',
+
+  SET_UP_LDPAGE: '/api/v1/configs/ldpage-contents',
+
+  EDIT_SET_UP_LDPAGE: (id: string) => `/api/v1/configs/ldpage-contents/${id}`,
 };

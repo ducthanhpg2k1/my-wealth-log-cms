@@ -2,13 +2,32 @@ import { Form, Tabs } from 'antd';
 import { TabsProps } from 'antd/lib';
 
 import Button from '@components/UI/Button/Button';
+import { openNotification } from '@utils/common';
 
+import Feature from './Feature';
+import FunctionPage from './FunctionPage';
 import styles from './index.module.scss';
+import Overview from './Overview';
+import { useEditSetupLdpage, useGetConfigLdPage, useSetupLdpage } from './service';
 import SettingBanner from './SettingBanner';
+import UserManager from './UserManager';
 
 
 const PageManagement = () => {
   const [form] = Form.useForm();
+  const { dataConfigLdPage } = useGetConfigLdPage({
+    onSuccess: (res) => {
+      form.setFieldsValue({
+        banners: res?.data?.content?.banners,
+        features: res?.data?.content?.features,
+        functions: res?.data?.content?.functions,
+        overviews: res?.data?.content?.overviews,
+        users: res?.data?.content?.users,
+      })
+    }
+  })
+
+
 
   const itemsTab: TabsProps['items'] = [
     {
@@ -19,42 +38,90 @@ const PageManagement = () => {
     {
       label: 'Tổng quan',
       key: 'overview',
-      children: '2',
+      children: <Overview form={form} />,
     },
     {
-      label: 'Tab 3',
-      key: 'tab_3',
-      children: '3',
+      label: 'Chức năng',
+      key: 'function',
+      children: <FunctionPage form={form} />,
     },
     {
       label: 'Tính năng nổi bật',
       key: 'feature',
-      children: '4',
+      children: <Feature form={form} />,
     },
     {
       label: 'Đánh giá',
       key: 'evaluate',
-      children: '5',
+      children: <UserManager form={form} />,
     },
   ];
 
-  // const onFinish = (values: any) => {
-  //   console.log('Received values of form:', values);
-  // };
+  const requestSetupLdpage = useSetupLdpage({
+    onSuccess: () => {
+      openNotification('Set up langding page thành công', 'success')
+    },
+    onError() {},
+  });
+  const requestEditSetupLdpage = useEditSetupLdpage({
+    onSuccess: () => {
+      openNotification('Set up langding page thành công', 'success')
+    },
+    onError() {},
+  });
+
+
+  const onFinish = (values: any) => {
+    const body = {
+      content: values
+    }
+    if (dataConfigLdPage?.data?.id) {
+      requestEditSetupLdpage.run(body, dataConfigLdPage?.data?.id)
+    } else {
+      requestSetupLdpage.run(body)
+    }
+  };
 
 
   return (
     <Form
       name="dynamic_form_nest_item"
-      // onFinish={onFinish}
+      onFinish={onFinish}
       form={form}
       initialValues={{
         banners: [{
           title: '',
           description: '',
           image: '',
+          required: false,
+          url_appstore: '',
+          url_google: ''
+        }],
+        overviews: [{
+          title: '',
+          description: '',
+          image: '',
           required: false
-        }]
+        }],
+        functions: [{
+          title: '',
+          description: '',
+          image: '',
+          required: false
+        }],
+        features: [{
+          title: '',
+          description: '',
+          icon: '',
+          required: false
+        }],
+        users: [{
+          avatar: '',
+          content: '',
+          icon: '',
+          description: '',
+          rate: ''
+        }],
       }}
       autoComplete="off"
 
@@ -65,6 +132,7 @@ const PageManagement = () => {
           htmlType="submit"
           className={styles.btn}
           type='green'
+          loading={requestSetupLdpage?.loading || requestEditSetupLdpage?.loading}
         >
           Lưu
         </Button>
@@ -72,6 +140,7 @@ const PageManagement = () => {
 
       <Tabs
         type="card"
+        className={styles.tab}
         items={itemsTab}
       />
     </Form>
