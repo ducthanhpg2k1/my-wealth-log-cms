@@ -93,6 +93,7 @@ const PageManagement = () => {
             title: '',
             description: '',
             image: '',
+            image_mobile: '',
             required: false,
             url_appstore: '',
             url_google: '',

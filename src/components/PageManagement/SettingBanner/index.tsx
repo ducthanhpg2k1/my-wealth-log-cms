@@ -11,7 +11,9 @@ import styles from './index.module.scss';
 
 const SettingBanner = ({ form }: { form: FormInstance }) => {
   const onDragEnd = ({ destination, source }: any) => {
-    if (!destination) { return; }
+    if (!destination) {
+      return;
+    }
 
     const { setFieldsValue, getFieldValue } = form;
     const banners = getFieldValue('banners') || [];
@@ -27,16 +29,18 @@ const SettingBanner = ({ form }: { form: FormInstance }) => {
       <Text type='font-18-600'>Quản lý banner</Text>
       <div className={styles.content}>
         <Row gutter={16} style={{ marginBottom: '-8px' }}>
-          <div style={{ width: '44px' }}>
-          </div>
-          <Col span={4}>
+          <div style={{ width: '44px' }}></div>
+          <Col span={3}>
             <Text type='font-14-400'>Tiêu đề</Text>
           </Col>
-          <Col span={4}>
+          <Col span={3}>
             <Text type='font-14-400'>Mô tả</Text>
           </Col>
-          <Col span={4}>
-            <Text type='font-14-400'>Hình ảnh</Text>
+          <Col span={3}>
+            <Text type='font-14-400'>Hình ảnh desktop</Text>
+          </Col>
+          <Col span={3}>
+            <Text type='font-14-400'>Hình ảnh mobile</Text>
           </Col>
           <Col span={4}>
             <Text type='font-14-400'>App store url</Text>
@@ -45,25 +49,20 @@ const SettingBanner = ({ form }: { form: FormInstance }) => {
             <Text type='font-14-400'>Google play url</Text>
           </Col>
           <Col span={2}>
-            <Text className={styles.textRequired} type='font-14-400'>Hiện</Text>
+            <Text className={styles.textRequired} type='font-14-400'>
+              Hiện
+            </Text>
           </Col>
         </Row>
 
-        <Form.List name="banners">
+        <Form.List name='banners'>
           {(fields, { add, remove }) => (
             <DragDropContext onDragEnd={onDragEnd}>
-              <Droppable droppableId="droppable">
+              <Droppable droppableId='droppable'>
                 {(provided: any) => (
-                  <div
-                    {...provided.droppableProps}
-                    ref={provided.innerRef}
-                  >
+                  <div {...provided.droppableProps} ref={provided.innerRef}>
                     {fields.map(({ key, name, ...restField }, index) => (
-                      <Draggable
-                        key={key}
-                        draggableId={key.toString()}
-                        index={index}
-                      >
+                      <Draggable key={key} draggableId={key.toString()} index={index}>
                         {(provided: any, snapshot: any) => (
                           <div
                             ref={provided.innerRef}
@@ -72,22 +71,21 @@ const SettingBanner = ({ form }: { form: FormInstance }) => {
                               ...provided.draggableProps.style,
                               padding: '8px',
                               background: snapshot.isDragging ? '#f5f5f5' : 'transparent',
-                              borderRadius: '8px'
+                              borderRadius: '8px',
                             }}
                           >
                             <Row gutter={16}>
-                              <div
-                                {...provided.dragHandleProps}
-                                className={styles.iconDrag}
-                              >
+                              <div {...provided.dragHandleProps} className={styles.iconDrag}>
                                 <Image alt='' width={10} height={16} src={'/svgIcon/ic-drag.svg'} />
                               </div>
-                              <Col span={4}>
+                              <Col span={3}>
                                 <Form.Item
                                   {...restField}
                                   name={[name, 'title']}
                                   className={styles.formList}
-                                  rules={[{ required: true, message: 'Tiêu đề không được bỏ trống' }]}
+                                  rules={[
+                                    { required: true, message: 'Tiêu đề không được bỏ trống' },
+                                  ]}
                                 >
                                   <InputTextarea
                                     autoSize={{ minRows: 1, maxRows: 2 }}
@@ -96,7 +94,7 @@ const SettingBanner = ({ form }: { form: FormInstance }) => {
                                   />
                                 </Form.Item>
                               </Col>
-                              <Col span={4}>
+                              <Col span={3}>
                                 <Form.Item
                                   {...restField}
                                   className={styles.formList}
@@ -110,12 +108,22 @@ const SettingBanner = ({ form }: { form: FormInstance }) => {
                                   />
                                 </Form.Item>
                               </Col>
-                              <Col span={4}>
+                              <Col span={3}>
                                 <Form.Item
                                   {...restField}
                                   className={styles.formList}
                                   rules={[{ required: true, message: 'Hình không được bỏ trống' }]}
                                   name={[name, 'image']}
+                                >
+                                  <InputUploadImage />
+                                </Form.Item>
+                              </Col>
+                              <Col span={3}>
+                                <Form.Item
+                                  {...restField}
+                                  className={styles.formList}
+                                  rules={[{ required: true, message: 'Hình không được bỏ trống' }]}
+                                  name={[name, 'image_mobile']}
                                 >
                                   <InputUploadImage />
                                 </Form.Item>
@@ -153,26 +161,29 @@ const SettingBanner = ({ form }: { form: FormInstance }) => {
                                 <Form.Item
                                   {...restField}
                                   className={styles.formList}
-                                  valuePropName="checked"
+                                  valuePropName='checked'
                                   name={[name, 'required']}
                                 >
                                   <Switch style={{ marginLeft: '50px' }} />
                                 </Form.Item>
                               </Col>
                               <Col span={1}>
-                                <div
-                                  className={styles.btn}
-
-                                >
+                                <div className={styles.btn}>
                                   <Button
                                     size='large'
-                                    shape="circle"
-                                    type="text"
+                                    shape='circle'
+                                    type='text'
                                     onClick={() => remove(name)}
-                                    icon={<Image alt='' src={'/svgIcon/ic-delete-red.svg'} width={14} height={14} />}
+                                    icon={
+                                      <Image
+                                        alt=''
+                                        src={'/svgIcon/ic-delete-red.svg'}
+                                        width={14}
+                                        height={14}
+                                      />
+                                    }
                                   />
                                 </div>
-
                               </Col>
                             </Row>
                           </div>
@@ -185,7 +196,7 @@ const SettingBanner = ({ form }: { form: FormInstance }) => {
               </Droppable>
               <Button
                 className={styles.button}
-                type="text"
+                type='text'
                 onClick={() => add()}
                 block
                 icon={<PlusOutlined style={{ color: '#2AA98B' }} />}
