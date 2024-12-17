@@ -12,10 +12,9 @@ import { useEditSetupLdpage, useGetConfigLdPage, useSetupLdpage } from './servic
 import SettingBanner from './SettingBanner';
 import UserManager from './UserManager';
 
-
 const PageManagement = () => {
   const [form] = Form.useForm();
-  const { dataConfigLdPage } = useGetConfigLdPage({
+  const { run } = useGetConfigLdPage({
     onSuccess: (res) => {
       form.setFieldsValue({
         banners: res?.data?.content?.banners,
@@ -23,11 +22,9 @@ const PageManagement = () => {
         functions: res?.data?.content?.functions,
         overviews: res?.data?.content?.overviews,
         users: res?.data?.content?.users,
-      })
-    }
-  })
-
-
+      });
+    },
+  });
 
   const itemsTab: TabsProps['items'] = [
     {
@@ -59,77 +56,83 @@ const PageManagement = () => {
 
   const requestSetupLdpage = useSetupLdpage({
     onSuccess: () => {
-      openNotification('Set up langding page thành công', 'success')
+      openNotification('Set up langding page thành công', 'success');
+      run();
     },
     onError() {},
   });
   const requestEditSetupLdpage = useEditSetupLdpage({
     onSuccess: () => {
-      openNotification('Set up langding page thành công', 'success')
+      openNotification('Set up langding page thành công', 'success');
+      run();
     },
     onError() {},
   });
 
-
   const onFinish = (values: any) => {
     const body = {
-      content: values
-    }
-    if (dataConfigLdPage?.data?.id) {
-      requestEditSetupLdpage.run(body, dataConfigLdPage?.data?.id)
-    } else {
-      requestSetupLdpage.run(body)
-    }
-  };
+      content: values,
+    };
 
+    requestSetupLdpage.run(body);
+  };
 
   return (
     <Form
-      name="dynamic_form_nest_item"
+      name='dynamic_form_nest_item'
       onFinish={onFinish}
       form={form}
       initialValues={{
-        banners: [{
-          title: '',
-          description: '',
-          image: '',
-          required: false,
-          url_appstore: '',
-          url_google: ''
-        }],
-        overviews: [{
-          title: '',
-          description: '',
-          image: '',
-          required: false
-        }],
-        functions: [{
-          title: '',
-          description: '',
-          image: '',
-          required: false
-        }],
-        features: [{
-          title: '',
-          description: '',
-          icon: '',
-          required: false
-        }],
-        users: [{
-          avatar: '',
-          content: '',
-          icon: '',
-          description: '',
-          rate: ''
-        }],
+        banners: [
+          {
+            title: '',
+            description: '',
+            image: '',
+            required: false,
+            url_appstore: '',
+            url_google: '',
+          },
+        ],
+        overviews: [
+          {
+            title: '',
+            description: '',
+            image: '',
+            required: false,
+          },
+        ],
+        functions: [
+          {
+            title: '',
+            description: '',
+            image: '',
+            required: false,
+          },
+        ],
+        features: [
+          {
+            title: '',
+            description: '',
+            icon: '',
+            required: false,
+          },
+        ],
+        users: [
+          {
+            avatar: '',
+            content: '',
+            icon: '',
+            description: '',
+            rate: '',
+          },
+        ],
       }}
-      autoComplete="off"
-
+      autoComplete='off'
     >
       <div className={styles.containerBtn}>
         <Button
           size='large'
-          htmlType="submit"
+          htmlType='submit'
           className={styles.btn}
           type='green'
           loading={requestSetupLdpage?.loading || requestEditSetupLdpage?.loading}
@@ -138,12 +141,8 @@ const PageManagement = () => {
         </Button>
       </div>
 
-      <Tabs
-        type="card"
-        className={styles.tab}
-        items={itemsTab}
-      />
+      <Tabs type='card' className={styles.tab} items={itemsTab} />
     </Form>
-  )
-}
-export default PageManagement
+  );
+};
+export default PageManagement;
