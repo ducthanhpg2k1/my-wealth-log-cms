@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { Form, Tabs } from 'antd';
 import { TabsProps } from 'antd/lib';
 
@@ -14,14 +16,14 @@ import UserManager from './UserManager';
 
 const PageManagement = () => {
   const [form] = Form.useForm();
+  const [defaultData, setDefaultData] = useState({});
   const { run } = useGetConfigLdPage({
     onSuccess: (res) => {
       form.setFieldsValue({
-        banners: res?.data?.content?.banners,
-        features: res?.data?.content?.features,
-        functions: res?.data?.content?.functions,
-        overviews: res?.data?.content?.overviews,
-        users: res?.data?.content?.users,
+        ...res?.data?.content,
+      });
+      setDefaultData({
+        ...res?.data?.content,
       });
     },
   });
@@ -71,7 +73,10 @@ const PageManagement = () => {
 
   const onFinish = (values: any) => {
     const body = {
-      content: values,
+      content: {
+        ...defaultData,
+        ...values,
+      },
     };
 
     requestSetupLdpage.run(body);
