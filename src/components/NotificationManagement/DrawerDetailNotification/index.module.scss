@@ -70,3 +70,12 @@
     object-fit: contain;
   }
 }
+
+.tagType {
+  width: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  height: 28px;
+}

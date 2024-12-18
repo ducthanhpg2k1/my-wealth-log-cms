@@ -1,3 +1,6 @@
+/* eslint-disable import/no-cycle */
+/* eslint-disable unicorn/no-null */
+/* eslint-disable unicorn/consistent-function-scoping */
 /* eslint-disable multiline-ternary */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable indent */
@@ -5,7 +8,17 @@
 import { useRef, useState } from 'react';
 
 import { PlusOutlined } from '@ant-design/icons';
-import { Dropdown, Row, Space, Table, Button as ButtonAntd, Checkbox, Form, Tooltip } from 'antd';
+import {
+  Dropdown,
+  Row,
+  Space,
+  Table,
+  Button as ButtonAntd,
+  Checkbox,
+  Form,
+  Tooltip,
+  Tag,
+} from 'antd';
 import type { TableColumnsType, TableProps } from 'antd';
 import dayjs from 'dayjs';
 import FileSaver from 'file-saver';
@@ -17,7 +30,7 @@ import InputText from '@components/UI/InputText';
 import NoDataTable from '@components/UI/NoDataTable';
 import SelectCustom from '@components/UI/SelectCustom';
 import Text from '@components/UI/Text';
-import { openNotification, TYPE_REPEAT } from '@utils/common';
+import { openNotification, TYPE_NOTIFICATION, TYPE_REPEAT } from '@utils/common';
 
 import DrawerAddNotification from './DrawerAddNotification';
 import DrawerDetailNotification from './DrawerDetailNotification';
@@ -25,6 +38,15 @@ import styles from './index.module.scss';
 import ModalDeleteNotification from './ModalDeleteNotification';
 import ModalDeleteNotifications from './ModalDeleteNotifications';
 import { useExportFileNotification, useGetNotifications } from './service';
+
+export const renderTextTypeNotification = (type: string) => {
+  if (type === TYPE_NOTIFICATION.ASSET) {
+    return 'Tài sản';
+  }
+  if (type === TYPE_NOTIFICATION.TRANSACTION) {
+    return 'Giao dịch';
+  }
+};
 
 const NotificationManagement = () => {
   const refDrawerAddNotification: any = useRef();
@@ -81,7 +103,7 @@ const NotificationManagement = () => {
     {
       title: 'Nội dung thông báo',
       dataIndex: 'conent',
-      width: 350,
+      width: 500,
       render: (_, record) => {
         return (
           <Space direction='vertical' size={12}>
@@ -142,6 +164,7 @@ const NotificationManagement = () => {
         return <Checkbox className={styles.checkboxCustom} checked={record.repeat} />;
       },
     },
+
     {
       title: 'Tần suất lặp lại',
       width: 200,
@@ -154,7 +177,25 @@ const NotificationManagement = () => {
         );
       },
     },
-
+    {
+      title: 'Loại thông báo',
+      width: 200,
+      dataIndex: 'target',
+      render: (_, record) => {
+        return (
+          <>
+            {record.target ? (
+              <Tag
+                className={styles.tagType}
+                color={record.target === TYPE_NOTIFICATION.ASSET ? 'gold' : 'blue'}
+              >
+                {renderTextTypeNotification(record.target)}
+              </Tag>
+            ) : null}
+          </>
+        );
+      },
+    },
     {
       title: (
         <>

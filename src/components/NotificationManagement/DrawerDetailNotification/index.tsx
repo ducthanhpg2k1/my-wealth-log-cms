@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 /* eslint-disable unicorn/no-null */
 /* eslint-disable multiline-ternary */
 /* eslint-disable no-mixed-operators */
@@ -8,14 +9,15 @@
 import { forwardRef, useImperativeHandle, useMemo, useState } from 'react';
 
 import { CloseOutlined } from '@ant-design/icons';
-import { Button as ButtonAntd, Col, Drawer, Row, Space, Spin, Tooltip } from 'antd';
+import { Button as ButtonAntd, Col, Drawer, Row, Space, Spin, Tag, Tooltip } from 'antd';
 import dayjs from 'dayjs';
 import Image from 'next/image';
 
 import Button from '@components/UI/Button/Button';
 import Text from '@components/UI/Text';
-import { TYPE_DATE } from '@utils/common';
+import { TYPE_DATE, TYPE_NOTIFICATION } from '@utils/common';
 
+import { renderTextTypeNotification } from '..';
 import styles from './index.module.scss';
 import { DATA_DATE_SEND } from '../DrawerAddNotification';
 import { useGetDetailNotification } from '../service';
@@ -149,6 +151,27 @@ const DrawerDetailNotification = (props: any, ref: any) => {
                   </div>
                 )}
               </Col>
+            </Row>
+            <Row align={'stretch'}>
+              <Col span={8}>
+                <Text type='font-14-400' color='neutral-700'>
+                  Loại thông báo
+                </Text>
+              </Col>
+              {dataDetail?.data?.target ? (
+                <Col span={16}>
+                  <Tag
+                    className={styles.tagType}
+                    color={
+                      dataDetail?.data?.target.target === TYPE_NOTIFICATION.ASSET ? 'gold' : 'blue'
+                    }
+                  >
+                    {renderTextTypeNotification(dataDetail?.data?.target)}
+                  </Tag>
+                </Col>
+              ) : (
+                <>-</>
+              )}
             </Row>
             {dataDetail?.data?.repeat && dataDetail?.data?.frequencyId.code === TYPE_DATE.DAILY && (
               <Row align={'stretch'}>

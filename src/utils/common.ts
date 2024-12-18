@@ -9,7 +9,7 @@ export const ROUTE_PATH = {
 
   UPLOAD_FILE: '/api/v1/configs/files/upload',
 
-  PAGE_MANAGEMENT: '/page-management'
+  PAGE_MANAGEMENT: '/page-management',
 };
 
 export const REG_EMAIL = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
@@ -305,4 +305,9 @@ export enum MARITAL_STATUS {
   SINGLE = 'single',
   MARRIAGE = 'marriage',
   DIVORCE = 'divorce',
+}
+
+export enum TYPE_NOTIFICATION {
+  ASSET = 'asset',
+  TRANSACTION = 'transaction',
 }

@@ -34,7 +34,14 @@ import InputText from '@components/UI/InputText';
 import InputTextarea from '@components/UI/InputTextarea';
 import SelectCustom from '@components/UI/SelectCustom';
 import Text from '@components/UI/Text';
-import { DATE_SEND, isImage, openNotification, TYPE_DATE, TYPE_DATE_SEND } from '@utils/common';
+import {
+  DATE_SEND,
+  isImage,
+  openNotification,
+  TYPE_DATE,
+  TYPE_DATE_SEND,
+  TYPE_NOTIFICATION,
+} from '@utils/common';
 
 import styles from './index.module.scss';
 import {
@@ -111,6 +118,7 @@ const DrawerAddNotification = (props: any, ref: any) => {
         sendAt: res?.data?.sendAt ? dayjs(res?.data?.sendAt) : dayjs(),
         daySendAt: res?.data?.daySendAt || TYPE_DATE_SEND.MONDAY,
         repeat: res?.data?.repeat,
+        target: res?.data?.target,
         sendDate:
           res?.data?.frequencyId?.code === TYPE_DATE.MONTHLY && dayjs(res?.data?.sendAt).date(),
         sendTime: res?.data?.frequencyId?.code === TYPE_DATE.MONTHLY && dayjs(res?.data?.sendAt),
@@ -227,6 +235,7 @@ const DrawerAddNotification = (props: any, ref: any) => {
           : formatteddaySendAt,
       repeat: values?.repeat,
       image: dataUpload?.url || '',
+      target: values.target || null,
     };
 
     if (idEdit) {
@@ -296,6 +305,7 @@ const DrawerAddNotification = (props: any, ref: any) => {
                 placeholder='Nội dung thông báo'
               />
             </Form.Item>
+
             <div className={styles.contentUpload}>
               <Text type='font-14-400'>Hình ảnh đính kèm</Text>
               <Space direction='vertical' size={12}>
@@ -334,6 +344,23 @@ const DrawerAddNotification = (props: any, ref: any) => {
                 )}
               </Space>
             </div>
+            <Form.Item name='target' label={'Loại thông báo'}>
+              <SelectCustom
+                allowClear
+                options={[
+                  {
+                    label: 'Tài sản',
+                    value: TYPE_NOTIFICATION.ASSET,
+                  },
+                  {
+                    label: 'Giao dịch',
+                    value: TYPE_NOTIFICATION.TRANSACTION,
+                  },
+                ]}
+                size='large'
+                placeholder={'Chọn loại thông báo'}
+              />
+            </Form.Item>
             <Form.Item valuePropName='checked' name='repeat' label={''}>
               <Checkbox>Lặp lại</Checkbox>
             </Form.Item>
