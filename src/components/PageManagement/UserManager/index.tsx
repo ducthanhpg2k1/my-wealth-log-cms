@@ -10,10 +10,11 @@ import Text from '@components/UI/Text';
 
 import styles from './index.module.scss';
 
-
 const UserManager = ({ form }: any) => {
   const onDragEnd = ({ destination, source }: any) => {
-    if (!destination) { return; }
+    if (!destination) {
+      return;
+    }
 
     const { setFieldsValue, getFieldValue } = form;
     const users = getFieldValue('users') || [];
@@ -29,8 +30,7 @@ const UserManager = ({ form }: any) => {
       <Text type='font-18-600'>Đánh giá từ người dùng</Text>
       <div className={styles.content}>
         <Row gutter={16} style={{ marginBottom: '-8px' }}>
-          <div style={{ width: '44px' }}>
-          </div>
+          <div style={{ width: '44px' }}></div>
           <Col span={5}>
             <Text type='font-14-400'>Họ và tên</Text>
           </Col>
@@ -45,21 +45,14 @@ const UserManager = ({ form }: any) => {
           </Col>
         </Row>
 
-        <Form.List name="users">
+        <Form.List name='users'>
           {(fields, { add, remove }) => (
             <DragDropContext onDragEnd={onDragEnd}>
-              <Droppable droppableId="droppable">
+              <Droppable droppableId='droppable'>
                 {(provided: any) => (
-                  <div
-                    {...provided.droppableProps}
-                    ref={provided.innerRef}
-                  >
+                  <div {...provided.droppableProps} ref={provided.innerRef}>
                     {fields.map(({ key, name, ...restField }, index) => (
-                      <Draggable
-                        key={key}
-                        draggableId={key.toString()}
-                        index={index}
-                      >
+                      <Draggable key={key} draggableId={key.toString()} index={index}>
                         {(provided: any, snapshot: any) => (
                           <div
                             ref={provided.innerRef}
@@ -68,14 +61,11 @@ const UserManager = ({ form }: any) => {
                               ...provided.draggableProps.style,
                               padding: '8px',
                               background: snapshot.isDragging ? '#f5f5f5' : 'transparent',
-                              borderRadius: '8px'
+                              borderRadius: '8px',
                             }}
                           >
                             <Row gutter={16}>
-                              <div
-                                {...provided.dragHandleProps}
-                                className={styles.iconDrag}
-                              >
+                              <div {...provided.dragHandleProps} className={styles.iconDrag}>
                                 <Image alt='' width={10} height={16} src={'/svgIcon/ic-drag.svg'} />
                               </div>
                               <Col span={5}>
@@ -83,10 +73,12 @@ const UserManager = ({ form }: any) => {
                                   {...restField}
                                   name={[name, 'name']}
                                   className={styles.formList}
-                                  rules={[{ required: true, message: 'Họ và tên không được bỏ trống' }]}
+                                  rules={[
+                                    { required: true, message: 'Họ và tên không được bỏ trống' },
+                                  ]}
                                 >
                                   <InputTextarea
-                                    autoSize={{ minRows: 1, maxRows: 2 }}
+                                    autoSize={{ minRows: 2, maxRows: 2 }}
                                     size='large'
                                     placeholder='Họ và tên'
                                   />
@@ -97,10 +89,11 @@ const UserManager = ({ form }: any) => {
                                   {...restField}
                                   className={styles.formList}
                                   name={[name, 'avatar']}
-                                  rules={[{ required: true, message: 'Avatar không được bỏ trống' }]}
+                                  rules={[
+                                    { required: true, message: 'Avatar không được bỏ trống' },
+                                  ]}
                                 >
                                   <InputUploadImage />
-
                                 </Form.Item>
                               </Col>
                               <Col span={5}>
@@ -118,29 +111,31 @@ const UserManager = ({ form }: any) => {
                                   className={styles.formList}
                                   name={[name, 'content']}
                                   rules={[{ required: true, message: 'Mô tả không được bỏ trống' }]}
-
                                 >
                                   <InputTextarea
-                                    autoSize={{ minRows: 1, maxRows: 2 }}
+                                    autoSize={{ minRows: 2, maxRows: 2 }}
                                     size='large'
                                     placeholder='Mô tả'
                                   />
                                 </Form.Item>
                               </Col>
                               <Col span={1}>
-                                <div
-                                  className={styles.btn}
-
-                                >
+                                <div className={styles.btn}>
                                   <Button
                                     size='large'
-                                    shape="circle"
-                                    type="text"
+                                    shape='circle'
+                                    type='text'
                                     onClick={() => remove(name)}
-                                    icon={<Image alt='' src={'/svgIcon/ic-delete-red.svg'} width={14} height={14} />}
+                                    icon={
+                                      <Image
+                                        alt=''
+                                        src={'/svgIcon/ic-delete-red.svg'}
+                                        width={14}
+                                        height={14}
+                                      />
+                                    }
                                   />
                                 </div>
-
                               </Col>
                             </Row>
                           </div>
@@ -153,7 +148,7 @@ const UserManager = ({ form }: any) => {
               </Droppable>
               <Button
                 className={styles.button}
-                type="text"
+                type='text'
                 onClick={() => add()}
                 block
                 icon={<PlusOutlined style={{ color: '#2AA98B' }} />}

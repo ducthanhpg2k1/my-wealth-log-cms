@@ -88,7 +88,7 @@ const SettingBanner = ({ form }: { form: FormInstance }) => {
                                   ]}
                                 >
                                   <InputTextarea
-                                    autoSize={{ minRows: 1, maxRows: 2 }}
+                                    autoSize={{ minRows: 2, maxRows: 2 }}
                                     size='large'
                                     placeholder='Thêm tiêu đề'
                                   />
@@ -102,7 +102,7 @@ const SettingBanner = ({ form }: { form: FormInstance }) => {
                                   rules={[{ required: true, message: 'Mô tả không được bỏ trống' }]}
                                 >
                                   <InputTextarea
-                                    autoSize={{ minRows: 1, maxRows: 2 }}
+                                    autoSize={{ minRows: 2, maxRows: 2 }}
                                     size='large'
                                     placeholder='Thêm mô tả'
                                   />
@@ -136,7 +136,7 @@ const SettingBanner = ({ form }: { form: FormInstance }) => {
                                   name={[name, 'url_appstore']}
                                 >
                                   <InputTextarea
-                                    autoSize={{ minRows: 1, maxRows: 2 }}
+                                    autoSize={{ minRows: 2, maxRows: 2 }}
                                     size='large'
                                     placeholder='Nhập url app store'
                                   />
@@ -150,7 +150,7 @@ const SettingBanner = ({ form }: { form: FormInstance }) => {
                                   name={[name, 'url_google']}
                                 >
                                   <InputTextarea
-                                    autoSize={{ minRows: 1, maxRows: 2 }}
+                                    autoSize={{ minRows: 2, maxRows: 2 }}
                                     size='large'
                                     placeholder='Nhập url google play'
                                   />
@@ -164,7 +164,7 @@ const SettingBanner = ({ form }: { form: FormInstance }) => {
                                   valuePropName='checked'
                                   name={[name, 'required']}
                                 >
-                                  <Switch style={{ marginLeft: '50px' }} />
+                                  <Switch style={{ marginLeft: '50px', marginTop: '15px' }} />
                                 </Form.Item>
                               </Col>
                               <Col span={1}>
