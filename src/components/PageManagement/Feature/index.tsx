@@ -79,7 +79,7 @@ const Feature = ({ form }: any) => {
                                   ]}
                                 >
                                   <InputTextarea
-                                    autoSize={{ minRows: 2, maxRows: 2 }}
+                                    autoSize={{ minRows: 2 }}
                                     size='large'
                                     placeholder='Thêm tiêu đề'
                                   />
@@ -93,7 +93,7 @@ const Feature = ({ form }: any) => {
                                   rules={[{ required: true, message: 'Mô tả không được bỏ trống' }]}
                                 >
                                   <InputTextarea
-                                    autoSize={{ minRows: 2, maxRows: 2 }}
+                                    autoSize={{ minRows: 2 }}
                                     size='large'
                                     placeholder='Thêm mô tả'
                                   />
