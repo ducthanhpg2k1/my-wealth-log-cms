@@ -140,6 +140,38 @@ export const useGetReportTransactions = () => {
   };
 };
 
+
+const serviceGetReportByType = async (filter: IFilterReport) => {
+  const params = {
+    createdAtFrom: filter?.createdAtFrom,
+    createdAtTo: filter?.createdAtTo,
+  };
+  return await privateRequest(request.get, API_PATH.REPORT_BY_TYPE, { params });
+};
+
+export const useGetReportByType = () => {
+  const { data, loading, run, refreshAsync } = useRequest(
+    async (filter: IFilterReport) => {
+      return await serviceGetReportByType(filter);
+    },
+    {
+      manual: true,
+    },
+  );
+
+  const onChange = (filter: IFilterReport) => {
+    run(filter);
+  };
+
+  return {
+    onChange,
+    dataByType: data,
+    run,
+    loading,
+    refreshAsync,
+  };
+};
+
 const serviceGetReportTransactionsByType = async (filter: IFilterReport) => {
   const params = {
     createdAtFrom: filter?.createdAtFrom,

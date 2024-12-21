@@ -78,7 +78,7 @@ const UserManager = ({ form }: any) => {
                                   ]}
                                 >
                                   <InputTextarea
-                                    autoSize={{ minRows: 2 }}
+                                    autoSize={{ minRows: 6, maxRows: 6 }}
                                     size='large'
                                     placeholder='Họ và tên'
                                   />
@@ -113,7 +113,7 @@ const UserManager = ({ form }: any) => {
                                   rules={[{ required: true, message: 'Mô tả không được bỏ trống' }]}
                                 >
                                   <InputTextarea
-                                    autoSize={{ minRows: 2 }}
+                                    autoSize={{ minRows: 6, maxRows: 6 }}
                                     size='large'
                                     placeholder='Mô tả'
                                   />

@@ -79,7 +79,7 @@ const FunctionPage = ({ form }: any) => {
                                   ]}
                                 >
                                   <InputTextarea
-                                    autoSize={{ minRows: 2 }}
+                                    autoSize={{ minRows: 6, maxRows: 6 }}
                                     size='large'
                                     placeholder='Thêm tiêu đề'
                                   />
@@ -93,7 +93,7 @@ const FunctionPage = ({ form }: any) => {
                                   rules={[{ required: true, message: 'Mô tả không được bỏ trống' }]}
                                 >
                                   <InputTextarea
-                                    autoSize={{ minRows: 2 }}
+                                    autoSize={{ minRows: 6, maxRows: 6 }}
                                     size='large'
                                     placeholder='Thêm mô tả'
                                   />
