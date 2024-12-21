@@ -29,11 +29,14 @@ const SettingBanner = ({ form }: { form: FormInstance }) => {
       <Text type='font-18-600'>Quản lý banner</Text>
       <div className={styles.content}>
         <Row gutter={16} style={{ marginBottom: '-8px' }}>
-          <div style={{ width: '44px' }}></div>
-          <Col span={3}>
+          <Col span={1}>
+          </Col>
+
+          {/* <div style={{ width: '44px' }}></div> */}
+          <Col span={5}>
             <Text type='font-14-400'>Tiêu đề</Text>
           </Col>
-          <Col span={3}>
+          <Col span={5}>
             <Text type='font-14-400'>Mô tả</Text>
           </Col>
           <Col span={3}>
@@ -42,10 +45,10 @@ const SettingBanner = ({ form }: { form: FormInstance }) => {
           <Col span={3}>
             <Text type='font-14-400'>Hình ảnh mobile</Text>
           </Col>
-          <Col span={4}>
+          <Col span={2}>
             <Text type='font-14-400'>App store url</Text>
           </Col>
-          <Col span={4}>
+          <Col span={2}>
             <Text type='font-14-400'>Google play url</Text>
           </Col>
           <Col span={2}>
@@ -75,10 +78,13 @@ const SettingBanner = ({ form }: { form: FormInstance }) => {
                             }}
                           >
                             <Row gutter={16}>
-                              <div {...provided.dragHandleProps} className={styles.iconDrag}>
-                                <Image alt='' width={10} height={16} src={'/svgIcon/ic-drag.svg'} />
-                              </div>
-                              <Col span={3}>
+                              <Col span={1}>
+                                <div {...provided.dragHandleProps} className={styles.iconDrag}>
+                                  <Image alt='' width={10} height={16} src={'/svgIcon/ic-drag.svg'} />
+                                </div>
+                              </Col>
+
+                              <Col span={5}>
                                 <Form.Item
                                   {...restField}
                                   name={[name, 'title']}
@@ -94,7 +100,7 @@ const SettingBanner = ({ form }: { form: FormInstance }) => {
                                   />
                                 </Form.Item>
                               </Col>
-                              <Col span={3}>
+                              <Col span={5}>
                                 <Form.Item
                                   {...restField}
                                   className={styles.formList}
@@ -128,7 +134,7 @@ const SettingBanner = ({ form }: { form: FormInstance }) => {
                                   <InputUploadImage />
                                 </Form.Item>
                               </Col>
-                              <Col span={4}>
+                              <Col span={2}>
                                 <Form.Item
                                   {...restField}
                                   className={styles.formList}
@@ -142,7 +148,7 @@ const SettingBanner = ({ form }: { form: FormInstance }) => {
                                   />
                                 </Form.Item>
                               </Col>
-                              <Col span={4}>
+                              <Col span={2}>
                                 <Form.Item
                                   {...restField}
                                   className={styles.formList}
@@ -164,7 +170,7 @@ const SettingBanner = ({ form }: { form: FormInstance }) => {
                                   valuePropName='checked'
                                   name={[name, 'required']}
                                 >
-                                  <Switch style={{ marginLeft: '50px', marginTop: '15px' }} />
+                                  <Switch className={styles.switch} />
                                 </Form.Item>
                               </Col>
                               <Col span={1}>

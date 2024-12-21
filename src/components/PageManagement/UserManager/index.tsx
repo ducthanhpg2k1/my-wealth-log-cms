@@ -30,19 +30,21 @@ const UserManager = ({ form }: any) => {
       <Text type='font-18-600'>Đánh giá từ người dùng</Text>
       <div className={styles.content}>
         <Row gutter={16} style={{ marginBottom: '-8px' }}>
-          <div style={{ width: '44px' }}></div>
-          <Col span={5}>
+          <Col span={1}></Col>
+          <Col span={8}>
             <Text type='font-14-400'>Họ và tên</Text>
           </Col>
-          <Col span={5}>
+          <Col span={3}>
             <Text type='font-14-400'>Avatar</Text>
           </Col>
-          <Col span={5}>
+          <Col span={3}>
             <Text type='font-14-400'>Star</Text>
           </Col>
-          <Col span={5}>
+          <Col span={8}>
             <Text type='font-14-400'>Mô tả</Text>
           </Col>
+          <Col span={1}></Col>
+
         </Row>
 
         <Form.List name='users'>
@@ -65,10 +67,14 @@ const UserManager = ({ form }: any) => {
                             }}
                           >
                             <Row gutter={16}>
-                              <div {...provided.dragHandleProps} className={styles.iconDrag}>
-                                <Image alt='' width={10} height={16} src={'/svgIcon/ic-drag.svg'} />
-                              </div>
-                              <Col span={5}>
+                              <Col span={1}>
+
+                                <div {...provided.dragHandleProps} className={styles.iconDrag}>
+                                  <Image alt='' width={10} height={16} src={'/svgIcon/ic-drag.svg'} />
+                                </div>
+                              </Col>
+
+                              <Col span={8}>
                                 <Form.Item
                                   {...restField}
                                   name={[name, 'name']}
@@ -84,7 +90,7 @@ const UserManager = ({ form }: any) => {
                                   />
                                 </Form.Item>
                               </Col>
-                              <Col span={5}>
+                              <Col span={3}>
                                 <Form.Item
                                   {...restField}
                                   className={styles.formList}
@@ -96,7 +102,7 @@ const UserManager = ({ form }: any) => {
                                   <InputUploadImage />
                                 </Form.Item>
                               </Col>
-                              <Col span={5}>
+                              <Col span={3}>
                                 <Form.Item
                                   {...restField}
                                   className={styles.formList}
@@ -105,7 +111,7 @@ const UserManager = ({ form }: any) => {
                                   <InputRate />
                                 </Form.Item>
                               </Col>
-                              <Col span={5}>
+                              <Col span={8}>
                                 <Form.Item
                                   {...restField}
                                   className={styles.formList}
@@ -159,7 +165,7 @@ const UserManager = ({ form }: any) => {
           )}
         </Form.List>
       </div>
-    </div>
+    </div >
   );
 };
 

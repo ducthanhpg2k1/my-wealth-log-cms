@@ -38,6 +38,20 @@
   }
 }
 
+.switch {
+  margin-left: 50px;
+  margin-top: 15px;
+
+  @media (min-width: 1280px) and (max-width: 1599px) {
+    margin-left: 50px;
+    margin-top: 14px;
+  }
+}
+
 .btn {
   margin-top: 5px;
+
+  @media (min-width: 1280px) and (max-width: 1599px) {
+    margin-left: 30px;
+  }
 }
