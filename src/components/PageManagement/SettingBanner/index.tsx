@@ -1,4 +1,3 @@
-import { PlusOutlined } from '@ant-design/icons';
 import { Button, Col, Form, FormInstance, Row, Switch } from 'antd';
 import Image from 'next/image';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
@@ -59,7 +58,7 @@ const SettingBanner = ({ form }: { form: FormInstance }) => {
         </Row>
 
         <Form.List name='banners'>
-          {(fields, { add, remove }) => (
+          {(fields, { remove }) => (
             <DragDropContext onDragEnd={onDragEnd}>
               <Droppable droppableId='droppable'>
                 {(provided: any) => (
@@ -200,7 +199,7 @@ const SettingBanner = ({ form }: { form: FormInstance }) => {
                   </div>
                 )}
               </Droppable>
-              <Button
+              {/* <Button
                 className={styles.button}
                 type='text'
                 onClick={() => add()}
@@ -208,7 +207,7 @@ const SettingBanner = ({ form }: { form: FormInstance }) => {
                 icon={<PlusOutlined style={{ color: '#2AA98B' }} />}
               >
                 Thêm dòng
-              </Button>
+              </Button> */}
             </DragDropContext>
           )}
         </Form.List>
