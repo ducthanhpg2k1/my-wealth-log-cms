@@ -54,6 +54,11 @@ const PageManagement = () => {
       key: 'evaluate',
       children: <UserManager form={form} />,
     },
+    // {
+    //   label: 'Footer',
+    //   key: 'footer',
+    //   children: <></>,
+    // },
   ];
 
   const requestSetupLdpage = useSetupLdpage({

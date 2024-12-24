@@ -33,29 +33,6 @@ ChartJS.register(
   Legend,
 );
 
-const DATA_NOTE = [
-  {
-    id: 1,
-    text: 'Giao dịch thu nhập',
-    bgColor: '#17B899',
-  },
-  {
-    id: 2,
-    text: 'Giao dịch chi phí',
-    bgColor: '#F08C8C',
-  },
-  {
-    id: 3,
-    text: 'Giao dịch thu chi',
-    bgColor: '#23B9E4',
-  },
-  {
-    id: 4,
-    text: 'Giao dịch điều chuyển',
-    bgColor: '#FDD76D',
-  },
-];
-
 const CardTransactionType = ({ data }: { data: any }) => {
   const isNoData = useMemo(() => {
     return isAllZero(data);
@@ -64,6 +41,35 @@ const CardTransactionType = ({ data }: { data: any }) => {
   const calculatePercentage = (value: number, total: number) => {
     return total > 0 ? (value / total) * 100 : 0;
   };
+
+  const DATA_NOTE = [
+    {
+      id: 1,
+      text: 'Giao dịch thu nhập',
+      bgColor: '#17B899',
+      value: data?.income,
+    },
+    {
+      id: 2,
+      text: 'Giao dịch chi phí',
+      bgColor: '#F08C8C',
+      value: data?.expense,
+    },
+    {
+      id: 3,
+      text: 'Giao dịch thu chi',
+      bgColor: '#23B9E4',
+      value: data?.income_expenditure,
+    },
+    {
+      id: 4,
+      text: 'Giao dịch điều chuyển',
+      bgColor: '#FDD76D',
+      value: data?.transfer,
+    },
+  ];
+
+  const totalValue = [data?.income, data?.expense, data?.income_expenditure, data?.transfer];
 
   const doughnutOptions: any = {
     responsive: true,
@@ -149,6 +155,10 @@ const CardTransactionType = ({ data }: { data: any }) => {
 
         <Space size={20} direction='vertical'>
           {DATA_NOTE?.map((item) => {
+            const percentage = calculatePercentage(
+              item?.value,
+              totalValue.reduce((acc: number, data: number) => acc + data, 0),
+            );
             return (
               <Row key={item?.id} align={'middle'} style={{ gap: '10px' }}>
                 <div
@@ -157,7 +167,12 @@ const CardTransactionType = ({ data }: { data: any }) => {
                     background: item?.bgColor,
                   }}
                 />
-                <Text type='font-14-400'>{item?.text}</Text>
+                <Text type='font-14-400'>
+                  {`${item?.text}: `}
+                  <Text element='span' className={styles.textNote} type='font-14-400'>{`${
+                    item?.value
+                  } (${percentage.toFixed(1)})%`}</Text>
+                </Text>
               </Row>
             );
           })}
