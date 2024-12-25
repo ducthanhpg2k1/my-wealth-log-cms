@@ -31,4 +31,6 @@ export const API_PATH = {
   SET_UP_LDPAGE: '/api/v1/configs/ldpage-contents',
 
   EDIT_SET_UP_LDPAGE: (id: string) => `/api/v1/configs/ldpage-contents/${id}`,
+
+  REPORT_BY_TYPE: '/api/v1/assets/report-by-type',
 };

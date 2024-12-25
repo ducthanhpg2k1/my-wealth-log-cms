@@ -9,10 +9,12 @@ import Button from '@components/UI/Button/Button';
 import Text from '@components/UI/Text';
 
 import CardSituation from './CardSituation';
+import CardTransactionAsset from './CardTransactionAsset';
 import CardTransactionComplicated from './CardTransactionComplicated';
 import CardTransactionType from './CardTransactionType';
 import styles from './index.module.scss';
 import {
+  useGetReportByType,
   useGetReportLoan,
   useGetReportNewAssets,
   useGetReportNewUser,
@@ -79,6 +81,14 @@ const Statistics = () => {
   } = useGetReportTransactions();
 
   const {
+    dataByType,
+    onChange: onChangeByType,
+    loading: loadingByType,
+    run: runByType,
+  } = useGetReportByType();
+
+
+  const {
     dataTransactionsByType,
     onChange: onChangeTransactionsByType,
     loading: loadingTransactionsByType,
@@ -107,6 +117,7 @@ const Statistics = () => {
     runNotifications(filterDate);
     runTransactions(filterDate);
     runGetReportNewUser(filterDate);
+    runByType(filterDate)
   });
 
   const onHandleFilter = (values: any) => {
@@ -124,7 +135,9 @@ const Statistics = () => {
     onChangeLoan(filter);
     onChangeTransactionsByCreateType(filter);
     onChangeTransactionsByType(filter);
+    onChangeByType(filter)
   };
+
 
   return (
     <Spin
@@ -133,6 +146,7 @@ const Statistics = () => {
         loadingTransactionsByCreateType ||
         loadingTransactionsByType ||
         loadingNewUser ||
+        loadingByType ||
         loadingNewAssets ||
         loadingNotifications ||
         loadingTransactions
@@ -226,8 +240,7 @@ const Statistics = () => {
           <Col span={6}>
             <CardHeader
               title='thông báo đã đọc/ đã gửi'
-              count={`${dataNotifications?.data?.countRead || 0}/${
-                dataNotifications?.data?.countAll || 0
+              count={`${dataNotifications?.data?.countRead || 0}/${dataNotifications?.data?.countAll || 0
               }`}
             />
           </Col>
@@ -244,14 +257,21 @@ const Statistics = () => {
           </Col>
         </Row>
         <Row gutter={16}>
-          <Col span={12}>
+          <Col span={8}>
             <CardTransactionType data={dataTransactionsByType?.data} />
           </Col>
-          <Col span={12}>
+          <Col span={8}>
             <CardTransactionComplicated data={dataTransactionsByCreateType?.data} />
           </Col>
+          <Col span={8}>
+            <CardTransactionAsset data={dataByType?.data} />
+          </Col>
+
         </Row>
-        <CardSituation data={dataTransactionsLoan?.data} />
+        <div style={{ marginBottom: '20px' }}>
+          <CardSituation data={dataTransactionsLoan?.data} />
+
+        </div>
       </div>
     </Spin>
   );

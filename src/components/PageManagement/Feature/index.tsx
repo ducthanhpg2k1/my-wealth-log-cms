@@ -29,14 +29,14 @@ const Feature = ({ form }: any) => {
       <Text type='font-18-600'>Quản lý thông tin tính năng</Text>
       <div className={styles.content}>
         <Row gutter={16} style={{ marginBottom: '-8px' }}>
-          <div style={{ width: '44px' }}></div>
-          <Col span={5}>
+          <Col span={1}></Col>
+          <Col span={8}>
             <Text type='font-14-400'>Tiêu đề</Text>
           </Col>
-          <Col span={5}>
+          <Col span={8}>
             <Text type='font-14-400'>Mô tả</Text>
           </Col>
-          <Col span={5}>
+          <Col span={3}>
             <Text type='font-14-400'>Icon</Text>
           </Col>
           <Col span={2}>
@@ -44,6 +44,7 @@ const Feature = ({ form }: any) => {
               Hiện
             </Text>
           </Col>
+          <Col span={1}></Col>
         </Row>
 
         <Form.List name='features'>
@@ -66,10 +67,13 @@ const Feature = ({ form }: any) => {
                             }}
                           >
                             <Row gutter={16}>
-                              <div {...provided.dragHandleProps} className={styles.iconDrag}>
-                                <Image alt='' width={10} height={16} src={'/svgIcon/ic-drag.svg'} />
-                              </div>
-                              <Col span={5}>
+                              <Col span={1}>
+                                <div {...provided.dragHandleProps} className={styles.iconDrag}>
+                                  <Image alt='' width={10} height={16} src={'/svgIcon/ic-drag.svg'} />
+                                </div>
+                              </Col>
+
+                              <Col span={8}>
                                 <Form.Item
                                   {...restField}
                                   name={[name, 'title']}
@@ -79,13 +83,13 @@ const Feature = ({ form }: any) => {
                                   ]}
                                 >
                                   <InputTextarea
-                                    autoSize={{ minRows: 2, maxRows: 2 }}
+                                    autoSize={{ minRows: 6, maxRows: 6 }}
                                     size='large'
                                     placeholder='Thêm tiêu đề'
                                   />
                                 </Form.Item>
                               </Col>
-                              <Col span={5}>
+                              <Col span={8}>
                                 <Form.Item
                                   {...restField}
                                   className={styles.formList}
@@ -93,13 +97,13 @@ const Feature = ({ form }: any) => {
                                   rules={[{ required: true, message: 'Mô tả không được bỏ trống' }]}
                                 >
                                   <InputTextarea
-                                    autoSize={{ minRows: 2, maxRows: 2 }}
+                                    autoSize={{ minRows: 6, maxRows: 6 }}
                                     size='large'
                                     placeholder='Thêm mô tả'
                                   />
                                 </Form.Item>
                               </Col>
-                              <Col span={5}>
+                              <Col span={3}>
                                 <Form.Item
                                   {...restField}
                                   className={styles.formList}
@@ -116,7 +120,7 @@ const Feature = ({ form }: any) => {
                                   valuePropName='checked'
                                   name={[name, 'required']}
                                 >
-                                  <Switch style={{ marginLeft: '50px', marginTop: '15px' }} />
+                                  <Switch className={styles.switch} />
                                 </Form.Item>
                               </Col>
                               <Col span={1}>
