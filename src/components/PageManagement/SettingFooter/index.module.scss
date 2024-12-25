@@ -1,0 +1,60 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.formList {
+  margin-bottom: 0 !important;
+}
+
+.button {
+  width: 120px !important;
+
+  span {
+    color: #2aa98b;
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.textRequired {
+  margin-left: 44px;
+
+  @media (min-width: 1280px) and (max-width: 1599px) {
+    margin-left: 10px
+  }
+}
+
+.iconDrag {
+  display: flex;
+  margin-top: 10px;
+  padding-left: 10px;
+  // justify-content: center;
+  // align-items: center;
+  width: 40px;
+
+  img {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.btn {
+  margin-top: 5px;
+}
+
+
+.switch {
+  margin-left: 50px;
+  margin-top: 15px;
+
+  @media (min-width: 1280px) and (max-width: 1599px) {
+    margin-left: 15px;
+    margin-top: 14px;
+  }
+}

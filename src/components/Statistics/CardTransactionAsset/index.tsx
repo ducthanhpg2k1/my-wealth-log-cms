@@ -34,29 +34,31 @@ ChartJS.register(
   Legend,
 );
 
-const DATA_NOTE = [
-  {
-    id: 1,
-    text: 'Bất động sản',
-    bgColor: '#17B899',
-  },
-  {
-    id: 2,
-    text: 'Phương tiện',
-    bgColor: '#23B9E4',
-  },
-  {
-    id: 3,
-    text: 'Sổ tiết kiệm',
-    bgColor: '#FDD76D',
-  },
-
-];
-
 const CardTransactionAsset = ({ data }: any) => {
   const isNoData = useMemo(() => {
     return isAllZero(data);
   }, [data]);
+
+  const DATA_NOTE = [
+    {
+      id: 1,
+      text: 'Bất động sản',
+      bgColor: '#17B899',
+      value: data?.real_state,
+    },
+    {
+      id: 2,
+      text: 'Phương tiện',
+      bgColor: '#23B9E4',
+      value: data?.vehicle,
+    },
+    {
+      id: 3,
+      text: 'Sổ tiết kiệm',
+      bgColor: '#FDD76D',
+      value: data?.saving_book,
+    },
+  ];
 
   const calculatePercentage = (value: number, total: number) => {
     return total > 0 ? (value / total) * 100 : 0;
@@ -114,12 +116,22 @@ const CardTransactionAsset = ({ data }: any) => {
     ],
   };
 
+  const totalValue = [data?.real_state, data?.vehicle, data?.saving_book];
+
   return (
     <div className={styles.card}>
       <Text type='font-18-600' color='text-primary'>
         Giao dịch theo tài sản
       </Text>
-      <Row align={'middle'} justify={'center'} style={{ gap: '70px', marginBottom: '24px' }}>
+      <Space
+        direction='vertical'
+        style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: '70px',
+          marginBottom: '24px',
+        }}
+      >
         {isNoData ? (
           <Image
             src={'/images/img-chart-nodata.png'}
@@ -141,6 +153,10 @@ const CardTransactionAsset = ({ data }: any) => {
 
         <Space size={20} direction='vertical'>
           {DATA_NOTE?.map((item) => {
+            const percentage = calculatePercentage(
+              item?.value,
+              totalValue.reduce((acc: number, data: number) => acc + data, 0),
+            );
             return (
               <Row key={item?.id} align={'middle'} style={{ gap: '10px' }}>
                 <div
@@ -149,12 +165,17 @@ const CardTransactionAsset = ({ data }: any) => {
                     background: item?.bgColor,
                   }}
                 />
-                <Text type='font-14-400'>{item?.text}</Text>
+                <Text type='font-14-400'>
+                  {`${item?.text}: `}
+                  <Text element='span' className={styles.textNote} type='font-14-400'>{`${
+                    item?.value
+                  } (${percentage.toFixed(1)}%)`}</Text>
+                </Text>
               </Row>
             );
           })}
         </Space>
-      </Row>
+      </Space>
     </div>
   );
 };

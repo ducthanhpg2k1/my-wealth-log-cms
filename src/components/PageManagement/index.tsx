@@ -12,6 +12,7 @@ import styles from './index.module.scss';
 import Overview from './Overview';
 import { useEditSetupLdpage, useGetConfigLdPage, useSetupLdpage } from './service';
 import SettingBanner from './SettingBanner';
+import SettingFooter from './SettingFooter';
 import UserManager from './UserManager';
 
 const PageManagement = () => {
@@ -54,11 +55,11 @@ const PageManagement = () => {
       key: 'evaluate',
       children: <UserManager form={form} />,
     },
-    // {
-    //   label: 'Footer',
-    //   key: 'footer',
-    //   children: <></>,
-    // },
+    {
+      label: 'Footer',
+      key: 'footer',
+      children: <SettingFooter form={form} />,
+    },
   ];
 
   const requestSetupLdpage = useSetupLdpage({
@@ -135,6 +136,17 @@ const PageManagement = () => {
             icon: '',
             description: '',
             rate: '',
+          },
+        ],
+        footer: [
+          {
+            title: '',
+            description: '',
+            image: '',
+            required: false,
+            url_facebook: '',
+            url_youtube: '',
+            url_tiktok: '',
           },
         ],
       }}

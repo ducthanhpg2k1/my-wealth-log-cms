@@ -1,12 +1,9 @@
 .containerBtn {
   // position: absolute;
   // right: 36px;
-  position: relative;
-  z-index: 999999;
   display: flex;
   justify-content: end;
   align-items: end;
-  margin-bottom: -30px
 }
 
 .btn {
@@ -16,5 +13,5 @@
 
 .tab {
   padding-top: 10px;
-  padding-bottom: 60px
+  padding-bottom: 60px;
 }

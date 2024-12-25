@@ -167,7 +167,7 @@ const CardTransactionComplicated = ({ data }: any) => {
                   {`${item?.text}: `}
                   <Text element='span' className={styles.textNote} type='font-14-400'>{`${
                     item?.value
-                  } (${percentage.toFixed(1)})%`}</Text>
+                  } (${percentage.toFixed(1)}%)`}</Text>
                 </Text>
               </Row>
             );

@@ -9,24 +9,24 @@ import Text from '@components/UI/Text';
 
 import styles from './index.module.scss';
 
-const SettingBanner = ({ form }: { form: FormInstance }) => {
+const SettingFooter = ({ form }: { form: FormInstance }) => {
   const onDragEnd = ({ destination, source }: any) => {
     if (!destination) {
       return;
     }
 
     const { setFieldsValue, getFieldValue } = form;
-    const banners = getFieldValue('banners') || [];
+    const footer = getFieldValue('footer') || [];
 
-    const [removed] = banners?.splice(source.index, 1);
-    banners.splice(destination.index, 0, removed);
+    const [removed] = footer?.splice(source.index, 1);
+    footer.splice(destination.index, 0, removed);
 
-    setFieldsValue({ banners });
+    setFieldsValue({ footer });
   };
 
   return (
     <div className={styles.container}>
-      <Text type='font-18-600'>Quản lý banner</Text>
+      <Text type='font-18-600'>Quản lý footer</Text>
       <div className={styles.content}>
         <Row gutter={16} style={{ marginBottom: '-8px' }}>
           <Col span={1}></Col>
@@ -39,16 +39,16 @@ const SettingBanner = ({ form }: { form: FormInstance }) => {
             <Text type='font-14-400'>Mô tả</Text>
           </Col>
           <Col span={3}>
-            <Text type='font-14-400'>Hình ảnh desktop</Text>
-          </Col>
-          <Col span={3}>
-            <Text type='font-14-400'>Hình ảnh mobile</Text>
+            <Text type='font-14-400'>Hình ảnh</Text>
           </Col>
           <Col span={2}>
-            <Text type='font-14-400'>App store url</Text>
+            <Text type='font-14-400'>Facebook url</Text>
           </Col>
           <Col span={2}>
-            <Text type='font-14-400'>Google play url</Text>
+            <Text type='font-14-400'>Youtube url</Text>
+          </Col>
+          <Col span={2}>
+            <Text type='font-14-400'>Tiktok url</Text>
           </Col>
           <Col span={2}>
             <Text className={styles.textRequired} type='font-14-400'>
@@ -57,7 +57,7 @@ const SettingBanner = ({ form }: { form: FormInstance }) => {
           </Col>
         </Row>
 
-        <Form.List name='banners'>
+        <Form.List name='footer'>
           {(fields, { remove, add }) => (
             <DragDropContext onDragEnd={onDragEnd}>
               <Droppable droppableId='droppable'>
@@ -128,27 +128,17 @@ const SettingBanner = ({ form }: { form: FormInstance }) => {
                                   <InputUploadImage />
                                 </Form.Item>
                               </Col>
-                              <Col span={3}>
-                                <Form.Item
-                                  {...restField}
-                                  className={styles.formList}
-                                  rules={[{ required: true, message: 'Hình không được bỏ trống' }]}
-                                  name={[name, 'image_mobile']}
-                                >
-                                  <InputUploadImage />
-                                </Form.Item>
-                              </Col>
+
                               <Col span={2}>
                                 <Form.Item
                                   {...restField}
                                   className={styles.formList}
-                                  rules={[{ required: true, message: 'Hình không được bỏ trống' }]}
-                                  name={[name, 'url_appstore']}
+                                  name={[name, 'url_facebook']}
                                 >
                                   <InputTextarea
                                     autoSize={{ minRows: 6, maxRows: 6 }}
                                     size='large'
-                                    placeholder='Nhập url app store'
+                                    placeholder='Nhập url facebook'
                                   />
                                 </Form.Item>
                               </Col>
@@ -156,13 +146,25 @@ const SettingBanner = ({ form }: { form: FormInstance }) => {
                                 <Form.Item
                                   {...restField}
                                   className={styles.formList}
-                                  rules={[{ required: true, message: 'Hình không được bỏ trống' }]}
-                                  name={[name, 'url_google']}
+                                  name={[name, 'url_youtube']}
                                 >
                                   <InputTextarea
                                     autoSize={{ minRows: 6, maxRows: 6 }}
                                     size='large'
-                                    placeholder='Nhập url google play'
+                                    placeholder='Nhập url youtube'
+                                  />
+                                </Form.Item>
+                              </Col>
+                              <Col span={2}>
+                                <Form.Item
+                                  {...restField}
+                                  className={styles.formList}
+                                  name={[name, 'url_tiktok']}
+                                >
+                                  <InputTextarea
+                                    autoSize={{ minRows: 6, maxRows: 6 }}
+                                    size='large'
+                                    placeholder='Nhập url tiktok'
                                   />
                                 </Form.Item>
                               </Col>
@@ -223,4 +225,4 @@ const SettingBanner = ({ form }: { form: FormInstance }) => {
   );
 };
 
-export default SettingBanner;
+export default SettingFooter;
