@@ -234,9 +234,7 @@ const Statistics = () => {
           <Col span={6}>
             <CardHeader count={dataNewUser?.data?.count || 0} title='USER ĐĂNG KÝ MỚI' />
           </Col>
-          <Col span={6}>
-            <CardHeader title='tài sản' count={dataNewAssets?.data?.count || 0} />
-          </Col>
+          
           <Col span={6}>
             <CardHeader
               title='thông báo đã đọc/ đã gửi'
@@ -254,6 +252,9 @@ const Statistics = () => {
                   : 0
               }
             />
+          </Col>
+          <Col span={6}>
+            <CardHeader title='tổng quan tài sản' count={dataNewAssets?.data?.count || 0} />
           </Col>
         </Row>
         <Row gutter={16}>
