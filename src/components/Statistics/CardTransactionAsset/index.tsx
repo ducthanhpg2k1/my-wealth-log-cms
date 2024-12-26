@@ -121,7 +121,7 @@ const CardTransactionAsset = ({ data }: any) => {
   return (
     <div className={styles.card}>
       <Text type='font-18-600' color='text-primary'>
-        Giao dịch theo tài sản
+        Tổng quan tài sản
       </Text>
       <Space
         direction='vertical'
