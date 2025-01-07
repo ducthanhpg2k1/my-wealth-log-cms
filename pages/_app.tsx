@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-page-custom-font */
 /* eslint-disable react/no-unknown-property */
 import '../styles/globals.scss';
 
@@ -5,7 +6,6 @@ import { ReactElement, ReactNode } from 'react';
 
 import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
-import { Inter } from 'next/font/google';
 import Head from 'next/head';
 import { appWithTranslation } from 'next-i18next';
 import NextNProgress from 'nextjs-progressbar';
@@ -23,11 +23,11 @@ type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
 
-const InterFont = Inter({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '700', '900'],
-  display: 'swap',
-});
+// const InterFont = Inter({
+//   subsets: ['latin'],
+//   weight: ['300', '400', '500', '700', '900'],
+//   display: 'swap',
+// });
 
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page: any) => page);
@@ -43,17 +43,20 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
         <meta name='title' content='My Wealth Log' />
         <meta name='description' content='My Wealth Log' />
         <link rel='shortcut icon' href='/images/logo-green.png' />
+
+        <link rel='preconnect' href='https://fonts.googleapis.com' />
+        <link rel='preconnect' href='https://fonts.gstatic.com' />
+        <link
+          href='https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Tourney:ital,wght@0,100..900;1,100..900&display=swap'
+          rel='stylesheet'
+        ></link>
         <meta
           name='viewport'
           content='width=device-width,initial-scale=1,maximum-scale=2,shrink-to-fit=no'
         />
         <meta http-equiv='Content-Security-Policy' content='upgrade-insecure-requests' />
       </Head>
-      <style jsx global>{`
-        :root {
-          --fontInter: ${InterFont.style.fontFamily};
-        }
-      `}</style>
+
       <ErrorBoundary>
         <NextNProgress color='#2aa98b' options={{ showSpinner: false }} />
         <AppLayout>{getLayout(<Component {...pageProps} />)}</AppLayout>
