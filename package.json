@@ -3,11 +3,11 @@
   "version": "0.1.1",
   "private": true,
   "scripts": {
-    "dev": "env-cmd -f .env.clientDev next dev -p 3111",
+    "dev": "env-cmd -f .env.clientDev next dev -p 3456",
     "build": "next build",
     "buildDev": "cp -f .env.clientDev .env && next build",
     "buildProd": "cp -f .env.clientProd .env && next build",
-    "start": "env-cmd -f .env.clientProd next start -p 3111",
+    "start": "env-cmd -f .env.clientProd next start -p 3456",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "analyze": "cross-env ANALYZE=true next build",
